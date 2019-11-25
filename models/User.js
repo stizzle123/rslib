@@ -30,6 +30,10 @@ const userSchema = new mongoose.Schema(
       required: true,
       select: false
     },
+    about: {
+      type: String,
+      trim: true
+    },
     role: {
       type: String,
       required: true,

@@ -1,12 +1,10 @@
 import Layout from "../components/Layout";
-import { Typography } from "@material-ui/core";
+import Profile from "../components/Profile";
 
 export default function profile({ user }) {
   return (
     <Layout {...user}>
-      <Typography variant="h2" component="h3">
-        My Profile
-      </Typography>
+      <Profile {...user} />
     </Layout>
   );
 }

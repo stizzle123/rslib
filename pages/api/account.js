@@ -80,13 +80,15 @@ const handleUpdateAvatar = async (req, res) => {
       await image.resize(250, jimp.AUTO);
       await image.write(`./public/${req.body.avatar}`);
 
-      const uploadedAvatar = await User.findOneAndUpdate(
-        { _id: req.body.id },
-        { $set: { avatar: req.body.avatar } },
+      const updatedAvatar = await User.findOneAndUpdate(
+        { _id: req.body._id },
+        {
+          $set: { avatar: req.body.avatar }
+        },
         { new: true }
       );
 
-      res.json(uploadedAvatar);
+      res.json(updatedAvatar);
       res.end();
     } catch (error) {
       console.error(error);
@@ -98,7 +100,7 @@ const handleUpdateAvatar = async (req, res) => {
 const handlePutRequest = async (req, res) => {
   req.body.updatedAt = new Date().toISOString();
   const updatedUser = await User.findOneAndUpdate(
-    { _id: req.body.id },
+    { _id: req.body._id },
     { $set: req.body },
     { new: true, runValidators: true }
   );
