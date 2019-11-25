@@ -5,6 +5,7 @@ import multer from "multer";
 import jimp from "jimp";
 import path from "path";
 import fs from "fs";
+import baseUrl from "../../utils/baseUrl";
 
 connectDb();
 
@@ -72,19 +73,14 @@ const handleUpdateAvatar = async (req, res) => {
       if (!req.file) {
         return res.status(500).json("No File was Selected");
       }
+
       const extension = req.file.mimetype.split("/")[1];
       req.body.avatar = `/uploads/avatars/${req.body.name
         .split(" ")[0]
         .toLowerCase()}-${Date.now()}.${extension}`;
       const image = await jimp.read(req.file.buffer);
       await image.resize(250, jimp.AUTO);
-      if (process.env.NODE_ENV !== "production") {
-        await image.write(`./public/${req.body.avatar}`);
-      } else {
-        await image.write(`./${req.body.avatar}`);
-      }
-      // await image.write(path.join(__dirname, `public/${req.body.avatar}`));
-      // await image.write(path.join(__dirname, `public/${req.body.avatar}`));
+      await image.write(`./public/${req.body.avatar}`);
 
       const updatedAvatar = await User.findOneAndUpdate(
         { _id: req.body._id },
