@@ -78,7 +78,6 @@ export default function Login() {
       const response = await axios.post(`${baseUrl}/api/login`, payload);
 
       const data = response.data;
-      console.log(data);
       handleLogin(data);
     } catch (err) {
       showError(err);
