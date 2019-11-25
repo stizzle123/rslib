@@ -21,6 +21,7 @@ import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import axios from "axios";
 import baseUrl from "../utils/baseUrl";
 import catchErrors from "../utils/catchErrors";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const INITIAL_STATE = {
   avatar: "",
@@ -38,16 +39,19 @@ export default function Profile({ avatar, name, about, _id }) {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    // if (name) {
+    //   setState(prevState => ({ ...prevState, name }));
+    // }
+
     const user = {
       name: state.name || name,
       about: state.about || about
     };
-    console.log(state.name);
 
     const isUser = Object.values(user).every(el => Boolean(el));
 
     isUser ? setDisabled(false) : setDisabled(true);
-  }, [state.name, state.avatar, state.about]);
+  }, [state.about, name]);
 
   const handleClose = () => setState({ openError: false });
 
@@ -86,12 +90,15 @@ export default function Profile({ avatar, name, about, _id }) {
     try {
       e.preventDefault();
       setLoading(true);
-      const url = `${baseUrl}/api/account`;
-      const { name, about, avatar } = state;
-      const payload = { name, about, avatar: avatar.name, _id };
-      console.log(payload);
+      const url = `${baseUrl}/api/user`;
+
+      const { name, about } = state;
+      const payload = { name, about, _id };
+      // console.log(payload);
       const response = await axios.patch(url, payload);
+
       setLoading(false);
+      setState(INITIAL_STATE);
     } catch (error) {
       setState({ openError: true });
       catchErrors(error, setError);
@@ -112,10 +119,12 @@ export default function Profile({ avatar, name, about, _id }) {
         <form onSubmit={handleSubmit} className={classes.form}>
           <div>
             <label htmlFor="avatar" className={classes.uploadButton}>
-              <Avatar
-                src={mediaPreview || avatar}
-                className={classes.bigAvatar}
-              />
+              <Tooltip title="Upload Avatar" placement="right">
+                <Avatar
+                  src={mediaPreview || avatar}
+                  className={classes.bigAvatar}
+                />
+              </Tooltip>
             </label>
             <IconButton
               onClick={handleAvatarUpload}
@@ -137,11 +146,11 @@ export default function Profile({ avatar, name, about, _id }) {
             {state.avatar && state.avatar.name}
           </span>
           <FormControl margin="normal" fullWidth required>
-            <InputLabel htmlFor="name">Name</InputLabel>
+            <InputLabel htmlFor="name">{name}</InputLabel>
             <Input
               type="text"
               name="name"
-              value={state.name || name}
+              value={state.name}
               onChange={handleChange}
             />
           </FormControl>
@@ -154,7 +163,7 @@ export default function Profile({ avatar, name, about, _id }) {
             margin="normal"
             variant="outlined"
             name="about"
-            value={state.about || about}
+            value={state.about}
             onChange={handleChange}
           />
           <Button
@@ -219,7 +228,10 @@ const useStyles = makeStyles(theme => ({
   bigAvatar: {
     width: 60,
     height: 60,
-    margin: "auto"
+    margin: "auto",
+    "&:hover": {
+      cursor: "pointer"
+    }
   },
   form: {
     width: "100%",

@@ -3,6 +3,8 @@ import jwt from "jsonwebtoken";
 import connectDb from "../../utils/connectDb";
 import multer from "multer";
 import jimp from "jimp";
+import path from "path";
+import fs from "fs";
 
 connectDb();
 
@@ -13,9 +15,7 @@ export default async (req, res) => {
       break;
     case "PATCH":
       await handleUpdateAvatar(req, res);
-      break;
-    case "PUT":
-      await handlePutRequest(req, res);
+
       break;
     default:
       res.status(405).send(`Method ${req.method} not allowed`);
@@ -47,7 +47,7 @@ async function handleGetRequest(req, res) {
 const avatarUploadOptions = {
   storage: multer.memoryStorage(),
   limits: {
-    fileSize: 1024 * 1024 * 5
+    fileSize: 1024 * 1024 * 10
   },
   fileFilter: (req, file, next) => {
     if (file.mimetype.startsWith("image/")) {
@@ -78,7 +78,13 @@ const handleUpdateAvatar = async (req, res) => {
         .toLowerCase()}-${Date.now()}.${extension}`;
       const image = await jimp.read(req.file.buffer);
       await image.resize(250, jimp.AUTO);
-      await image.write(`./public/${req.body.avatar}`);
+      if (process.env.NODE_ENV !== "production") {
+        await image.write(`./public/${req.body.avatar}`);
+      } else {
+        await image.write(`./${req.body.avatar}`);
+      }
+      // await image.write(path.join(__dirname, `public/${req.body.avatar}`));
+      // await image.write(path.join(__dirname, `public/${req.body.avatar}`));
 
       const updatedAvatar = await User.findOneAndUpdate(
         { _id: req.body._id },
@@ -95,17 +101,6 @@ const handleUpdateAvatar = async (req, res) => {
       res.status(500).json(error);
     }
   });
-};
-
-const handlePutRequest = async (req, res) => {
-  req.body.updatedAt = new Date().toISOString();
-  const updatedUser = await User.findOneAndUpdate(
-    { _id: req.body._id },
-    { $set: req.body },
-    { new: true, runValidators: true }
-  );
-
-  res.json(updatedUser);
 };
 
 export const config = {
