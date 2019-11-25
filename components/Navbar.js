@@ -349,15 +349,13 @@ const Navbar = ({ id, name, avatar }) => {
                   onClose={handleClose}
                   TransitionComponent={Fade}
                 >
-                  <MenuItem onClick={() => router.replace(`/profile?id=${id}`)}>
+                  <MenuItem onClick={() => router.replace(`/profile`)}>
                     Profile
                   </MenuItem>
-                  <MenuItem onClick={() => router.replace(`/account?id=${id}`)}>
+                  <MenuItem onClick={() => router.replace(`/account`)}>
                     My account
                   </MenuItem>
-                  <MenuItem
-                    onClick={() => router.replace(`/bookcollections?id=${id}`)}
-                  >
+                  <MenuItem onClick={() => router.replace(`/bookcollections`)}>
                     My Collections
                   </MenuItem>
                   <MenuItem onClick={signOut}>Logout</MenuItem>
