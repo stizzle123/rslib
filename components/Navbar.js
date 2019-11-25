@@ -317,16 +317,14 @@ const Navbar = ({ id, name, avatar }) => {
                   onClose={handleClose}
                   TransitionComponent={Fade}
                 >
-                  <MenuItem onClick={() => router.push(`/profile?id=${id}`)}>
+                  <MenuItem onClick={() => router.push(`/profile`)}>
                     Profile
                   </MenuItem>
 
-                  <MenuItem onClick={() => router.push(`/account?id=${id}`)}>
+                  <MenuItem onClick={() => router.push(`/account}`)}>
                     My account
                   </MenuItem>
-                  <MenuItem
-                    onClick={() => router.push(`/bookcollections?id=${id}`)}
-                  >
+                  <MenuItem onClick={() => router.push(`/bookcollections`)}>
                     My Collections
                   </MenuItem>
                   <MenuItem onClick={signOut}>Logout</MenuItem>
