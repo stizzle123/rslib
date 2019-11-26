@@ -158,8 +158,8 @@ export default function Profile({ avatar, name, about, _id }) {
           </FormControl>
           <TextField
             id="outlined-textarea"
-            label={`Write something about yourself ${name}`}
-            placeholder={`Write something about yourself ${name}`}
+            label={`Write something about yourself, ${name}`}
+            placeholder={`Write something about yourself, ${name}`}
             multiline
             className={classes.textField}
             margin="normal"
