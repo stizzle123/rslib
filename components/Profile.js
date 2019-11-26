@@ -44,14 +44,14 @@ export default function Profile({ avatar, name, about, _id }) {
     // }
 
     const user = {
-      name: state.name || name,
-      about: state.about || about
+      name: state.name,
+      about: state.about
     };
 
     const isUser = Object.values(user).every(el => Boolean(el));
 
     isUser ? setDisabled(false) : setDisabled(true);
-  }, [state.about, name]);
+  }, [state.about, state.name]);
 
   const handleClose = () => setState({ openError: false });
 
@@ -79,7 +79,7 @@ export default function Profile({ avatar, name, about, _id }) {
       const res = await axios.post(process.env.CLOUDINARY_URL, userData);
       let payload = {};
       payload._id = _id;
-      payload.avatar = res.data.url;
+      payload.avatar = res.data.secure_url;
       const response = await axios.patch(url, payload);
       setLoading(false);
     } catch (error) {
@@ -148,7 +148,7 @@ export default function Profile({ avatar, name, about, _id }) {
             {state.avatar && state.avatar.name}
           </span>
           <FormControl margin="normal" fullWidth required>
-            <InputLabel htmlFor="name">{name}</InputLabel>
+            <InputLabel htmlFor="name">Name</InputLabel>
             <Input
               type="text"
               name="name"
@@ -158,8 +158,8 @@ export default function Profile({ avatar, name, about, _id }) {
           </FormControl>
           <TextField
             id="outlined-textarea"
-            label="Write something about yourself"
-            placeholder="Write something about yourself"
+            label={`Write something about yourself ${name}`}
+            placeholder={`Write something about yourself ${name}`}
             multiline
             className={classes.textField}
             margin="normal"
