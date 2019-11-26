@@ -30,28 +30,37 @@ const INITIAL_STATE = {
   openError: false
 };
 
-export default function Profile({ avatar, name, about, _id }) {
+export default function Profile({ _id }) {
   const classes = useStyles();
   const [state, setState] = useState(INITIAL_STATE);
   const [mediaPreview, setMediaPreview] = useState("");
-  const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const userUrl = `${baseUrl}/api/user?id=${_id}`;
 
   useEffect(() => {
-    // if (name) {
-    //   setState(prevState => ({ ...prevState, name }));
-    // }
+    let abort = new AbortController();
 
-    const user = {
-      name: state.name,
-      about: state.about
+    axios
+      .get(userUrl)
+      .then(res => {
+        setState(prevState => ({
+          ...prevState,
+          name: res.data.name,
+          about: res.data.about,
+          avatar: res.data.avatar,
+          openError: false
+        }));
+      })
+      .catch(err => {
+        setState({ openError: true });
+        console.error(err);
+      });
+
+    return () => {
+      return abort.abort();
     };
-
-    const isUser = Object.values(user).every(el => Boolean(el));
-
-    isUser ? setDisabled(false) : setDisabled(true);
-  }, [state.about, state.name]);
+  }, [userUrl]);
 
   const handleClose = () => setState({ openError: false });
 
@@ -100,7 +109,6 @@ export default function Profile({ avatar, name, about, _id }) {
       const response = await axios.patch(url, payload);
 
       setLoading(false);
-      setState(INITIAL_STATE);
     } catch (error) {
       setState({ openError: true });
       catchErrors(error, setError);
@@ -123,16 +131,18 @@ export default function Profile({ avatar, name, about, _id }) {
             <label htmlFor="avatar" className={classes.uploadButton}>
               <Tooltip title="Upload Avatar" placement="right">
                 <Avatar
-                  src={mediaPreview || avatar}
+                  src={mediaPreview || state.avatar}
                   className={classes.bigAvatar}
                 />
               </Tooltip>
             </label>
             <IconButton
               onClick={handleAvatarUpload}
-              disabled={!avatar || !mediaPreview}
+              disabled={!state.avatar || !mediaPreview}
             >
-              <AddAPhotoIcon color="secondary" fontSize="large" />
+              <Tooltip title="Click to upload" placement="right">
+                <AddAPhotoIcon color="primary" fontSize="large" />
+              </Tooltip>
             </IconButton>
           </div>
           <input
@@ -158,8 +168,8 @@ export default function Profile({ avatar, name, about, _id }) {
           </FormControl>
           <TextField
             id="outlined-textarea"
-            label={`Write something about yourself, ${name}`}
-            placeholder={`Write something about yourself, ${name}`}
+            label={`Write something about yourself, ${state.name}`}
+            placeholder={`Write something about yourself, ${state.name}`}
             multiline
             className={classes.textField}
             margin="normal"
@@ -171,7 +181,7 @@ export default function Profile({ avatar, name, about, _id }) {
           <Button
             type="submit"
             fullWidth
-            disabled={disabled || loading}
+            disabled={!(state.name && state.about) || loading}
             variant="contained"
             color="primary"
             className={classes.submit}
@@ -179,7 +189,7 @@ export default function Profile({ avatar, name, about, _id }) {
             {loading ? (
               <span>
                 Saving...
-                <CircularProgress size={0.5} />
+                <CircularProgress size="1rem" color="secondary" />
               </span>
             ) : (
               <span>Save</span>
@@ -225,7 +235,7 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     margin: theme.spacing(2),
-    backgroundColor: theme.palette.secondary.light
+    backgroundColor: theme.palette.primary.light
   },
   bigAvatar: {
     width: 60,
@@ -270,9 +280,9 @@ const useStyles = makeStyles(theme => ({
     width: "100%"
   },
   submit: {
-    backgroundColor: theme.palette.secondary.light,
+    backgroundColor: theme.palette.primary.light,
     "&:hover": {
-      backgroundColor: darken(theme.palette.secondary.light, 0.1)
+      backgroundColor: darken(theme.palette.primary.light, 0.1)
     }
   }
 }));

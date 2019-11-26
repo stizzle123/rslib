@@ -5,12 +5,27 @@ connectDb();
 
 export default async (req, res) => {
   switch (req.method) {
+    case "GET":
+      await handleGetUserDetails(req, res);
+      break;
     case "PATCH":
       await handleUpdateUser(req, res);
       break;
     default:
       res.status(405).send(`Method ${req.method} not allowed`);
       break;
+  }
+};
+
+const handleGetUserDetails = async (req, res) => {
+  try {
+    const id = req.query.id;
+    const user = await User.findById({ _id: id });
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(error);
   }
 };
 
