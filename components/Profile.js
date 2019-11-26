@@ -141,7 +141,7 @@ export default function Profile({ _id }) {
               disabled={!state.avatar || !mediaPreview}
             >
               <Tooltip title="Click to upload" placement="right">
-                <AddAPhotoIcon color="primary" fontSize="large" />
+                <AddAPhotoIcon color="secondary" fontSize="large" />
               </Tooltip>
             </IconButton>
           </div>
@@ -235,7 +235,7 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     margin: theme.spacing(2),
-    backgroundColor: theme.palette.primary.light
+    backgroundColor: theme.palette.secondary.light
   },
   bigAvatar: {
     width: 60,
@@ -280,9 +280,9 @@ const useStyles = makeStyles(theme => ({
     width: "100%"
   },
   submit: {
-    backgroundColor: theme.palette.primary.light,
+    backgroundColor: theme.palette.secondary.light,
     "&:hover": {
-      backgroundColor: darken(theme.palette.primary.light, 0.1)
+      backgroundColor: darken(theme.palette.secondary.light, 0.1)
     }
   }
 }));
