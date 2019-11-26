@@ -297,7 +297,7 @@ const Navbar = ({ id, name, avatar }) => {
                 <IconButton
                   aria-label="show 3 new collections"
                   color="inherit"
-                  onClick={() => router.push(`/bookcollections?id=${id}`)}
+                  onClick={() => router.push(`/bookcollections`)}
                 >
                   <Badge badgeContent={3} color="secondary">
                     <Icon className="fas fa-shopping-bag" />

@@ -1,11 +1,6 @@
 import User from "../../models/User";
 import jwt from "jsonwebtoken";
 import connectDb from "../../utils/connectDb";
-import multer from "multer";
-import jimp from "jimp";
-import path from "path";
-import fs from "fs";
-import baseUrl from "../../utils/baseUrl";
 
 connectDb();
 
@@ -16,7 +11,6 @@ export default async (req, res) => {
       break;
     case "PATCH":
       await handleUpdateAvatar(req, res);
-
       break;
     default:
       res.status(405).send(`Method ${req.method} not allowed`);
@@ -45,62 +39,26 @@ async function handleGetRequest(req, res) {
   }
 }
 
-const avatarUploadOptions = {
-  storage: multer.memoryStorage(),
-  limits: {
-    fileSize: 1024 * 1024 * 10
-  },
-  fileFilter: (req, file, next) => {
-    if (file.mimetype.startsWith("image/")) {
-      next(null, true);
-    } else {
-      next(null, false);
-    }
-  }
-};
-
-const uploadAvatar = multer(avatarUploadOptions).single("avatar");
-
 const handleUpdateAvatar = async (req, res) => {
-  uploadAvatar(req, res, async function(err) {
-    try {
-      if (err instanceof multer.MulterError) {
-        return res.status(500).json(err);
-      } else if (err) {
-        return res.status(500).json(err);
-      }
+  try {
+    const { _id, avatar } = req.body;
 
-      if (!req.file) {
-        return res.status(500).json("No File was Selected");
-      }
-
-      const extension = req.file.mimetype.split("/")[1];
-      req.body.avatar = `/uploads/avatars/${req.body.name
-        .split(" ")[0]
-        .toLowerCase()}-${Date.now()}.${extension}`;
-      const image = await jimp.read(req.file.buffer);
-      await image.resize(250, jimp.AUTO);
-      await image.write(`./public/${req.body.avatar}`);
-
-      const updatedAvatar = await User.findOneAndUpdate(
-        { _id: req.body._id },
-        {
-          $set: { avatar: req.body.avatar }
-        },
-        { new: true }
-      );
-
-      res.json(updatedAvatar);
-      res.end();
-    } catch (error) {
-      console.error(error);
-      res.status(500).json(error);
-    }
-  });
-};
-
-export const config = {
-  api: {
-    bodyParser: false
+    const updatedAvatar = await User.findOneAndUpdate(
+      { _id: _id },
+      {
+        $set: { avatar: avatar }
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedAvatar);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(error);
   }
 };
+
+// export const config = {
+//   api: {
+//     bodyParser: false
+//   }
+// };

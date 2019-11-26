@@ -10,8 +10,8 @@ connectDb();
 export default async (req, res) => {
   const { name, email, password, department } = req.body;
   try {
-    if (!isLength(name, { min: 3, max: 20 })) {
-      return res.status(422).send("Name must be 3-20 characters long");
+    if (!isLength(name, { min: 3, max: 10 })) {
+      return res.status(422).send("Name must be 3-10 characters long");
     } else if (!isLength(password, { min: 6 })) {
       return res
         .status(422)

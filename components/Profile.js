@@ -72,12 +72,15 @@ export default function Profile({ avatar, name, about, _id }) {
       setLoading(true);
       const url = `${baseUrl}/api/account`;
       const { avatar } = state;
+      userData.append("file", avatar);
+      userData.append("upload_preset", "rslibrary");
+      userData.append("cloud_name", "stizzle");
 
-      userData.set("avatar", avatar);
-      userData.set("name", name);
-      userData.set("_id", _id);
-
-      const response = await axios.patch(url, userData);
+      const res = await axios.post(process.env.CLOUDINARY_URL, userData);
+      let payload = {};
+      payload._id = _id;
+      payload.avatar = res.data.url;
+      const response = await axios.patch(url, payload);
       setLoading(false);
     } catch (error) {
       setState({ openError: true });
@@ -94,7 +97,6 @@ export default function Profile({ avatar, name, about, _id }) {
 
       const { name, about } = state;
       const payload = { name, about, _id };
-      // console.log(payload);
       const response = await axios.patch(url, payload);
 
       setLoading(false);

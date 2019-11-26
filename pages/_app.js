@@ -20,7 +20,10 @@ export class MyApp extends App {
 
     if (!token) {
       const isProtectedRoute =
-        ctx.pathname === "/account" || ctx.pathname === "/create";
+        ctx.pathname === "/account" ||
+        ctx.pathname === "/create" ||
+        ctx.pathname === "/profile" ||
+        ctx.pathname === "/bookcollections";
       if (isProtectedRoute) {
         redirectUser(ctx, "/login");
       }
