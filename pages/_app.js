@@ -54,6 +54,11 @@ export class MyApp extends App {
     window.addEventListener("storage", this.syncLogout);
   }
 
+  componentWillUnmount() {
+    window.removeEventListener("storage", this.syncLogout);
+    window.localStorage.removeItem("logout");
+  }
+
   syncLogout = e => {
     if (e.key === "logout") {
       Router.push("/login");
