@@ -36,9 +36,14 @@ export class MyApp extends App {
         pageProps.user = user;
         const isRoot = user.role === "root";
         const isAdmin = user.role === "admin";
+        const isLoggedIn =
+          (user && ctx.pathname === "/login") || ctx.pathname === "/signup";
         const isNotPermitted =
           !(isRoot || isAdmin) && ctx.pathname === "/create";
         if (isNotPermitted) {
+          redirectUser(ctx, "/");
+        }
+        if (isLoggedIn) {
           redirectUser(ctx, "/");
         }
       } catch (error) {

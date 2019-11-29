@@ -42,7 +42,7 @@ export default function SidebarNavList() {
     <div className={classes.flex}>
       <>
         <List>
-          <ListItem button onClick={() => router.replace("/")}>
+          <ListItem button onClick={() => router.replace("/dashboard")}>
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>
@@ -52,13 +52,19 @@ export default function SidebarNavList() {
             <ListItemIcon>
               <LibraryBooksIcon />
             </ListItemIcon>
-            <ListItemText primary="Add Books" />
+            <ListItemText
+              primary="Add Books"
+              onClick={() => router.push("/books/add")}
+            />
           </ListItem>
           <ListItem button>
             <ListItemIcon>
               <CollectionsIcon />
             </ListItemIcon>
-            <ListItemText primary="Book Collections" />
+            <ListItemText
+              primary="Book Collections"
+              onClick={() => router.push("/books")}
+            />
           </ListItem>
           <ListItem button>
             <ListItemIcon>

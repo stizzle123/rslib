@@ -1,7 +1,7 @@
-import Layout from "../components/Layout";
+import Layout from "../../components/Layout";
 import { Typography } from "@material-ui/core";
 
-export default function books({ user }) {
+export default function index({ user }) {
   return (
     <Layout {...user}>
       <Typography variant="h2" component="h5">
