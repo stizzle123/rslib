@@ -62,6 +62,7 @@ class Index extends React.Component {
             <>
               <span id="message-id">
                 This Website uses cookies to ensure you get the best experience.
+                <br />
                 Please kindly enable cookies on your device.{" "}
                 <Link href="/privacy">
                   <a className={classes.link}>Learn More</a>
