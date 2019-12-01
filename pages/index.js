@@ -44,10 +44,10 @@ class Index extends React.Component {
   };
 
   render() {
-    const { user, classes } = this.props;
+    const { user, classes, collections } = this.props;
     const { open } = this.state;
     return (
-      <Layout {...user}>
+      <Layout {...user} collections={collections}>
         <HeroContent {...user} />
         <Tile {...user} />
         {user && <SectionContent {...user} />}

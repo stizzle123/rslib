@@ -121,7 +121,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Navbar = ({ id, name, avatar }) => {
+const Navbar = ({ id, name, avatar, collections }) => {
   const classes = useStyles();
   const router = useRouter();
 
@@ -356,7 +356,7 @@ const Navbar = ({ id, name, avatar }) => {
                     My account
                   </MenuItem>
                   <MenuItem onClick={() => router.replace(`/bookcollections`)}>
-                    My Collections
+                    My Collections{" "}
                   </MenuItem>
                   <MenuItem onClick={signOut}>Logout</MenuItem>
                 </Menu>

@@ -1,7 +1,10 @@
 import Layout from "../components/Layout";
 import { Typography } from "@material-ui/core";
+import { parseCookies } from "nookies";
+import axios from "axios";
+import baseUrl from "../utils/baseUrl";
 
-export default function bookcollections({ user }) {
+function bookcollections({ user }) {
   return (
     <Layout {...user}>
       <Typography variant="h2" component="h3">
@@ -10,3 +13,5 @@ export default function bookcollections({ user }) {
     </Layout>
   );
 }
+
+export default bookcollections;

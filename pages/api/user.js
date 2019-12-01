@@ -20,7 +20,7 @@ export default async (req, res) => {
 const handleGetUserDetails = async (req, res) => {
   try {
     const id = req.query.id;
-    const user = await User.findById({ _id: id });
+    const user = await User.findOne({ _id: id });
 
     res.status(200).json(user);
   } catch (error) {

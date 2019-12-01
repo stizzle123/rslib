@@ -32,8 +32,14 @@ export class MyApp extends App {
         const payload = { headers: { Authorization: token } };
         const url = `${baseUrl}/api/account`;
         const response = await axios.get(url, payload);
+        const collectionData = await axios.get(
+          `${baseUrl}/api/collections`,
+          payload
+        );
         const user = response.data;
+        const collections = collectionData.data;
         pageProps.user = user;
+        pageProps.collections = collections;
         const isRoot = user.role === "root";
         const isAdmin = user.role === "admin";
         const isLoggedIn =

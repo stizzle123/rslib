@@ -1,5 +1,6 @@
 import connectDb from "../../utils/connectDb";
 import User from "../../models/User";
+import Collection from "../../models/Collection";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import isLength from "validator/lib/isLength";
@@ -31,6 +32,9 @@ export default async (req, res) => {
       department,
       password: hash
     }).save();
+
+    await new Collection({ user: newUser._id }).save();
+
     const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
       expiresIn: "1d"
     });
