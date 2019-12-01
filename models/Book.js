@@ -6,9 +6,13 @@ const bookSchema = new mongoose.Schema(
     author: {
       type: String,
       required: true,
+      trim: true
+    },
+    title: {
+      type: String,
+      required: true,
       trim: true,
-      unique: true,
-      lowercase: true
+      unique: true
     },
     genre: {
       type: String,
@@ -24,6 +28,12 @@ const bookSchema = new mongoose.Schema(
     summary: {
       type: String,
       trim: true
+    },
+    status: {
+      type: String,
+      required: true,
+      trim: true,
+      default: "available"
     }
   },
   { timestamps: true }

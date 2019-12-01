@@ -299,7 +299,7 @@ const Navbar = ({ id, name, avatar, collections }) => {
                   color="inherit"
                   onClick={() => router.push(`/bookcollections`)}
                 >
-                  <Badge badgeContent={3} color="secondary">
+                  <Badge badgeContent={collections.length} color="secondary">
                     <Icon className="fas fa-shopping-bag" />
                   </Badge>
                 </IconButton>
