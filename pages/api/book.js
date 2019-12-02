@@ -24,6 +24,7 @@ const handleCreateBook = async (req, res) => {
   const data = { ...req.body };
   try {
     const book = await new Book(data).save();
+
     res.status(200).json(book);
   } catch (error) {
     console.error(error);

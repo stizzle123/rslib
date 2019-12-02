@@ -3,16 +3,16 @@ import mongodbErrorHandler from "mongoose-mongodb-errors";
 
 const bookSchema = new mongoose.Schema(
   {
-    author: {
+    title: {
       type: String,
       required: true,
       trim: true
     },
-    title: {
+    authorName: {
       type: String,
       required: true,
       trim: true,
-      unique: true
+      lowercase: true
     },
     genre: {
       type: String,
@@ -23,6 +23,7 @@ const bookSchema = new mongoose.Schema(
     imageUrl: {
       type: String,
       required: true,
+      trim: true,
       default: "/images/no-image-available.png"
     },
     summary: {
@@ -39,6 +40,6 @@ const bookSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-bookSchema.plugin(mongodbErrorHandler);
+// bookSchema.plugin(mongodbErrorHandler);
 
 export default mongoose.models.Book || mongoose.model("Book", bookSchema);
