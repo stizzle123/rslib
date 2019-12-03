@@ -6,7 +6,8 @@ import {
   Divider,
   List,
   ListItem,
-  CircularProgress
+  CircularProgress,
+  Button
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import Avatar from "@material-ui/core/Avatar";
@@ -16,15 +17,16 @@ import TimelineIcon from "@material-ui/icons/Timeline";
 import PollIcon from "@material-ui/icons/Poll";
 import moment from "moment";
 import axios from "axios";
+import { useRouter } from "next/router";
 import baseUrl from "../utils/baseUrl";
-import Link from "next/link";
 import TopRatedBooks from "./TopRatedBooks";
 
 const useStyles = makeStyles(theme => ({
   header: {
-    background: "#42a5f5",
+    backgroundImage:
+      "linear-gradient(52deg, rgba(163, 163, 163, 0.09) 0%, rgba(163, 163, 163, 0.09) 33.3%,rgba(100, 100, 100, 0.09) 33.3%, rgba(100, 100, 100, 0.09) 66.6%,rgba(162, 162, 162, 0.09) 66.6%, rgba(162, 162, 162, 0.09) 99%),linear-gradient(258deg, rgba(193, 193, 193, 0.06) 0%, rgba(193, 193, 193, 0.06) 33.3%,rgba(169, 169, 169, 0.06) 33.3%, rgba(169, 169, 169, 0.06) 66.6%,rgba(92, 92, 92, 0.06) 66.6%, rgba(92, 92, 92, 0.06) 99%),linear-gradient(129deg, rgba(45, 45, 45, 0.03) 0%, rgba(45, 45, 45, 0.03) 33.3%,rgba(223, 223, 223, 0.03) 33.3%, rgba(223, 223, 223, 0.03) 66.6%,rgba(173, 173, 173, 0.03) 66.6%, rgba(173, 173, 173, 0.03) 99%),linear-gradient(280deg, rgba(226, 226, 226, 0.06) 0%, rgba(226, 226, 226, 0.06) 33.3%,rgba(81, 81, 81, 0.06) 33.3%, rgba(81, 81, 81, 0.06) 66.6%,rgba(186, 186, 186, 0.06) 66.6%, rgba(186, 186, 186, 0.06) 99%),linear-gradient(85deg, rgba(225, 225, 225, 0.04) 0%, rgba(225, 225, 225, 0.04) 33.3%,rgba(95, 95, 95, 0.04) 33.3%, rgba(95, 95, 95, 0.04) 66.6%,rgba(39, 39, 39, 0.04) 66.6%, rgba(39, 39, 39, 0.04) 99%),linear-gradient(128deg, rgba(184, 184, 184, 0.06) 0%, rgba(184, 184, 184, 0.06) 33.3%,rgba(0, 0, 0, 0.06) 33.3%, rgba(0, 0, 0, 0.06) 66.6%,rgba(140, 140, 140, 0.06) 66.6%, rgba(140, 140, 140, 0.06) 99.89999999999999%),linear-gradient(323deg, rgba(40, 40, 40, 0.07) 0%, rgba(40, 40, 40, 0.07) 33.3%,rgba(214, 214, 214, 0.07) 33.3%, rgba(214, 214, 214, 0.07) 66.6%,rgba(190, 190, 190, 0.07) 66.6%, rgba(190, 190, 190, 0.07) 99.89999999999999%),linear-gradient(61deg, rgba(230, 230, 230, 0) 0%, rgba(230, 230, 230, 0) 33.3%,rgba(241, 241, 241, 0) 33.3%, rgba(241, 241, 241, 0) 66.6%,rgba(55, 55, 55, 0) 66.6%, rgba(55, 55, 55, 0) 99%),linear-gradient(0deg, #2625e3,#0bbaef)",
     width: "100%",
-    height: "70vh",
+    height: "80vh",
     padding: "20px 0",
     position: "relative",
     [theme.breakpoints.down("sm")]: {
@@ -41,11 +43,15 @@ const useStyles = makeStyles(theme => ({
       gridTemplateColumns: "repeat(1, 1fr)"
     }
   },
-  flex: {
-    display: "flex",
+  gridIt: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))",
+    gridGap: 6,
     // margin: "20px 0",
     "& > *": {
-      marginRight: 10
+      marginRight: 10,
+      justifySelf: "start",
+      alignSelf: "center"
     }
   },
   paper: {
@@ -61,6 +67,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function Dashboard({ collections }) {
   const classes = useStyles();
+  const router = useRouter();
   const [books, setBooks] = useState([]);
   const [latestbooks, setLatestBooks] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -97,18 +104,23 @@ export default function Dashboard({ collections }) {
           </Typography>
           <div className={classes.grid}>
             <Paper className={classes.paper}>
-              <Typography variant="subtitle2" style={{ display: "flex" }}>
-                Total Books as at {moment(Date.now()).format("MMMM Do, YYYY")}{" "}
-                <TimelineIcon
-                  fontSize="small"
-                  color="secondary"
-                  style={{ marginLeft: "5px" }}
-                />
-              </Typography>
-              <Typography variant="h6" component="h6" gutterBottom>
-                {books.length}{" "}
-                <ArrowUpwardIcon color="secondary" fontSize="small" />
-              </Typography>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <Typography
+                  variant="subtitle2"
+                  style={{ display: "flex" }}
+                  gutterBottom
+                >
+                  <TimelineIcon
+                    fontSize="small"
+                    color="secondary"
+                    style={{ marginLeft: "5px" }}
+                  />
+                  Total Books as at {moment(Date.now()).format("MMMM Do, YYYY")}{" "}
+                </Typography>
+                <Typography variant="h1" component="h1">
+                  {books.length}
+                </Typography>
+              </div>
               <Divider />
               <div style={{ margin: "20px 0" }}>
                 <Typography
@@ -118,26 +130,48 @@ export default function Dashboard({ collections }) {
                 >
                   Book Count by Genre
                 </Typography>
-                <div className={classes.flex}>
+                <div className={classes.gridIt}>
                   <Chip
-                    label="Self Development"
+                    label="Self Help"
                     color="secondary"
                     avatar={<Avatar>8</Avatar>}
+                    onClick={() => console.log("Hello...")}
+                  />
+                  <Chip
+                    label="Autobiography"
+                    color="secondary"
+                    avatar={<Avatar>2</Avatar>}
+                    onClick={() => console.log("Hello...")}
                   />
                   <Chip
                     label="Business"
                     color="secondary"
                     avatar={<Avatar>12</Avatar>}
+                    onClick={() => console.log("Hello...")}
                   />
                   <Chip
                     label="Biography"
                     color="secondary"
                     avatar={<Avatar>2</Avatar>}
+                    onClick={() => console.log("Hello...")}
                   />
                   <Chip
-                    label="Technical"
+                    label="History"
                     color="secondary"
                     avatar={<Avatar>4</Avatar>}
+                    onClick={() => console.log("Hello...")}
+                  />
+                  <Chip
+                    label="Philosophy"
+                    color="secondary"
+                    avatar={<Avatar>5</Avatar>}
+                    onClick={() => console.log("Hello...")}
+                  />
+                  <Chip
+                    label="Science"
+                    color="secondary"
+                    avatar={<Avatar>3</Avatar>}
+                    onClick={() => console.log("Hello...")}
                   />
                 </div>
               </div>
@@ -170,9 +204,14 @@ export default function Dashboard({ collections }) {
                   ))
                 )}
               </List>
-              <Link href="/books">
-                <a>View all Books</a>
-              </Link>
+              <Divider />
+              <Button
+                style={{ margin: "10px 0" }}
+                color="secondary"
+                onClick={() => router.replace("/books")}
+              >
+                View all Books
+              </Button>
             </Paper>
           </div>
         </Container>

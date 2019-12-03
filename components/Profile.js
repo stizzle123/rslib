@@ -117,104 +117,113 @@ export default function Profile({ _id }) {
   };
 
   return (
-    <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <EditSharp />
-        </Avatar>
-        <Typography variant="h5" component="h1">
-          Edit Profile
-        </Typography>
+    <div className={classes.base}>
+      <div className={classes.root}>
+        <Paper className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <EditSharp />
+          </Avatar>
+          <Typography variant="h5" component="h1">
+            Edit Profile
+          </Typography>
 
-        <form onSubmit={handleSubmit} className={classes.form}>
-          <div>
-            <label htmlFor="avatar" className={classes.uploadButton}>
-              <Tooltip title="Upload Avatar" placement="right">
-                <Avatar
-                  src={mediaPreview || state.avatar}
-                  className={classes.bigAvatar}
-                />
-              </Tooltip>
-            </label>
-            <IconButton
-              onClick={handleAvatarUpload}
-              disabled={!state.avatar || !mediaPreview}
-            >
-              <Tooltip title="Click to upload" placement="right">
-                <AddAPhotoIcon color="secondary" fontSize="large" />
-              </Tooltip>
-            </IconButton>
-          </div>
-          <input
-            type="file"
-            name="avatar"
-            id="avatar"
-            accept="image/*"
-            className={classes.input}
-            onChange={handleChange}
-          />
-
-          <span className={classes.filename}>
-            {state.avatar && state.avatar.name}
-          </span>
-          <FormControl margin="normal" fullWidth required>
-            <InputLabel htmlFor="name">Name</InputLabel>
-            <Input
-              type="text"
-              name="name"
-              value={state.name}
+          <form onSubmit={handleSubmit} className={classes.form}>
+            <div>
+              <label htmlFor="avatar" className={classes.uploadButton}>
+                <Tooltip title="Click to Upload Avatar" placement="right">
+                  <Avatar
+                    src={mediaPreview || state.avatar}
+                    className={classes.bigAvatar}
+                  />
+                </Tooltip>
+              </label>
+              <IconButton
+                onClick={handleAvatarUpload}
+                disabled={!state.avatar || !mediaPreview}
+              >
+                <Tooltip title="Click to upload" placement="right">
+                  <AddAPhotoIcon color="secondary" fontSize="large" />
+                </Tooltip>
+              </IconButton>
+            </div>
+            <input
+              type="file"
+              name="avatar"
+              id="avatar"
+              accept="image/*"
+              className={classes.input}
               onChange={handleChange}
             />
-          </FormControl>
-          <TextField
-            id="outlined-textarea"
-            label={`Write something about yourself, ${state.name}`}
-            placeholder={`Write something about yourself, ${state.name}`}
-            multiline
-            className={classes.textField}
-            margin="normal"
-            variant="outlined"
-            name="about"
-            value={state.about}
-            onChange={handleChange}
-          />
-          <Button
-            type="submit"
-            fullWidth
-            disabled={!(state.name && state.about) || loading}
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            {loading ? (
-              <span>
-                Saving...
-                <CircularProgress size="1rem" color="secondary" />
-              </span>
-            ) : (
-              <span>Save</span>
-            )}
-          </Button>
-        </form>
 
-        {error && (
-          <Snackbar
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "right"
-            }}
-            open={state.openError}
-            onClose={handleClose}
-            autoHideDuration={6000}
-            message={<span className={classes.snack}>{error}</span>}
-          />
-        )}
-      </Paper>
+            <span className={classes.filename}>
+              {state.avatar && state.avatar.name}
+            </span>
+            <FormControl margin="normal" fullWidth required>
+              <InputLabel htmlFor="name">Name</InputLabel>
+              <Input
+                type="text"
+                name="name"
+                value={state.name}
+                onChange={handleChange}
+              />
+            </FormControl>
+            <TextField
+              id="outlined-textarea"
+              label={`Write something about yourself, ${state.name}`}
+              placeholder={`Write something about yourself, ${state.name}`}
+              multiline
+              className={classes.textField}
+              margin="normal"
+              variant="outlined"
+              name="about"
+              value={state.about}
+              onChange={handleChange}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              disabled={!(state.name && state.about) || loading}
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              {loading ? (
+                <span>
+                  Saving...
+                  <CircularProgress size="1rem" color="secondary" />
+                </span>
+              ) : (
+                <span>Save</span>
+              )}
+            </Button>
+          </form>
+
+          {error && (
+            <Snackbar
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right"
+              }}
+              open={state.openError}
+              onClose={handleClose}
+              autoHideDuration={6000}
+              message={<span className={classes.snack}>{error}</span>}
+            />
+          )}
+        </Paper>
+      </div>
     </div>
   );
 }
 
 const useStyles = makeStyles(theme => ({
+  base: {
+    width: "100%",
+    height: "100%",
+    backgroundImage:
+      "linear-gradient(135deg, transparent 0%, transparent 6%,rgba(71, 71, 71,0.04) 6%, rgba(71, 71, 71,0.04) 22%,transparent 22%, transparent 100%),linear-gradient(45deg, transparent 0%, transparent 20%,rgba(71, 71, 71,0.04) 20%, rgba(71, 71, 71,0.04) 47%,transparent 47%, transparent 100%),linear-gradient(135deg, transparent 0%, transparent 24%,rgba(71, 71, 71,0.04) 24%, rgba(71, 71, 71,0.04) 62%,transparent 62%, transparent 100%),linear-gradient(45deg, transparent 0%, transparent 73%,rgba(71, 71, 71,0.04) 73%, rgba(71, 71, 71,0.04) 75%,transparent 75%, transparent 100%),linear-gradient(90deg, rgb(255,255,255),rgb(255,255,255))",
+    padding: theme.spacing(8)
+  },
   root: {
     width: "auto",
     display: "block",
@@ -227,7 +236,6 @@ const useStyles = makeStyles(theme => ({
     }
   },
   paper: {
-    marginTop: theme.spacing(8),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",

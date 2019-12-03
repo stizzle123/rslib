@@ -12,7 +12,8 @@ import {
   Snackbar,
   Dialog,
   Select,
-  MenuItem
+  MenuItem,
+  Fab
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import MenuBookIcon from "@material-ui/icons/MenuBook";
@@ -26,11 +27,19 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { genres } from "../utils/genres";
 
 const useStyles = makeStyles(theme => ({
+  base: {
+    width: "100%",
+    height: "100%",
+    backgroundImage:
+      "linear-gradient(135deg, transparent 0%, transparent 6%,rgba(71, 71, 71,0.04) 6%, rgba(71, 71, 71,0.04) 22%,transparent 22%, transparent 100%),linear-gradient(45deg, transparent 0%, transparent 20%,rgba(71, 71, 71,0.04) 20%, rgba(71, 71, 71,0.04) 47%,transparent 47%, transparent 100%),linear-gradient(135deg, transparent 0%, transparent 24%,rgba(71, 71, 71,0.04) 24%, rgba(71, 71, 71,0.04) 62%,transparent 62%, transparent 100%),linear-gradient(45deg, transparent 0%, transparent 73%,rgba(71, 71, 71,0.04) 73%, rgba(71, 71, 71,0.04) 75%,transparent 75%, transparent 100%),linear-gradient(90deg, rgb(255,255,255),rgb(255,255,255))",
+    padding: theme.spacing(8)
+  },
   root: {
     width: "auto",
     display: "block",
     marginLeft: theme.spacing(3),
     marginRight: theme.spacing(3),
+
     [theme.breakpoints.up("md")]: {
       width: 400,
       marginLeft: "auto",
@@ -38,8 +47,6 @@ const useStyles = makeStyles(theme => ({
     }
   },
   paper: {
-    marginTop: theme.spacing(8),
-    marginBottom: theme.spacing(8),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -116,6 +123,7 @@ export default function AddBook({ _id }) {
   const [state, setState] = useState(INIT_STATE);
   const [mediaPreview, setMediaPreview] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loadingImage, setLoadingImage] = useState(false);
   const [error, setError] = useState("");
   const [openError, setOpenError] = useState(false);
 
@@ -132,7 +140,7 @@ export default function AddBook({ _id }) {
   const handleImageUpload = async e => {
     const userData = new FormData();
     try {
-      setLoading(true);
+      setLoadingImage(true);
       const url = `${baseUrl}/api/book`;
       const { imageUrl } = state;
       userData.append("file", imageUrl);
@@ -143,12 +151,12 @@ export default function AddBook({ _id }) {
       setState({ imageUrl: res.data.secure_url });
     } catch (error) {
       console.error(error);
-      setLoading(false);
+      setLoadingImage(false);
       setError(error);
       setOpenError(true);
       catchErrors(error, setError);
     } finally {
-      setLoading(false);
+      setLoadingImage(false);
     }
   };
 
@@ -177,123 +185,143 @@ export default function AddBook({ _id }) {
   };
 
   return (
-    <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <Avatar className={classes.imageUrl}>
-          <MenuBookIcon />
-        </Avatar>
-        <Typography variant="h5" component="h1">
-          Add a Book
-        </Typography>
-        <form onSubmit={handleSubmit} className={classes.form}>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-          >
-            <label htmlFor="imageUrl" className={classes.uploadButton}>
-              <Tooltip title="Upload Book Cover Image" placement="right">
-                <Avatar
-                  src={mediaPreview || "/images/no-image.png"}
-                  className={classes.bigAvatar}
-                />
-              </Tooltip>
-            </label>
-            <IconButton
-              onClick={handleImageUpload}
-              disabled={!state.imageUrl || !mediaPreview}
+    <div className={classes.base}>
+      <div className={classes.root}>
+        <Paper className={classes.paper}>
+          <Avatar className={classes.imageUrl}>
+            <MenuBookIcon />
+          </Avatar>
+          <Typography variant="h5" component="h1">
+            Add a Book
+          </Typography>
+          <form onSubmit={handleSubmit} className={classes.form}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center"
+              }}
             >
-              <Tooltip title="Click to upload" placement="right">
-                <CloudUploadIcon color="primary" fontSize="large" />
-              </Tooltip>
-            </IconButton>
-          </div>
-          <input
-            type="file"
-            name="imageUrl"
-            id="imageUrl"
-            accept="image/*"
-            className={classes.input}
-            onChange={handleChange}
-          />
+              <label htmlFor="imageUrl" className={classes.uploadButton}>
+                <Tooltip
+                  title="Click to Upload Book Cover Image"
+                  placement="right"
+                >
+                  <Avatar
+                    src={mediaPreview || "/images/no-image.png"}
+                    className={classes.bigAvatar}
+                  />
+                </Tooltip>
+              </label>
 
-          <span className={classes.filename}>
-            {state.imageUrl && state.imageUrl.name}
-          </span>
-          <FormControl margin="normal" fullWidth required>
-            <InputLabel htmlFor="authorName">Author</InputLabel>
-            <Input
-              type="text"
-              name="authorName"
-              value={state.authorName}
+              <Fab
+                size="small"
+                color="primary"
+                disabled={!state.imageUrl || !mediaPreview}
+                onClick={handleImageUpload}
+                variant="extended"
+              >
+                {loadingImage ? (
+                  <span>
+                    Uploading...{" "}
+                    <CircularProgress size="1rem" color="primary" />
+                  </span>
+                ) : (
+                  <>
+                    <CloudUploadIcon style={{ marginRight: ".5rem" }} /> Upload
+                    Image
+                  </>
+                )}
+              </Fab>
+            </div>
+            <input
+              type="file"
+              name="imageUrl"
+              id="imageUrl"
+              accept="image/*"
+              className={classes.input}
               onChange={handleChange}
             />
-          </FormControl>
 
-          <FormControl margin="normal" fullWidth required>
-            <InputLabel htmlFor="title">Book Title</InputLabel>
-            <Input
-              type="text"
-              name="title"
-              value={state.title}
-              onChange={handleChange}
-            />
-          </FormControl>
+            <span className={classes.filename}>
+              {state.imageUrl && state.imageUrl.name}
+            </span>
 
-          <FormControl fullWidth required className={classes.formControl}>
-            <InputLabel id="demo-simple-select-outlined-label">
-              Genre
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-outlined-label"
-              id="demo-simple-select-outlined"
-              name="genre"
-              value={state.genre}
-              onChange={handleChange}
-            >
-              <MenuItem value="select genre" disabled={true}>
-                Select Genre
-              </MenuItem>
-              {genres.map((genre, i) => (
-                <MenuItem key={i} value={genre.value}>
-                  {genre.name}
+            <FormControl margin="normal" fullWidth required>
+              <InputLabel htmlFor="title">Book Title</InputLabel>
+              <Input
+                type="text"
+                name="title"
+                value={state.title}
+                onChange={handleChange}
+              />
+            </FormControl>
+
+            <FormControl margin="normal" fullWidth required>
+              <InputLabel htmlFor="authorName">Author</InputLabel>
+              <Input
+                type="text"
+                name="authorName"
+                value={state.authorName}
+                onChange={handleChange}
+              />
+            </FormControl>
+
+            <FormControl fullWidth required className={classes.formControl}>
+              <InputLabel id="demo-simple-select-outlined-label">
+                Genre
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-outlined-label"
+                id="genre"
+                name="genre"
+                value={state.genre}
+                onChange={handleChange}
+              >
+                <MenuItem value="select genre" disabled={true}>
+                  Select Genre
                 </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl fullWidth>
-            <TextField
-              id="outlined-textarea"
-              label="Summary"
-              placeholder="Summary"
-              multiline
-              margin="normal"
-              variant="outlined"
-            />
-          </FormControl>
-          <Button
-            type="submit"
-            fullWidth
-            disabled={
-              !(state.authorName && state.genre && state.title) || loading
-            }
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            {loading ? (
-              <span>
-                Loading...
-                <CircularProgress size="1rem" color="primary" />
-              </span>
-            ) : (
-              <span>Submit</span>
-            )}
-          </Button>
-        </form>
-      </Paper>
+                {genres.map((genre, i) => (
+                  <MenuItem key={i} value={genre.value}>
+                    {genre.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl fullWidth>
+              <TextField
+                id="outlined-textarea"
+                label="Summary"
+                placeholder="Summary"
+                multiline
+                margin="normal"
+                variant="outlined"
+              />
+            </FormControl>
+            <Button
+              type="submit"
+              fullWidth
+              disabled={
+                !(state.authorName && state.genre && state.title) ||
+                loading ||
+                loadingImage
+              }
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              {loading ? (
+                <span>
+                  Loading...
+                  <CircularProgress size="1rem" color="primary" />
+                </span>
+              ) : (
+                <span>Submit</span>
+              )}
+            </Button>
+          </form>
+        </Paper>
+      </div>
     </div>
   );
 }

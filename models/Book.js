@@ -35,6 +35,11 @@ const bookSchema = new mongoose.Schema(
       required: true,
       trim: true,
       default: "available"
+    },
+    quantity: {
+      type: Number,
+      default: 1,
+      trim: true
     }
   },
   { timestamps: true }

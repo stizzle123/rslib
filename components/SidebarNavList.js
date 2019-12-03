@@ -83,7 +83,7 @@ export default function SidebarNavList() {
       </>
       <span className={classes.bottomPosition}>
         <span className={classes.footerColor}>
-          &copy; {new Date().getFullYear()}, Copyright, RSLIBRARY
+          Copyright &copy; RSLIBRARY {new Date().getFullYear()}
         </span>
       </span>
     </div>

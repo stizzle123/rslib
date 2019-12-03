@@ -1,27 +1,31 @@
 export const genres = [
   {
-    name: "Fantasy",
-    value: "fantasy"
+    name: "Autobiography",
+    value: "autobiography"
   },
 
   {
-    name: "Educational",
-    value: "educational"
+    name: "Business",
+    value: "business"
   },
   {
-    name: "Drama",
-    value: "drama"
+    name: "Biography",
+    value: "biography"
   },
   {
-    name: "Legal",
-    value: "legal"
+    name: "History",
+    value: "history"
   },
   {
-    name: "Fiction",
-    value: "fiction"
+    name: "Philosophy",
+    value: "philosophy"
   },
   {
-    name: "Thriller",
-    value: "thriller"
+    name: "Self Help",
+    value: "self help"
+  },
+  {
+    name: "Science",
+    value: "science"
   }
 ];
