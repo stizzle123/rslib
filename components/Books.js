@@ -43,14 +43,6 @@ const StyledTableRow = withStyles(theme => ({
   }
 }))(TableRow);
 
-const StyledTableFooter = withStyles(theme => ({
-  root: {
-    width: "100%",
-    backgroundImage:
-      "linear-gradient(16deg, rgba(116, 116, 116,0.02) 0%, rgba(116, 116, 116,0.02) 25%,transparent 25%, transparent 96%,rgba(177, 177, 177,0.02) 96%, rgba(177, 177, 177,0.02) 100%),linear-gradient(236deg, rgba(148, 148, 148,0.02) 0%, rgba(148, 148, 148,0.02) 53%,transparent 53%, transparent 59%,rgba(56, 56, 56,0.02) 59%, rgba(56, 56, 56,0.02) 100%),linear-gradient(284deg, rgba(16, 16, 16,0.02) 0%, rgba(16, 16, 16,0.02) 46%,transparent 46%, transparent 71%,rgba(181, 181, 181,0.02) 71%, rgba(181, 181, 181,0.02) 100%),linear-gradient(316deg, rgba(197, 197, 197,0.02) 0%, rgba(197, 197, 197,0.02) 26%,transparent 26%, transparent 49%,rgba(58, 58, 58,0.02) 49%, rgba(58, 58, 58,0.02) 100%),linear-gradient(90deg, rgb(255,255,255),rgb(255,255,255))"
-  }
-}))(TableFooter);
-
 const useStyles = makeStyles(theme => ({
   base: {
     padding: theme.spacing(8),
@@ -58,16 +50,14 @@ const useStyles = makeStyles(theme => ({
   },
   root: {
     width: "100%",
-    overflowX: "auto",
     margin: "auto"
   },
   table: {
     minWidth: 500
+    // position: "relative"
   },
-  footer: {
-    width: "100%",
-    backgroundImage:
-      "linear-gradient(16deg, rgba(116, 116, 116,0.02) 0%, rgba(116, 116, 116,0.02) 25%,transparent 25%, transparent 96%,rgba(177, 177, 177,0.02) 96%, rgba(177, 177, 177,0.02) 100%),linear-gradient(236deg, rgba(148, 148, 148,0.02) 0%, rgba(148, 148, 148,0.02) 53%,transparent 53%, transparent 59%,rgba(56, 56, 56,0.02) 59%, rgba(56, 56, 56,0.02) 100%),linear-gradient(284deg, rgba(16, 16, 16,0.02) 0%, rgba(16, 16, 16,0.02) 46%,transparent 46%, transparent 71%,rgba(181, 181, 181,0.02) 71%, rgba(181, 181, 181,0.02) 100%),linear-gradient(316deg, rgba(197, 197, 197,0.02) 0%, rgba(197, 197, 197,0.02) 26%,transparent 26%, transparent 49%,rgba(58, 58, 58,0.02) 49%, rgba(58, 58, 58,0.02) 100%),linear-gradient(90deg, rgb(255,255,255),rgb(255,255,255))"
+  tableWrapper: {
+    overflowX: "auto"
   }
 }));
 
@@ -114,72 +104,76 @@ export default function Books() {
         All Available Books
       </Typography>
       <Paper className={classes.root}>
-        <Table className={classes.table} aria-label="customized table">
-          <TableHead>
-            <TableRow>
-              <StyledTableCell>Book Cover</StyledTableCell>
-              <StyledTableCell align="right">Title</StyledTableCell>
-              <StyledTableCell align="right">Author</StyledTableCell>
-              <StyledTableCell align="right">Genre</StyledTableCell>
-              <StyledTableCell align="right">Quantity</StyledTableCell>
-              <StyledTableCell align="right">Status</StyledTableCell>
-              <StyledTableCell align="right">Actions</StyledTableCell>
-            </TableRow>
-          </TableHead>
+        <div className={classes.tableWrapper}>
+          <Table className={classes.table} aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>Book Cover</StyledTableCell>
+                <StyledTableCell align="right">Title</StyledTableCell>
+                <StyledTableCell align="right">Author</StyledTableCell>
+                <StyledTableCell align="right">Genre</StyledTableCell>
+                <StyledTableCell align="right">Quantity</StyledTableCell>
+                <StyledTableCell align="right">Status</StyledTableCell>
+                <StyledTableCell align="right">Actions</StyledTableCell>
+              </TableRow>
+            </TableHead>
 
-          <TableBody>
-            {(rowsPerPage > 0
-              ? books.slice(
-                  page * rowsPerPage,
-                  page * rowsPerPage + rowsPerPage
-                )
-              : books
-            ).map(book => (
-              <StyledTableRow key={book._id}>
-                <StyledTableCell component="th" scope="row">
-                  <Avatar variant="square" src={book.imageUrl} />
-                </StyledTableCell>
-                <StyledTableCell align="right">{book.title}</StyledTableCell>
-                <StyledTableCell align="right">
-                  {book.authorName}
-                </StyledTableCell>
-                <StyledTableCell align="right">{book.genre}</StyledTableCell>
-                <StyledTableCell align="right">{book.quantity}</StyledTableCell>
-                <StyledTableCell align="right">
-                  {/* {book.status} */}
-                  <Chip color="secondary" label={book.status} />
-                </StyledTableCell>
-                <StyledTableCell align="right">
-                  <IconButton color="primary">
-                    <EditIcon color="primary" />
-                  </IconButton>
-                  <Button>Borrow</Button>
-                  <IconButton>
-                    <DeleteIcon color="error" />
-                  </IconButton>
-                </StyledTableCell>
-              </StyledTableRow>
-            ))}
-          </TableBody>
-          <StyledTableFooter>
-            <TableRow>
-              <TablePagination
-                rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-                colSpan={3}
-                count={books.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                SelectProps={{
-                  inputProps: { "aria-label": "rows per page" },
-                  native: true
-                }}
-                onChangePage={handleChangePage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
-                ActionsComponent={TablePaginationActions}
-              />
-            </TableRow>
-          </StyledTableFooter>
-        </Table>
+            <TableBody>
+              {(rowsPerPage > 0
+                ? books.slice(
+                    page * rowsPerPage,
+                    page * rowsPerPage + rowsPerPage
+                  )
+                : books
+              ).map(book => (
+                <StyledTableRow key={book._id}>
+                  <StyledTableCell component="th" scope="row">
+                    <Avatar variant="square" src={book.imageUrl} />
+                  </StyledTableCell>
+                  <StyledTableCell align="right">{book.title}</StyledTableCell>
+                  <StyledTableCell align="right">
+                    {book.authorName}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">{book.genre}</StyledTableCell>
+                  <StyledTableCell align="right">
+                    {book.quantity}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    {/* {book.status} */}
+                    <Chip color="secondary" label={book.status} />
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    <IconButton color="primary">
+                      <EditIcon color="primary" />
+                    </IconButton>
+                    <Button>Borrow</Button>
+                    <IconButton>
+                      <DeleteIcon color="error" />
+                    </IconButton>
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+                  colSpan={3}
+                  count={books.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  SelectProps={{
+                    inputProps: { "aria-label": "rows per page" },
+                    native: true
+                  }}
+                  onChangePage={handleChangePage}
+                  onChangeRowsPerPage={handleChangeRowsPerPage}
+                  ActionsComponent={TablePaginationActions}
+                />
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </div>
       </Paper>
     </div>
   );

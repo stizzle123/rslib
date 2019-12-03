@@ -4,7 +4,8 @@ import {
   ListItemIcon,
   ListItemText,
   Divider,
-  makeStyles
+  makeStyles,
+  Avatar
 } from "@material-ui/core";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
@@ -15,13 +16,13 @@ import Router, { useRouter } from "next/router";
 import { fade, lighten } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
-  //   flex: {
-  //     display: "flex",
-  //     justifyContent: "space-between",
-  //     alignItems: "center",
-  //     flexDirection: "column",
-  //     width: "100%"
-  //   },
+  // flex: {
+  //   display: "flex",
+  //   justifyContent: "space-between",
+  //   alignItems: "center",
+  //   flexDirection: "column",
+  //   width: "100%"
+  // },
   bottomPosition: {
     position: "absolute",
     bottom: "0",
@@ -31,6 +32,10 @@ const useStyles = makeStyles(theme => ({
   },
   footerColor: {
     color: lighten(theme.palette.common.black, 0.6)
+  },
+  footerLogo: {
+    display: "flex",
+    justifyContent: "center"
   }
 }));
 
@@ -82,6 +87,11 @@ export default function SidebarNavList() {
         </List>
       </>
       <span className={classes.bottomPosition}>
+        <Avatar
+          src="/images/rslibrary-logo.png"
+          variant="circle"
+          style={{ margin: "auto", width: "60px", height: "60px" }}
+        />
         <span className={classes.footerColor}>
           Copyright &copy; RSLIBRARY {new Date().getFullYear()}
         </span>
