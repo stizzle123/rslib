@@ -43,6 +43,14 @@ const StyledTableRow = withStyles(theme => ({
   }
 }))(TableRow);
 
+const StyledTableFooter = withStyles(theme => ({
+  root: {
+    width: "100%",
+    backgroundImage:
+      "linear-gradient(16deg, rgba(116, 116, 116,0.02) 0%, rgba(116, 116, 116,0.02) 25%,transparent 25%, transparent 96%,rgba(177, 177, 177,0.02) 96%, rgba(177, 177, 177,0.02) 100%),linear-gradient(236deg, rgba(148, 148, 148,0.02) 0%, rgba(148, 148, 148,0.02) 53%,transparent 53%, transparent 59%,rgba(56, 56, 56,0.02) 59%, rgba(56, 56, 56,0.02) 100%),linear-gradient(284deg, rgba(16, 16, 16,0.02) 0%, rgba(16, 16, 16,0.02) 46%,transparent 46%, transparent 71%,rgba(181, 181, 181,0.02) 71%, rgba(181, 181, 181,0.02) 100%),linear-gradient(316deg, rgba(197, 197, 197,0.02) 0%, rgba(197, 197, 197,0.02) 26%,transparent 26%, transparent 49%,rgba(58, 58, 58,0.02) 49%, rgba(58, 58, 58,0.02) 100%),linear-gradient(90deg, rgb(255,255,255),rgb(255,255,255))"
+  }
+}))(TableFooter);
+
 const useStyles = makeStyles(theme => ({
   base: {
     padding: theme.spacing(8),
@@ -153,7 +161,7 @@ export default function Books() {
               </StyledTableRow>
             ))}
           </TableBody>
-          <TableFooter className={classes.footer}>
+          <StyledTableFooter>
             <TableRow>
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
@@ -170,7 +178,7 @@ export default function Books() {
                 ActionsComponent={TablePaginationActions}
               />
             </TableRow>
-          </TableFooter>
+          </StyledTableFooter>
         </Table>
       </Paper>
     </div>
