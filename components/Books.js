@@ -53,8 +53,8 @@ const useStyles = makeStyles(theme => ({
   base: {
     padding: theme.spacing(8),
     textAlign: "center",
-    height: "100%",
-    minHeight: "100vh",
+    height: "100vh",
+    minHeight: "100%",
     position: "relative",
     backgroundImage:
       "linear-gradient(74deg, rgba(236, 236, 236,0.02) 0%, rgba(236, 236, 236,0.02) 13%,transparent 13%, transparent 64%,rgba(55, 55, 55,0.02) 64%, rgba(55, 55, 55,0.02) 71%,rgba(239, 239, 239,0.02) 71%, rgba(239, 239, 239,0.02) 100%),linear-gradient(170deg, rgba(8, 8, 8,0.02) 0%, rgba(8, 8, 8,0.02) 1%,transparent 1%, transparent 60%,rgba(9, 9, 9,0.02) 60%, rgba(9, 9, 9,0.02) 80%,rgba(198, 198, 198,0.02) 80%, rgba(198, 198, 198,0.02) 100%),linear-gradient(118deg, rgba(134, 134, 134,0.02) 0%, rgba(134, 134, 134,0.02) 30%,transparent 30%, transparent 43%,rgba(85, 85, 85,0.02) 43%, rgba(85, 85, 85,0.02) 47%,rgba(103, 103, 103,0.02) 47%, rgba(103, 103, 103,0.02) 100%),linear-gradient(249deg, rgba(178, 178, 178,0.02) 0%, rgba(178, 178, 178,0.02) 8%,transparent 8%, transparent 47%,rgba(161, 161, 161,0.02) 47%, rgba(161, 161, 161,0.02) 61%,rgba(19, 19, 19,0.02) 61%, rgba(19, 19, 19,0.02) 100%),linear-gradient(90deg, rgb(255,255,255),rgb(255,255,255))",
@@ -162,6 +162,8 @@ export default function Books() {
 
   return (
     <>
+      <BorrowModal book={book} open={open} handleClose={handleClose} />
+
       <div className={classes.base}>
         <SearchComponent updateSearch={updateSearch} />
         <Typography variant="h4" component="h6" gutterBottom>
@@ -270,7 +272,6 @@ export default function Books() {
           </div>
         </Paper>
       </div>
-      <BorrowModal book={book} open={open} handleClose={handleClose} />
     </>
   );
 }

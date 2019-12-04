@@ -117,9 +117,20 @@ export default function Dashboard({ collections }) {
                   />
                   Total Books as at {moment(Date.now()).format("MMMM Do, YYYY")}{" "}
                 </Typography>
-                <Typography variant="h1" component="h1">
-                  {books.length}
-                </Typography>
+                <>
+                  <Typography variant="h1" component="h1">
+                    {books.length}
+                  </Typography>
+                  <sup
+                    style={{
+                      marginTop: "50px",
+                      marginLeft: "-8px",
+                      fontWeight: 700
+                    }}
+                  >
+                    books
+                  </sup>
+                </>
               </div>
               <Divider />
               <div style={{ margin: "20px 0" }}>
