@@ -5,7 +5,8 @@ import {
   Button,
   Avatar,
   Typography,
-  IconButton
+  IconButton,
+  CircularProgress
 } from "@material-ui/core";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -17,10 +18,15 @@ import TablePagination from "@material-ui/core/TablePagination";
 import Chip from "@material-ui/core/Chip";
 import Paper from "@material-ui/core/Paper";
 import DeleteIcon from "@material-ui/icons/Delete";
+import Tooltip from "@material-ui/core/Tooltip";
 import EditIcon from "@material-ui/icons/Edit";
+import { useTheme } from "@material-ui/core/styles";
 import axios from "axios";
 import baseUrl from "../utils/baseUrl";
 import TablePaginationActions from "./TablePaginationActions";
+import SearchComponent from "./SearchComponent";
+import { capitalize } from "../utils/capitalize";
+import BorrowModal from "./BorrowModal";
 
 const StyledTableCell = withStyles(theme => ({
   head: {
@@ -46,7 +52,16 @@ const StyledTableRow = withStyles(theme => ({
 const useStyles = makeStyles(theme => ({
   base: {
     padding: theme.spacing(8),
-    textAlign: "center"
+    textAlign: "center",
+    height: "100%",
+    minHeight: "100vh",
+    position: "relative",
+    backgroundImage:
+      "linear-gradient(74deg, rgba(236, 236, 236,0.02) 0%, rgba(236, 236, 236,0.02) 13%,transparent 13%, transparent 64%,rgba(55, 55, 55,0.02) 64%, rgba(55, 55, 55,0.02) 71%,rgba(239, 239, 239,0.02) 71%, rgba(239, 239, 239,0.02) 100%),linear-gradient(170deg, rgba(8, 8, 8,0.02) 0%, rgba(8, 8, 8,0.02) 1%,transparent 1%, transparent 60%,rgba(9, 9, 9,0.02) 60%, rgba(9, 9, 9,0.02) 80%,rgba(198, 198, 198,0.02) 80%, rgba(198, 198, 198,0.02) 100%),linear-gradient(118deg, rgba(134, 134, 134,0.02) 0%, rgba(134, 134, 134,0.02) 30%,transparent 30%, transparent 43%,rgba(85, 85, 85,0.02) 43%, rgba(85, 85, 85,0.02) 47%,rgba(103, 103, 103,0.02) 47%, rgba(103, 103, 103,0.02) 100%),linear-gradient(249deg, rgba(178, 178, 178,0.02) 0%, rgba(178, 178, 178,0.02) 8%,transparent 8%, transparent 47%,rgba(161, 161, 161,0.02) 47%, rgba(161, 161, 161,0.02) 61%,rgba(19, 19, 19,0.02) 61%, rgba(19, 19, 19,0.02) 100%),linear-gradient(90deg, rgb(255,255,255),rgb(255,255,255))",
+    [theme.breakpoints.down("sm")]: {
+      minHeight: "100vh",
+      height: "100%"
+    }
   },
   root: {
     width: "100%",
@@ -58,6 +73,12 @@ const useStyles = makeStyles(theme => ({
   },
   tableWrapper: {
     overflowX: "auto"
+  },
+  spinner: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)"
   }
 }));
 
@@ -65,21 +86,26 @@ export default function Books() {
   const classes = useStyles();
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [search, setSearch] = useState("");
+  const [book, setBook] = useState([]);
+  const URL = `${baseUrl}/api/books`;
+  const [open, setOpen] = React.useState(false);
+  const theme = useTheme();
+
+  const handleClickOpen = id => {
+    setBook(books.filter(book => book._id === id));
+    setOpen(true);
+    console.log(book);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, books.length - page * rowsPerPage);
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = event => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-  const URL = `${baseUrl}/api/books`;
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -93,88 +119,158 @@ export default function Books() {
       .catch(err => {
         console.error(err);
       });
+
     return () => {
       abortController.abort();
     };
   }, [URL]);
 
-  return (
-    <div className={classes.base}>
-      <Typography variant="h4" component="h6" gutterBottom>
-        All Available Books
-      </Typography>
-      <Paper className={classes.root}>
-        <div className={classes.tableWrapper}>
-          <Table className={classes.table} aria-label="customized table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell>Book Cover</StyledTableCell>
-                <StyledTableCell align="right">Title</StyledTableCell>
-                <StyledTableCell align="right">Author</StyledTableCell>
-                <StyledTableCell align="right">Genre</StyledTableCell>
-                <StyledTableCell align="right">Quantity</StyledTableCell>
-                <StyledTableCell align="right">Status</StyledTableCell>
-                <StyledTableCell align="right">Actions</StyledTableCell>
-              </TableRow>
-            </TableHead>
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
 
-            <TableBody>
-              {(rowsPerPage > 0
-                ? books.slice(
-                    page * rowsPerPage,
-                    page * rowsPerPage + rowsPerPage
-                  )
-                : books
-              ).map(book => (
-                <StyledTableRow key={book._id}>
-                  <StyledTableCell component="th" scope="row">
-                    <Avatar variant="square" src={book.imageUrl} />
-                  </StyledTableCell>
-                  <StyledTableCell align="right">{book.title}</StyledTableCell>
-                  <StyledTableCell align="right">
-                    {book.authorName}
-                  </StyledTableCell>
-                  <StyledTableCell align="right">{book.genre}</StyledTableCell>
-                  <StyledTableCell align="right">
-                    {book.quantity}
-                  </StyledTableCell>
-                  <StyledTableCell align="right">
-                    {/* {book.status} */}
-                    <Chip color="secondary" label={book.status} />
-                  </StyledTableCell>
-                  <StyledTableCell align="right">
-                    <IconButton color="primary">
-                      <EditIcon color="primary" />
-                    </IconButton>
-                    <Button>Borrow</Button>
-                    <IconButton>
-                      <DeleteIcon color="error" />
-                    </IconButton>
-                  </StyledTableCell>
-                </StyledTableRow>
-              ))}
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TablePagination
-                  rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-                  colSpan={3}
-                  count={books.length}
-                  rowsPerPage={rowsPerPage}
-                  page={page}
-                  SelectProps={{
-                    inputProps: { "aria-label": "rows per page" },
-                    native: true
-                  }}
-                  onChangePage={handleChangePage}
-                  onChangeRowsPerPage={handleChangeRowsPerPage}
-                  ActionsComponent={TablePaginationActions}
-                />
-              </TableRow>
-            </TableFooter>
-          </Table>
-        </div>
-      </Paper>
-    </div>
+  const updateSearch = e => {
+    setSearch(e.target.value.substr(0, 20));
+  };
+
+  const handleChangeRowsPerPage = event => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const filteredBook = () =>
+    books.filter(book => {
+      if (search !== "") {
+        return (
+          book.authorName.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
+          book.title.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
+          book.genre.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
+          book.status.toLowerCase().indexOf(search.toLowerCase()) !== -1
+        );
+      } else {
+        return book;
+      }
+    });
+
+  const onDeleteBook = id => {
+    setBooks(books.filter(book => book._id !== id));
+  };
+
+  // const handleBorrow = id => {
+  //   setBook(filteredBook(book => book._id === id));
+  // };
+
+  return (
+    <>
+      <div className={classes.base}>
+        <SearchComponent updateSearch={updateSearch} />
+        <Typography variant="h4" component="h6" gutterBottom>
+          All Available Books
+        </Typography>
+        <Paper className={classes.root}>
+          <div className={classes.tableWrapper}>
+            {loading ? (
+              <CircularProgress className={classes.spinner} size={60} />
+            ) : (
+              <Table className={classes.table} aria-label="customized table">
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell>Book Cover</StyledTableCell>
+                    <StyledTableCell align="right">Title</StyledTableCell>
+                    <StyledTableCell align="right">Author</StyledTableCell>
+                    <StyledTableCell align="right">Genre</StyledTableCell>
+                    <StyledTableCell align="right">Quantity</StyledTableCell>
+                    <StyledTableCell align="right">Status</StyledTableCell>
+                    <StyledTableCell align="right">Actions</StyledTableCell>
+                  </TableRow>
+                </TableHead>
+
+                <TableBody>
+                  {(rowsPerPage > 0
+                    ? filteredBook().slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                    : filteredBook()
+                  ).map(book => (
+                    <StyledTableRow key={book._id}>
+                      <StyledTableCell component="th" scope="row">
+                        <Avatar
+                          variant="square"
+                          src={book.imageUrl}
+                          style={{ margin: "auto" }}
+                        />
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        {book.title}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        {capitalize(book.authorName)}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        {book.genre}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        {book.quantity}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        <Chip
+                          color="secondary"
+                          label={status ? "checked out" : "available"}
+                        />
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        <Tooltip title="Edit">
+                          <IconButton color="primary">
+                            <EditIcon color="primary" />
+                          </IconButton>
+                        </Tooltip>
+                        <Button
+                          size="small"
+                          variant="outlined"
+                          color="secondary"
+                          onClick={() => handleClickOpen(book._id)}
+                        >
+                          Borrow
+                        </Button>
+                        <Tooltip title="Delete">
+                          <IconButton onClick={() => onDeleteBook(book._id)}>
+                            <DeleteIcon color="error" />
+                          </IconButton>
+                        </Tooltip>
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  ))}
+                </TableBody>
+                <TableFooter>
+                  <TableRow>
+                    <TablePagination
+                      rowsPerPageOptions={[
+                        5,
+                        10,
+                        25,
+                        { label: "All", value: -1 }
+                      ]}
+                      colSpan={3}
+                      count={filteredBook().length}
+                      rowsPerPage={rowsPerPage}
+                      page={page}
+                      SelectProps={{
+                        inputProps: { "aria-label": "rows per page" },
+                        native: true
+                      }}
+                      onChangePage={handleChangePage}
+                      onChangeRowsPerPage={handleChangeRowsPerPage}
+                      ActionsComponent={TablePaginationActions}
+                    />
+                  </TableRow>
+                </TableFooter>
+              </Table>
+            )}
+          </div>
+        </Paper>
+      </div>
+      <BorrowModal book={book} open={open} handleClose={handleClose} />
+    </>
   );
 }

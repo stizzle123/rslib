@@ -93,7 +93,7 @@ export default function SidebarNavList() {
           style={{ margin: "auto", width: "60px", height: "60px" }}
         />
         <span className={classes.footerColor}>
-          Copyright &copy; RSLIBRARY {new Date().getFullYear()}
+          Copyright &copy; RS LIBRARY {new Date().getFullYear()}
         </span>
       </span>
     </div>
