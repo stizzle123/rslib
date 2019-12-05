@@ -39,7 +39,8 @@ const bookSchema = new mongoose.Schema(
     quantity: {
       type: Number,
       default: 1,
-      trim: true
+      trim: true,
+      min: 0
     }
   },
   { timestamps: true }

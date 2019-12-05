@@ -10,7 +10,8 @@ import {
   Button,
   FormControl,
   Snackbar,
-  Dialog
+  Dialog,
+  Chip
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import EditSharp from "@material-ui/icons/EditSharp";
@@ -22,6 +23,7 @@ import axios from "axios";
 import baseUrl from "../utils/baseUrl";
 import catchErrors from "../utils/catchErrors";
 import Tooltip from "@material-ui/core/Tooltip";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 const INITIAL_STATE = {
   avatar: "",
@@ -137,14 +139,24 @@ export default function Profile({ _id }) {
                   />
                 </Tooltip>
               </label>
-              <IconButton
-                onClick={handleAvatarUpload}
-                disabled={!state.avatar || !mediaPreview}
-              >
-                <Tooltip title="Click to upload" placement="right">
-                  <AddAPhotoIcon color="secondary" fontSize="large" />
-                </Tooltip>
-              </IconButton>
+              <>
+                <IconButton
+                  onClick={handleAvatarUpload}
+                  disabled={!state.avatar || !mediaPreview}
+                >
+                  <Tooltip title="Click to upload" placement="right">
+                    <AddAPhotoIcon color="secondary" fontSize="large" />
+                  </Tooltip>
+                </IconButton>
+                <Chip
+                  icon={<ArrowBackIcon />}
+                  color="secondary"
+                  label="click Icon to upload"
+                  size="small"
+                  disabled={!state.avatar || !mediaPreview}
+                  className={classes.chip}
+                />
+              </>
             </div>
             <input
               type="file"
@@ -219,10 +231,11 @@ export default function Profile({ _id }) {
 const useStyles = makeStyles(theme => ({
   base: {
     width: "100%",
-    height: "100vh",
+    height: "100%",
     backgroundImage:
       "linear-gradient(135deg, transparent 0%, transparent 6%,rgba(71, 71, 71,0.04) 6%, rgba(71, 71, 71,0.04) 22%,transparent 22%, transparent 100%),linear-gradient(45deg, transparent 0%, transparent 20%,rgba(71, 71, 71,0.04) 20%, rgba(71, 71, 71,0.04) 47%,transparent 47%, transparent 100%),linear-gradient(135deg, transparent 0%, transparent 24%,rgba(71, 71, 71,0.04) 24%, rgba(71, 71, 71,0.04) 62%,transparent 62%, transparent 100%),linear-gradient(45deg, transparent 0%, transparent 73%,rgba(71, 71, 71,0.04) 73%, rgba(71, 71, 71,0.04) 75%,transparent 75%, transparent 100%),linear-gradient(90deg, rgb(255,255,255),rgb(255,255,255))",
-    padding: theme.spacing(8)
+    padding: theme.spacing(8),
+    backgroundAttachment: "fixed"
   },
   root: {
     width: "auto",
@@ -292,5 +305,9 @@ const useStyles = makeStyles(theme => ({
     "&:hover": {
       backgroundColor: darken(theme.palette.secondary.light, 0.1)
     }
+  },
+  chip: {
+    position: "relative"
+    // width: "100%"
   }
 }));

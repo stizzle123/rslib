@@ -20,13 +20,16 @@ import Paper from "@material-ui/core/Paper";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Tooltip from "@material-ui/core/Tooltip";
 import EditIcon from "@material-ui/icons/Edit";
-import { useTheme } from "@material-ui/core/styles";
 import axios from "axios";
 import baseUrl from "../utils/baseUrl";
 import TablePaginationActions from "./TablePaginationActions";
 import SearchComponent from "./SearchComponent";
 import { capitalize } from "../utils/capitalize";
 import BorrowModal from "./BorrowModal";
+import DeleteModal from "./DeleteModal";
+import { useRouter } from "next/router";
+import { darken } from "@material-ui/core/styles";
+import Link from "next/link";
 
 const StyledTableCell = withStyles(theme => ({
   head: {
@@ -45,6 +48,10 @@ const StyledTableRow = withStyles(theme => ({
   root: {
     "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.background.default
+    },
+    "&:hover": {
+      // cursor: "pointer",
+      backgroundColor: darken(theme.palette.background.default, 0.01)
     }
   }
 }))(TableRow);
@@ -58,6 +65,7 @@ const useStyles = makeStyles(theme => ({
     position: "relative",
     backgroundImage:
       "linear-gradient(74deg, rgba(236, 236, 236,0.02) 0%, rgba(236, 236, 236,0.02) 13%,transparent 13%, transparent 64%,rgba(55, 55, 55,0.02) 64%, rgba(55, 55, 55,0.02) 71%,rgba(239, 239, 239,0.02) 71%, rgba(239, 239, 239,0.02) 100%),linear-gradient(170deg, rgba(8, 8, 8,0.02) 0%, rgba(8, 8, 8,0.02) 1%,transparent 1%, transparent 60%,rgba(9, 9, 9,0.02) 60%, rgba(9, 9, 9,0.02) 80%,rgba(198, 198, 198,0.02) 80%, rgba(198, 198, 198,0.02) 100%),linear-gradient(118deg, rgba(134, 134, 134,0.02) 0%, rgba(134, 134, 134,0.02) 30%,transparent 30%, transparent 43%,rgba(85, 85, 85,0.02) 43%, rgba(85, 85, 85,0.02) 47%,rgba(103, 103, 103,0.02) 47%, rgba(103, 103, 103,0.02) 100%),linear-gradient(249deg, rgba(178, 178, 178,0.02) 0%, rgba(178, 178, 178,0.02) 8%,transparent 8%, transparent 47%,rgba(161, 161, 161,0.02) 47%, rgba(161, 161, 161,0.02) 61%,rgba(19, 19, 19,0.02) 61%, rgba(19, 19, 19,0.02) 100%),linear-gradient(90deg, rgb(255,255,255),rgb(255,255,255))",
+    backgroundAttachment: "fixed",
     [theme.breakpoints.down("sm")]: {
       minHeight: "100vh",
       height: "100%"
@@ -82,8 +90,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Books() {
+export default function Books({ _id, name }) {
   const classes = useStyles();
+  const router = useRouter();
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
@@ -92,12 +101,20 @@ export default function Books() {
   const [book, setBook] = useState([]);
   const URL = `${baseUrl}/api/books`;
   const [open, setOpen] = React.useState(false);
-  const theme = useTheme();
+  const [deleteOpen, setDeleteOpen] = useState(false);
 
   const handleClickOpen = id => {
     setBook(books.filter(book => book._id === id));
     setOpen(true);
-    console.log(book);
+  };
+
+  const handleClickDeleteOpen = id => {
+    setBook(books.filter(book => book._id === id));
+    setDeleteOpen(true);
+  };
+
+  const handleDeleteClose = () => {
+    setDeleteOpen(false);
   };
 
   const handleClose = () => {
@@ -154,15 +171,23 @@ export default function Books() {
 
   const onDeleteBook = id => {
     setBooks(books.filter(book => book._id !== id));
+    setDeleteOpen(false);
   };
-
-  // const handleBorrow = id => {
-  //   setBook(filteredBook(book => book._id === id));
-  // };
 
   return (
     <>
-      <BorrowModal book={book} open={open} handleClose={handleClose} />
+      <BorrowModal
+        name={name}
+        book={book}
+        open={open}
+        handleClose={handleClose}
+      />
+      <DeleteModal
+        book={book}
+        deleteOpen={deleteOpen}
+        onDeleteBook={onDeleteBook}
+        handleDeleteClose={handleDeleteClose}
+      />
 
       <div className={classes.base}>
         <SearchComponent updateSearch={updateSearch} />
@@ -204,7 +229,9 @@ export default function Books() {
                         />
                       </StyledTableCell>
                       <StyledTableCell align="right">
-                        {book.title}
+                        <Link href={`/book/info?id=${book._id}`}>
+                          <a style={{ color: "#333" }}>{book.title}</a>
+                        </Link>
                       </StyledTableCell>
                       <StyledTableCell align="right">
                         {capitalize(book.authorName)}
@@ -219,12 +246,18 @@ export default function Books() {
                         <Chip
                           color="secondary"
                           label={status ? "checked out" : "available"}
+                          disabled={true}
                         />
                       </StyledTableCell>
                       <StyledTableCell align="right">
                         <Tooltip title="Edit">
-                          <IconButton color="primary">
-                            <EditIcon color="primary" />
+                          <IconButton
+                            color="secondary"
+                            onClick={() =>
+                              router.push(`/book/edit?id=${book._id}`)
+                            }
+                          >
+                            <EditIcon color="secondary" />
                           </IconButton>
                         </Tooltip>
                         <Button
@@ -235,8 +268,11 @@ export default function Books() {
                         >
                           Borrow
                         </Button>
+
                         <Tooltip title="Delete">
-                          <IconButton onClick={() => onDeleteBook(book._id)}>
+                          <IconButton
+                            onClick={() => handleClickDeleteOpen(book._id)}
+                          >
                             <DeleteIcon color="error" />
                           </IconButton>
                         </Tooltip>

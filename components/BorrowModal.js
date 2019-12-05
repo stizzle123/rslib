@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function BorrowModal({ handleClose, open, book }) {
+export default function BorrowModal({ handleClose, open, book, name }) {
   const classes = useStyles();
   const [state, setState] = React.useState({
     checked: false
@@ -49,6 +49,12 @@ export default function BorrowModal({ handleClose, open, book }) {
   const handleChange = name => event => {
     setState({ ...state, [name]: event.target.checked });
   };
+
+  const handleBorrow = book => {
+    // console.log(selectedDate, book);
+    handleClose();
+  };
+
   return (
     <div className={classes.root}>
       {book.map(book => (
@@ -85,8 +91,9 @@ export default function BorrowModal({ handleClose, open, book }) {
                 inputProps={{ "aria-label": "secondary checkbox" }}
               />{" "}
               <small>
-                I hereby agree to return this book in good condition and be
-                liable for any damage done to the integrity of the book.
+                I {capitalize(name)}, do hereby agree to return this book in
+                good condition and be held accountable for any misplacement or
+                damage done to the integrity of this book.
               </small>
             </>
           </DialogContent>
@@ -116,7 +123,7 @@ export default function BorrowModal({ handleClose, open, book }) {
               <Button
                 variant="contained"
                 autoFocus
-                onClick={handleClose}
+                onClick={() => handleBorrow(book)}
                 color="secondary"
                 style={{ marginRight: "30px" }}
                 disabled={!state.checked}

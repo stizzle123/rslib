@@ -25,16 +25,14 @@ const theme = createMuiTheme({
       main: "#3f51b5"
     },
     secondary: {
-      main: "#19857b"
-    },
-    danger: {
-      main: red.A700
+      main: "#19857b",
+      red: red.A700
     },
     error: {
       main: red.A400
     },
     background: {
-      default: "#fff"
+      default: "#fafafa"
     }
   }
 });

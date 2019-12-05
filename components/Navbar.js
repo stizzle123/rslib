@@ -13,13 +13,26 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
-import { Drawer, Button, Avatar, Icon, Tooltip } from "@material-ui/core";
+import {
+  Drawer,
+  Button,
+  Avatar,
+  Icon,
+  Tooltip,
+  Paper,
+  Card,
+  CardContent,
+  CardMedia,
+  CardHeader,
+  Grid
+} from "@material-ui/core";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
+import ClearIcon from "@material-ui/icons/Clear";
 import Fade from "@material-ui/core/Fade";
 import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
 import Router, { useRouter } from "next/router";
@@ -28,6 +41,9 @@ import { fade, makeStyles } from "@material-ui/core/styles";
 import NProgress from "nprogress";
 import SidebarNavList from "./SidebarNavList";
 import { handleLogOut } from "../utils/auth";
+import axios from "axios";
+import baseUrl from "../utils/baseUrl";
+import { capitalize } from "../utils/capitalize";
 
 Router.onRouteChangeStart = () => NProgress.start();
 Router.onRouteChangeComplete = () => NProgress.done();
@@ -121,12 +137,57 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     justifyContent: "center",
     padding: "0 40px"
+  },
+  searchContainer: {
+    position: "fixed",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "50%",
+    minHeight: "70%",
+    height: "40%",
+    overflowY: "auto",
+    zIndex: 99999999,
+    padding: theme.spacing(4)
+  },
+  card: {
+    display: "flex",
+    margin: "10px auto",
+    // height: 100,
+    // width: "100%",
+    "&:hover": {
+      cursor: "pointer"
+    },
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column"
+    }
+  },
+  cardMedia: {
+    width: 159,
+    height: 250,
+    objectFit: "cover",
+    objectPosition: "center",
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+      height: 550
+    }
+  },
+  cardContent: {
+    width: "100%",
+    textAlign: "center",
+    backgroundImage:
+      "linear-gradient(74deg, rgba(236, 236, 236,0.02) 0%, rgba(236, 236, 236,0.02) 13%,transparent 13%, transparent 64%,rgba(55, 55, 55,0.02) 64%, rgba(55, 55, 55,0.02) 71%,rgba(239, 239, 239,0.02) 71%, rgba(239, 239, 239,0.02) 100%),linear-gradient(170deg, rgba(8, 8, 8,0.02) 0%, rgba(8, 8, 8,0.02) 1%,transparent 1%, transparent 60%,rgba(9, 9, 9,0.02) 60%, rgba(9, 9, 9,0.02) 80%,rgba(198, 198, 198,0.02) 80%, rgba(198, 198, 198,0.02) 100%),linear-gradient(118deg, rgba(134, 134, 134,0.02) 0%, rgba(134, 134, 134,0.02) 30%,transparent 30%, transparent 43%,rgba(85, 85, 85,0.02) 43%, rgba(85, 85, 85,0.02) 47%,rgba(103, 103, 103,0.02) 47%, rgba(103, 103, 103,0.02) 100%),linear-gradient(249deg, rgba(178, 178, 178,0.02) 0%, rgba(178, 178, 178,0.02) 8%,transparent 8%, transparent 47%,rgba(161, 161, 161,0.02) 47%, rgba(161, 161, 161,0.02) 61%,rgba(19, 19, 19,0.02) 61%, rgba(19, 19, 19,0.02) 100%),linear-gradient(90deg, rgb(255,255,255),rgb(255,255,255))",
+    "& > *": {
+      margin: "10px 0"
+    }
   }
 }));
 
 const Navbar = ({ id, name, avatar, collections }) => {
   const classes = useStyles();
   const router = useRouter();
+  const URL = `${baseUrl}/api/books`;
+  const [books, setBooks] = useState([]);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
@@ -137,6 +198,7 @@ const Navbar = ({ id, name, avatar, collections }) => {
     right: false,
     auth: false
   });
+  const [search, setSearch] = useState("");
 
   const open = Boolean(anchorEl);
 
@@ -148,8 +210,45 @@ const Navbar = ({ id, name, avatar, collections }) => {
     }
   }, [state.auth]);
 
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  useEffect(() => {
+    const abortController = new AbortController();
+
+    axios
+      .get(URL)
+      .then(res => {
+        setBooks(res.data);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+
+    return () => {
+      abortController.abort();
+    };
+  }, [URL]);
+  const filteredBook = () =>
+    books.filter(book => {
+      if (search !== "") {
+        return (
+          book.authorName.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
+          book.title.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
+          book.genre.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
+          book.status.toLowerCase().indexOf(search.toLowerCase()) !== -1
+        );
+      } else {
+        return book;
+      }
+    });
+
+  // const isMenuOpen = Boolean(anchorEl);
+  // const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const handleSearch = e => {
+    setSearch(e.target.value.substr(0, 20));
+  };
+
+  const handleCloseSearch = () => {
+    setSearch("");
+  };
 
   const handleProfileMenuOpen = event => {
     setAnchorEl(event.currentTarget);
@@ -225,6 +324,53 @@ const Navbar = ({ id, name, avatar, collections }) => {
 
   return (
     <>
+      {search && (
+        <Paper elevation={10} className={classes.searchContainer}>
+          <Grid container justify="space-between" alignItems="center">
+            <Typography variant="h5" gutterBottom>
+              Search Results: <strong>{filteredBook().length}</strong>
+            </Typography>
+            <IconButton onClick={handleCloseSearch}>
+              <ClearIcon />
+            </IconButton>
+          </Grid>
+          <Divider style={{ margin: "10px 0" }} />
+          {filteredBook().length > 1 ? (
+            filteredBook().map(book => (
+              <div key={book._id}>
+                <Card
+                  className={classes.card}
+                  onClick={() => router.push(`/book/info?id=${book._id}`)}
+                >
+                  <Avatar
+                    src={book.imageUrl}
+                    variant="square"
+                    className={classes.cardMedia}
+                  />
+                  <CardContent className={classes.cardContent}>
+                    <Typography variant="h6" component="h1">
+                      <span style={{ color: "#ccc" }}>Author Name:</span>{" "}
+                      {capitalize(book.authorName)}
+                    </Typography>
+                    <Typography variant="subtitle1">
+                      <span style={{ color: "#ccc" }}>Genre:</span>{" "}
+                      {capitalize(book.genre)}
+                    </Typography>
+                    <Typography variant="subtitle1">
+                      <span style={{ color: "#ccc" }}>Title:</span> {book.title}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                <Divider />
+              </div>
+            ))
+          ) : (
+            <Typography variant="h3" component="h1">
+              No Results found for query "{search}"
+            </Typography>
+          )}
+        </Paper>
+      )}
       <AppBar position="static">
         <Toolbar>
           {state.auth && (
@@ -255,19 +401,23 @@ const Navbar = ({ id, name, avatar, collections }) => {
           <div className={classes.grow} />
           <div>
             {state.auth && (
-              <div className={classes.search}>
-                <div className={classes.searchIcon}>
-                  <SearchIcon />
+              <>
+                <div className={classes.search}>
+                  <div className={classes.searchIcon}>
+                    <SearchIcon />
+                  </div>
+                  <InputBase
+                    placeholder="Search…"
+                    classes={{
+                      root: classes.inputRoot,
+                      input: classes.inputInput
+                    }}
+                    inputProps={{ "aria-label": "search" }}
+                    value={search}
+                    onChange={handleSearch}
+                  />
                 </div>
-                <InputBase
-                  placeholder="Search…"
-                  classes={{
-                    root: classes.inputRoot,
-                    input: classes.inputInput
-                  }}
-                  inputProps={{ "aria-label": "search" }}
-                />
-              </div>
+              </>
             )}
             {!state.auth && (
               <>

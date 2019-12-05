@@ -1,11 +1,13 @@
+import React from "react";
 import Layout from "../../components/Layout";
 import { Typography } from "@material-ui/core";
-import Books from "../../components/Books";
 
-export default function index({ user, collections }) {
+export default function info({ user, collections }) {
   return (
     <Layout {...user} collections={collections}>
-      <Books {...user} />
+      <Typography variant="h3" component="h1">
+        View A Book
+      </Typography>
     </Layout>
   );
 }

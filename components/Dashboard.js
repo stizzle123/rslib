@@ -124,7 +124,7 @@ export default function Dashboard({ collections }) {
                   <sup
                     style={{
                       marginTop: "50px",
-                      marginLeft: "-8px",
+                      marginLeft: "-3px",
                       fontWeight: 700
                     }}
                   >
