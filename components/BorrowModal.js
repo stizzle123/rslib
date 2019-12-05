@@ -15,6 +15,7 @@ import {
 import Grid from "@material-ui/core/Grid";
 import { Avatar, makeStyles, Divider } from "@material-ui/core";
 import { capitalize } from "../utils/capitalize";
+import moment from "moment";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -38,10 +39,11 @@ const useStyles = makeStyles(theme => ({
 
 export default function BorrowModal({ handleClose, open, book, name }) {
   const classes = useStyles();
+  const date = new Date();
   const [state, setState] = React.useState({
     checked: false
   });
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
+  const [selectedDate, setSelectedDate] = React.useState(date);
 
   const handleDateChange = date => {
     setSelectedDate(date);
@@ -117,6 +119,7 @@ export default function BorrowModal({ handleClose, open, book, name }) {
                   disabled={!state.checked}
                   disablePast
                   style={{ top: "-10px", left: "30px" }}
+                  maxDate={date.setDate(date.getDate() + 14)}
                 />
               </MuiPickersUtilsProvider>
 

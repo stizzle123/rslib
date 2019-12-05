@@ -77,7 +77,7 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(2),
     marginLeft: 0,
     width: "100%",
-    display: "none",
+    // display: "none",
     [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing(3),
       width: "auto",
@@ -98,10 +98,18 @@ const useStyles = makeStyles(theme => ({
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 7),
-    transition: theme.transitions.create("width"),
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.easeInOut,
+      duration: theme.transitions.duration.enteringScreen
+    }),
     width: "100%",
     [theme.breakpoints.up("md")]: {
       width: 200
+    },
+    [theme.breakpoints.up("lg")]: {
+      "&:focus": {
+        width: 230
+      }
     }
   },
   sectionDesktop: {
@@ -148,15 +156,25 @@ const useStyles = makeStyles(theme => ({
     height: "40%",
     overflowY: "auto",
     zIndex: 99999999,
-    padding: theme.spacing(4)
+    padding: theme.spacing(4),
+    backgroundImage:
+      "repeating-linear-gradient(135deg, rgba(236, 236, 236,0.02) 0px, rgba(236, 236, 236,0.02) 26px,rgba(210, 210, 210,0.02) 26px, rgba(210, 210, 210,0.02) 52px,rgba(184, 184, 184,0.02) 52px, rgba(184, 184, 184,0.02) 78px,rgba(158, 158, 158,0.02) 78px, rgba(158, 158, 158,0.02) 104px,rgba(131, 131, 131,0.02) 104px, rgba(131, 131, 131,0.02) 130px,rgba(105, 105, 105,0.02) 130px, rgba(105, 105, 105,0.02) 156px,rgba(79, 79, 79,0.02) 156px, rgba(79, 79, 79,0.02) 182px,rgba(53, 53, 53,0.02) 182px, rgba(53, 53, 53,0.02) 208px),repeating-linear-gradient(45deg, rgba(213, 213, 213,0.02) 0px, rgba(213, 213, 213,0.02) 26px,rgba(192, 192, 192,0.02) 26px, rgba(192, 192, 192,0.02) 52px,rgba(171, 171, 171,0.02) 52px, rgba(171, 171, 171,0.02) 78px,rgba(150, 150, 150,0.02) 78px, rgba(150, 150, 150,0.02) 104px,rgba(129, 129, 129,0.02) 104px, rgba(129, 129, 129,0.02) 130px,rgba(108, 108, 108,0.02) 130px, rgba(108, 108, 108,0.02) 156px,rgba(87, 87, 87,0.02) 156px, rgba(87, 87, 87,0.02) 182px,rgba(66, 66, 66,0.02) 182px, rgba(66, 66, 66,0.02) 208px),linear-gradient(90deg, #FFF,#FFF)"
   },
   card: {
     display: "flex",
     margin: "10px auto",
-    // height: 100,
-    // width: "100%",
+
+    // transition: theme.transitions.create("background-position", {
+    //   duration: theme.transitions.duration.leavingScreen,
+    //   easing: theme.transitions.easing.sharp
+    // }),
+    background:
+      "linear-gradient(74deg, rgba(236, 236, 236,0.02) 0%, rgba(236, 236, 236,0.02) 13%,transparent 13%, transparent 64%,rgba(55, 55, 55,0.02) 64%, rgba(55, 55, 55,0.02) 71%,rgba(239, 239, 239,0.02) 71%, rgba(239, 239, 239,0.02) 100%),linear-gradient(170deg, rgba(8, 8, 8,0.02) 0%, rgba(8, 8, 8,0.02) 1%,transparent 1%, transparent 60%,rgba(9, 9, 9,0.02) 60%, rgba(9, 9, 9,0.02) 80%,rgba(198, 198, 198,0.02) 80%, rgba(198, 198, 198,0.02) 100%),linear-gradient(118deg, rgba(134, 134, 134,0.02) 0%, rgba(134, 134, 134,0.02) 30%,transparent 30%, transparent 43%,rgba(85, 85, 85,0.02) 43%, rgba(85, 85, 85,0.02) 47%,rgba(103, 103, 103,0.02) 47%, rgba(103, 103, 103,0.02) 100%),linear-gradient(249deg, rgba(178, 178, 178,0.02) 0%, rgba(178, 178, 178,0.02) 8%,transparent 8%, transparent 47%,rgba(161, 161, 161,0.02) 47%, rgba(161, 161, 161,0.02) 61%,rgba(19, 19, 19,0.02) 61%, rgba(19, 19, 19,0.02) 100%),linear-gradient(90deg, rgb(255,255,255),rgb(255,255,255))",
+
     "&:hover": {
-      cursor: "pointer"
+      cursor: "pointer",
+      background:
+        "linear-gradient(90deg, rgba(0, 0, 0,0.03) 0%, rgba(0, 0, 0,0.03) 61%,rgba(232, 232, 232,0.03) 61%, rgba(232, 232, 232,0.03) 75%,rgba(57, 57, 57,0.03) 75%, rgba(57, 57, 57,0.03) 100%),linear-gradient(0deg, rgba(234, 234, 234,0.03) 0%, rgba(234, 234, 234,0.03) 53%,rgba(23, 23, 23,0.03) 53%, rgba(23, 23, 23,0.03) 78%,rgba(226, 226, 226,0.03) 78%, rgba(226, 226, 226,0.03) 100%),linear-gradient(90deg, rgb(255,255,255),rgb(255,255,255))"
     },
     [theme.breakpoints.down("sm")]: {
       flexDirection: "column"
@@ -175,8 +193,7 @@ const useStyles = makeStyles(theme => ({
   cardContent: {
     width: "100%",
     textAlign: "center",
-    backgroundImage:
-      "linear-gradient(74deg, rgba(236, 236, 236,0.02) 0%, rgba(236, 236, 236,0.02) 13%,transparent 13%, transparent 64%,rgba(55, 55, 55,0.02) 64%, rgba(55, 55, 55,0.02) 71%,rgba(239, 239, 239,0.02) 71%, rgba(239, 239, 239,0.02) 100%),linear-gradient(170deg, rgba(8, 8, 8,0.02) 0%, rgba(8, 8, 8,0.02) 1%,transparent 1%, transparent 60%,rgba(9, 9, 9,0.02) 60%, rgba(9, 9, 9,0.02) 80%,rgba(198, 198, 198,0.02) 80%, rgba(198, 198, 198,0.02) 100%),linear-gradient(118deg, rgba(134, 134, 134,0.02) 0%, rgba(134, 134, 134,0.02) 30%,transparent 30%, transparent 43%,rgba(85, 85, 85,0.02) 43%, rgba(85, 85, 85,0.02) 47%,rgba(103, 103, 103,0.02) 47%, rgba(103, 103, 103,0.02) 100%),linear-gradient(249deg, rgba(178, 178, 178,0.02) 0%, rgba(178, 178, 178,0.02) 8%,transparent 8%, transparent 47%,rgba(161, 161, 161,0.02) 47%, rgba(161, 161, 161,0.02) 61%,rgba(19, 19, 19,0.02) 61%, rgba(19, 19, 19,0.02) 100%),linear-gradient(90deg, rgb(255,255,255),rgb(255,255,255))",
+
     "& > *": {
       margin: "10px 0"
     }
@@ -327,14 +344,17 @@ const Navbar = ({ id, name, avatar, collections }) => {
       {search && (
         <Paper elevation={10} className={classes.searchContainer}>
           <Grid container justify="space-between" alignItems="center">
-            <Typography variant="h5" gutterBottom>
-              Search Results: <strong>{filteredBook().length}</strong>
+            <Typography variant="subtitle1" gutterBottom>
+              Search Results:{" "}
+              <strong style={{ fontSize: "1.8rem" }}>
+                {filteredBook().length}
+              </strong>
             </Typography>
             <IconButton onClick={handleCloseSearch}>
               <ClearIcon />
             </IconButton>
           </Grid>
-          <Divider style={{ margin: "10px 0" }} />
+          <Divider style={{ margin: "10px 0" }} light />
           {filteredBook().length > 1 ? (
             filteredBook().map(book => (
               <div key={book._id}>
@@ -342,26 +362,21 @@ const Navbar = ({ id, name, avatar, collections }) => {
                   className={classes.card}
                   onClick={() => router.push(`/book/info?id=${book._id}`)}
                 >
-                  <Avatar
-                    src={book.imageUrl}
-                    variant="square"
-                    className={classes.cardMedia}
-                  />
                   <CardContent className={classes.cardContent}>
-                    <Typography variant="h6" component="h1">
+                    <Typography variant="subtitle1" component="h1">
                       <span style={{ color: "#ccc" }}>Author Name:</span>{" "}
                       {capitalize(book.authorName)}
                     </Typography>
-                    <Typography variant="subtitle1">
+                    <Typography variant="subtitle2">
                       <span style={{ color: "#ccc" }}>Genre:</span>{" "}
                       {capitalize(book.genre)}
                     </Typography>
-                    <Typography variant="subtitle1">
+                    <Typography variant="subtitle2">
                       <span style={{ color: "#ccc" }}>Title:</span> {book.title}
                     </Typography>
                   </CardContent>
                 </Card>
-                <Divider />
+                <Divider light />
               </div>
             ))
           ) : (
@@ -393,7 +408,7 @@ const Navbar = ({ id, name, avatar, collections }) => {
           <Avatar
             src="/images/rslibrary-logo.png"
             variant="circle"
-            style={{ width: "40px", height: "40px" }}
+            style={{ width: "40px", height: "40px", marginRight: 15 }}
             onClick={() => router.replace("/")}
             className={classes.sectionMobile}
           />
