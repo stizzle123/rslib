@@ -350,8 +350,8 @@ const Navbar = ({ id, name, avatar, collections }) => {
                 {filteredBook().length}
               </strong>
             </Typography>
-            <IconButton onClick={handleCloseSearch}>
-              <ClearIcon />
+            <IconButton onClick={handleCloseSearch} color="secondary">
+              <ClearIcon color="secondary" />
             </IconButton>
           </Grid>
           <Divider style={{ margin: "10px 0" }} light />

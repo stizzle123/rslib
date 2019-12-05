@@ -237,7 +237,7 @@ export default function Books({ _id, name }) {
                         {capitalize(book.authorName)}
                       </StyledTableCell>
                       <StyledTableCell align="right">
-                        {book.genre}
+                        {capitalize(book.genre)}
                       </StyledTableCell>
                       <StyledTableCell align="right">
                         {book.quantity}
