@@ -15,14 +15,14 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     width: 350,
     position: "absolute",
-    right: "80px",
+    right: "90px",
     top: "10px",
     marginBottom: "30px",
     [theme.breakpoints.down("sm")]: {
       width: "78.9%",
       justifyContent: "center",
       margin: "auto",
-      left: "50px"
+      left: "60px"
     }
   },
   input: {

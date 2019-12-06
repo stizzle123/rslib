@@ -22,7 +22,7 @@ export const genres = [
   },
   {
     name: "Self Help",
-    value: "self help"
+    value: "selfhelp"
   },
   {
     name: "Science",

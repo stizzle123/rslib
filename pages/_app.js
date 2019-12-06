@@ -26,7 +26,10 @@ export class MyApp extends App {
         ctx.pathname === "/dashboard" ||
         ctx.pathname === "/books" ||
         ctx.pathname === "/books/add" ||
-        ctx.pathname === "/bookcollections";
+        ctx.pathname === "/bookcollections" ||
+        ctx.pathname === "/book/edit" ||
+        ctx.pathname === "/book/info" ||
+        ctx.pathname === "/collection";
       if (isProtectedRoute) {
         redirectUser(ctx, "/login");
       }

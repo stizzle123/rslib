@@ -10,6 +10,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+import SettingsIcon from "@material-ui/icons/Settings";
 import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
@@ -31,19 +32,24 @@ import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import Checkbox from "@material-ui/core/Checkbox";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import ClearIcon from "@material-ui/icons/Clear";
 import Fade from "@material-ui/core/Fade";
-import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EmailIcon from "@material-ui/icons/Email";
 import Router, { useRouter } from "next/router";
 import Link from "next/link";
 import { fade, makeStyles } from "@material-ui/core/styles";
+import CloseIcon from "@material-ui/icons/Close";
 import NProgress from "nprogress";
 import SidebarNavList from "./SidebarNavList";
 import { handleLogOut } from "../utils/auth";
 import axios from "axios";
 import baseUrl from "../utils/baseUrl";
 import { capitalize } from "../utils/capitalize";
+import { useTheme } from "@material-ui/styles";
 
 Router.onRouteChangeStart = () => NProgress.start();
 Router.onRouteChangeComplete = () => NProgress.done();
@@ -127,6 +133,7 @@ const useStyles = makeStyles(theme => ({
   list: {
     width: 250,
     height: "100vh",
+    position: "relative",
     backgroundImage:
       "linear-gradient(55deg, rgba(208, 208, 208, 0.03) 0%, rgba(208, 208, 208, 0.03) 20%,rgba(55, 55, 55, 0.03) 20%, rgba(55, 55, 55, 0.03) 40%,rgba(81, 81, 81, 0.03) 40%, rgba(81, 81, 81, 0.03) 60%,rgba(208, 208, 208, 0.03) 60%, rgba(208, 208, 208, 0.03) 80%,rgba(191, 191, 191, 0.03) 80%, rgba(191, 191, 191, 0.03) 100%),linear-gradient(291deg, rgba(190, 190, 190, 0.02) 0%, rgba(190, 190, 190, 0.02) 14.286%,rgba(105, 105, 105, 0.02) 14.286%, rgba(105, 105, 105, 0.02) 28.572%,rgba(230, 230, 230, 0.02) 28.572%, rgba(230, 230, 230, 0.02) 42.858%,rgba(216, 216, 216, 0.02) 42.858%, rgba(216, 216, 216, 0.02) 57.144%,rgba(181, 181, 181, 0.02) 57.144%, rgba(181, 181, 181, 0.02) 71.42999999999999%,rgba(129, 129, 129, 0.02) 71.43%, rgba(129, 129, 129, 0.02) 85.71600000000001%,rgba(75, 75, 75, 0.02) 85.716%, rgba(75, 75, 75, 0.02) 100.002%),linear-gradient(32deg, rgba(212, 212, 212, 0.03) 0%, rgba(212, 212, 212, 0.03) 12.5%,rgba(223, 223, 223, 0.03) 12.5%, rgba(223, 223, 223, 0.03) 25%,rgba(11, 11, 11, 0.03) 25%, rgba(11, 11, 11, 0.03) 37.5%,rgba(86, 86, 86, 0.03) 37.5%, rgba(86, 86, 86, 0.03) 50%,rgba(106, 106, 106, 0.03) 50%, rgba(106, 106, 106, 0.03) 62.5%,rgba(220, 220, 220, 0.03) 62.5%, rgba(220, 220, 220, 0.03) 75%,rgba(91, 91, 91, 0.03) 75%, rgba(91, 91, 91, 0.03) 87.5%,rgba(216, 216, 216, 0.03) 87.5%, rgba(216, 216, 216, 0.03) 100%),linear-gradient(312deg, rgba(113, 113, 113, 0.01) 0%, rgba(113, 113, 113, 0.01) 14.286%,rgba(54, 54, 54, 0.01) 14.286%, rgba(54, 54, 54, 0.01) 28.572%,rgba(166, 166, 166, 0.01) 28.572%, rgba(166, 166, 166, 0.01) 42.858%,rgba(226, 226, 226, 0.01) 42.858%, rgba(226, 226, 226, 0.01) 57.144%,rgba(109, 109, 109, 0.01) 57.144%, rgba(109, 109, 109, 0.01) 71.42999999999999%,rgba(239, 239, 239, 0.01) 71.43%, rgba(239, 239, 239, 0.01) 85.71600000000001%,rgba(54, 54, 54, 0.01) 85.716%, rgba(54, 54, 54, 0.01) 100.002%),linear-gradient(22deg, rgba(77, 77, 77, 0.03) 0%, rgba(77, 77, 77, 0.03) 20%,rgba(235, 235, 235, 0.03) 20%, rgba(235, 235, 235, 0.03) 40%,rgba(215, 215, 215, 0.03) 40%, rgba(215, 215, 215, 0.03) 60%,rgba(181, 181, 181, 0.03) 60%, rgba(181, 181, 181, 0.03) 80%,rgba(193, 193, 193, 0.03) 80%, rgba(193, 193, 193, 0.03) 100%),linear-gradient(80deg, rgba(139, 139, 139, 0.02) 0%, rgba(139, 139, 139, 0.02) 14.286%,rgba(114, 114, 114, 0.02) 14.286%, rgba(114, 114, 114, 0.02) 28.572%,rgba(240, 240, 240, 0.02) 28.572%, rgba(240, 240, 240, 0.02) 42.858%,rgba(221, 221, 221, 0.02) 42.858%, rgba(221, 221, 221, 0.02) 57.144%,rgba(74, 74, 74, 0.02) 57.144%, rgba(74, 74, 74, 0.02) 71.42999999999999%,rgba(201, 201, 201, 0.02) 71.43%, rgba(201, 201, 201, 0.02) 85.71600000000001%,rgba(187, 187, 187, 0.02) 85.716%, rgba(187, 187, 187, 0.02) 100.002%),linear-gradient(257deg, rgba(72, 72, 72, 0.03) 0%, rgba(72, 72, 72, 0.03) 16.667%,rgba(138, 138, 138, 0.03) 16.667%, rgba(138, 138, 138, 0.03) 33.334%,rgba(54, 54, 54, 0.03) 33.334%, rgba(54, 54, 54, 0.03) 50.001000000000005%,rgba(161, 161, 161, 0.03) 50.001%, rgba(161, 161, 161, 0.03) 66.668%,rgba(17, 17, 17, 0.03) 66.668%, rgba(17, 17, 17, 0.03) 83.33500000000001%,rgba(230, 230, 230, 0.03) 83.335%, rgba(230, 230, 230, 0.03) 100.002%),linear-gradient(47deg, rgba(191, 191, 191, 0.01) 0%, rgba(191, 191, 191, 0.01) 16.667%,rgba(27, 27, 27, 0.01) 16.667%, rgba(27, 27, 27, 0.01) 33.334%,rgba(66, 66, 66, 0.01) 33.334%, rgba(66, 66, 66, 0.01) 50.001000000000005%,rgba(36, 36, 36, 0.01) 50.001%, rgba(36, 36, 36, 0.01) 66.668%,rgba(230, 230, 230, 0.01) 66.668%, rgba(230, 230, 230, 0.01) 83.33500000000001%,rgba(93, 93, 93, 0.01) 83.335%, rgba(93, 93, 93, 0.01) 100.002%),linear-gradient(90deg, #FFF,#FFF)"
   },
@@ -197,6 +204,16 @@ const useStyles = makeStyles(theme => ({
     "& > *": {
       margin: "10px 0"
     }
+  },
+  notificationHeader: {
+    height: 100,
+    color: theme.palette.common.white,
+    display: "flex",
+    // justifyContent: "center",
+    justifyContent: "space-around",
+    alignItems: "center",
+    backgroundImage:
+      "linear-gradient(90deg, rgba(125, 125, 125, 0) 0%, rgba(125, 125, 125, 0) 7%,rgba(194, 194, 194, 0) 7%, rgba(194, 194, 194, 0) 29%,rgba(124, 124, 124, 0) 29%, rgba(124, 124, 124, 0) 57%,rgba(237, 237, 237, 0) 57%, rgba(237, 237, 237, 0) 59%,rgba(110, 110, 110, 0) 59%, rgba(110, 110, 110, 0) 100%),linear-gradient(90deg, rgba(6, 6, 6, 0.01) 0%, rgba(6, 6, 6, 0.01) 20%,rgba(210, 210, 210, 0.01) 20%, rgba(210, 210, 210, 0.01) 64%,rgba(10, 10, 10, 0.01) 64%, rgba(10, 10, 10, 0.01) 82%,rgba(72, 72, 72, 0.01) 82%, rgba(72, 72, 72, 0.01) 88%,rgba(127, 127, 127, 0.01) 88%, rgba(127, 127, 127, 0.01) 100%),linear-gradient(90deg, rgba(4, 4, 4, 0.06) 0%, rgba(4, 4, 4, 0.06) 56%,rgba(6, 6, 6, 0.06) 56%, rgba(6, 6, 6, 0.06) 65%,rgba(110, 110, 110, 0.06) 65%, rgba(110, 110, 110, 0.06) 83%,rgba(136, 136, 136, 0.06) 83%, rgba(136, 136, 136, 0.06) 100%),linear-gradient(349deg, rgba(137, 137, 137, 0.02) 0%, rgba(137, 137, 137, 0.02) 43%,rgba(112, 112, 112, 0.02) 43%, rgba(112, 112, 112, 0.02) 100%),linear-gradient(47deg, rgba(184, 184, 184, 0.06) 0%, rgba(184, 184, 184, 0.06) 36%,rgba(32, 32, 32, 0.06) 36%, rgba(32, 32, 32, 0.06) 100%),linear-gradient(83deg, rgba(222, 222, 222, 0.07) 0%, rgba(222, 222, 222, 0.07) 98%,rgba(143, 143, 143, 0.07) 98%, rgba(143, 143, 143, 0.07) 100%),repeating-linear-gradient(0deg, rgba(244, 244, 244, 0.08) 0px, rgba(244, 244, 244, 0.08) 72px,rgba(155, 155, 155, 0.08) 72px, rgba(155, 155, 155, 0.08) 179px,rgba(102, 102, 102, 0.08) 179px, rgba(102, 102, 102, 0.08) 477px,rgba(133, 133, 133, 0.08) 477px, rgba(133, 133, 133, 0.08) 580px,rgba(83, 83, 83, 0.08) 580px, rgba(83, 83, 83, 0.08) 614px),repeating-linear-gradient(135deg, rgba(115, 115, 115, 0.03) 0px, rgba(115, 115, 115, 0.03) 266px,rgba(99, 99, 99, 0.03) 266px, rgba(99, 99, 99, 0.03) 273px,rgba(115, 115, 115, 0.03) 273px, rgba(115, 115, 115, 0.03) 351px,rgba(229, 229, 229, 0.03) 351px, rgba(229, 229, 229, 0.03) 439px),repeating-linear-gradient(45deg, rgba(72, 72, 72, 0.01) 0px, rgba(72, 72, 72, 0.01) 232px,rgba(65, 65, 65, 0.01) 232px, rgba(65, 65, 65, 0.01) 345px,rgba(140, 140, 140, 0.01) 345px, rgba(140, 140, 140, 0.01) 348px,rgba(26, 26, 26, 0.01) 348px, rgba(26, 26, 26, 0.01) 547px),repeating-linear-gradient(45deg, rgba(68, 68, 68, 0.05) 0px, rgba(68, 68, 68, 0.05) 115px,rgba(182, 182, 182, 0.05) 115px, rgba(182, 182, 182, 0.05) 246px,rgba(14, 14, 14, 0.05) 246px, rgba(14, 14, 14, 0.05) 272px,rgba(80, 80, 80, 0.05) 272px, rgba(80, 80, 80, 0.05) 298px,rgba(37, 37, 37, 0.05) 298px, rgba(37, 37, 37, 0.05) 434px),repeating-linear-gradient(135deg, rgba(46, 46, 46, 0.03) 0px, rgba(46, 46, 46, 0.03) 107px,rgba(169, 169, 169, 0.03) 107px, rgba(169, 169, 169, 0.03) 182px,rgba(71, 71, 71, 0.03) 182px, rgba(71, 71, 71, 0.03) 321px,rgba(182, 182, 182, 0.03) 321px, rgba(182, 182, 182, 0.03) 359px),linear-gradient(90deg, #084da4 0%,#01aeb6 100%)"
   }
 }));
 
@@ -205,9 +222,9 @@ const Navbar = ({ id, name, avatar, collections }) => {
   const router = useRouter();
   const URL = `${baseUrl}/api/books`;
   const [books, setBooks] = useState([]);
+  const theme = useTheme();
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const [state, setState] = useState({
     top: false,
     left: false,
@@ -245,7 +262,7 @@ const Navbar = ({ id, name, avatar, collections }) => {
   }, [URL]);
   const filteredBook = () =>
     books.filter(book => {
-      if (search !== "") {
+      if (search) {
         return (
           book.authorName.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
           book.title.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
@@ -257,26 +274,16 @@ const Navbar = ({ id, name, avatar, collections }) => {
       }
     });
 
-  // const isMenuOpen = Boolean(anchorEl);
-  // const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const handleSearch = e => {
-    setSearch(e.target.value.substr(0, 20));
+    setSearch(e.target.value.substr(0, 50));
   };
 
   const handleCloseSearch = () => {
     setSearch("");
   };
 
-  const handleProfileMenuOpen = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
   };
 
   const isActive = path => {
@@ -285,15 +292,6 @@ const Navbar = ({ id, name, avatar, collections }) => {
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
-  const handleMobileMenuOpen = event => {
-    setMobileMoreAnchorEl(event.currentTarget);
   };
 
   const toggleDrawer = (side, open) => event => {
@@ -336,6 +334,63 @@ const Navbar = ({ id, name, avatar, collections }) => {
       <SidebarNavList />
     </div>
   );
+
+  const notifyList = side => (
+    <div className={classes.list} role="presentation">
+      <Typography variant="h6" className={classes.notificationHeader}>
+        Notifications
+        <Tooltip title="close" placement="bottom">
+          <IconButton
+            edge="end"
+            color="inherit"
+            onClick={toggleDrawer(side, false)}
+          >
+            <CloseIcon style={{ color: theme.palette.common.white }} />
+          </IconButton>
+        </Tooltip>
+      </Typography>
+
+      <List>
+        <ListItem>
+          <ListItemText primary="recently borrowed The Lean Startup" />
+          <IconButton edge="end">
+            <DeleteIcon />
+          </IconButton>
+        </ListItem>
+        <ListItem>
+          <ListItemText primary="1 overdue submission" />
+          <IconButton edge="end">
+            <DeleteIcon />
+          </IconButton>
+        </ListItem>
+        <ListItem>
+          <ListItemText primary="Newly created account" />
+          <IconButton edge="end">
+            <DeleteIcon />
+          </IconButton>
+        </ListItem>
+      </List>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          // height: "80%",
+          flexDirection: "column"
+        }}
+      >
+        {/* <Typography
+          variant="subtitle1"
+          style={{
+            marginTop: "40px"
+          }}
+        >
+          You have 0 Notifications
+        </Typography> */}
+      </div>
+    </div>
+  );
+
   const menuId = "primary-search-account-menu";
   const mobileMenuId = "primary-search-account-menu-mobile";
 
@@ -343,6 +398,11 @@ const Navbar = ({ id, name, avatar, collections }) => {
     <>
       {search && (
         <Paper elevation={10} className={classes.searchContainer}>
+          <Avatar
+            style={{ margin: "auto" }}
+            src="/images/rslibrary-logo.png"
+            variant="circle"
+          />
           <Grid container justify="space-between" alignItems="center">
             <Typography variant="subtitle1" gutterBottom>
               Search Results:{" "}
@@ -355,7 +415,7 @@ const Navbar = ({ id, name, avatar, collections }) => {
             </IconButton>
           </Grid>
           <Divider style={{ margin: "10px 0" }} light />
-          {filteredBook().length > 1 ? (
+          {filteredBook().length > 0 ? (
             filteredBook().map(book => (
               <div key={book._id}>
                 <Card
@@ -457,6 +517,18 @@ const Navbar = ({ id, name, avatar, collections }) => {
           {state.auth && (
             <>
               <div>
+                <>
+                  <IconButton
+                    aria-label="show 3 new collections"
+                    color="inherit"
+                    onClick={toggleDrawer("right", true)}
+                  >
+                    <Badge badgeContent={3} color="secondary">
+                      <NotificationsIcon />
+                    </Badge>
+                  </IconButton>
+                </>
+
                 <IconButton
                   aria-label="show 3 new collections"
                   color="inherit"
@@ -529,9 +601,14 @@ const Navbar = ({ id, name, avatar, collections }) => {
         </Toolbar>
       </AppBar>
       {state.auth && (
-        <Drawer open={state.left} onClose={toggleDrawer("left", false)}>
-          {sideList("left")}
-        </Drawer>
+        <>
+          <Drawer open={state.left} onClose={toggleDrawer("left", false)}>
+            {sideList("left")}
+          </Drawer>
+          <Drawer open={state.right} anchor="right">
+            {notifyList("right")}
+          </Drawer>
+        </>
       )}
     </>
   );

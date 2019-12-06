@@ -9,7 +9,7 @@ import {
   CircularProgress,
   Button
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles, useTheme } from "@material-ui/styles";
 import Avatar from "@material-ui/core/Avatar";
 import Chip from "@material-ui/core/Chip";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
@@ -20,6 +20,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import baseUrl from "../utils/baseUrl";
 import TopRatedBooks from "./TopRatedBooks";
+import Link from "next/link";
 
 const useStyles = makeStyles(theme => ({
   header: {
@@ -67,9 +68,20 @@ const useStyles = makeStyles(theme => ({
 
 export default function Dashboard({ collections }) {
   const classes = useStyles();
+  const theme = useTheme();
   const router = useRouter();
   const [books, setBooks] = useState([]);
   const [latestbooks, setLatestBooks] = useState([]);
+  const [count, setCount] = useState({
+    autobiography: [],
+    biography: [],
+    selfhelp: [],
+    business: [],
+    science: [],
+    philosophy: [],
+    history: [],
+    legal: []
+  });
   const [loading, setLoading] = useState(false);
   const latestBookUrl = `${baseUrl}/api/latestbooks`;
 
@@ -90,6 +102,64 @@ export default function Dashboard({ collections }) {
       setBooks([]);
     };
   }, [latestBookUrl]);
+
+  useEffect(() => {
+    let abortController = new AbortController();
+    let business = books.filter(book => {
+      if (book.genre === "business") {
+        return book;
+      }
+    });
+    let selfhelp = books.filter(book => {
+      if (book.genre === "self help") {
+        return book;
+      }
+    });
+    let autobiography = books.filter(book => {
+      if (book.genre === "autobiography") {
+        return book;
+      }
+    });
+    let biography = books.filter(book => {
+      if (book.genre === "biography") {
+        return book;
+      }
+    });
+    let science = books.filter(book => {
+      if (book.genre === "science") {
+        return book;
+      }
+    });
+    let history = books.filter(book => {
+      if (book.genre === "history") {
+        return book;
+      }
+    });
+    let philosophy = books.filter(book => {
+      if (book.genre === "philosophy") {
+        return book;
+      }
+    });
+    let legal = books.filter(book => {
+      if (book.genre === "legal") {
+        return book;
+      }
+    });
+    setCount(prevState => ({
+      business,
+      selfhelp,
+      history,
+      autobiography,
+      biography,
+      science,
+      philosophy,
+      legal
+    }));
+    return () => {
+      abortController.abort();
+    };
+  }, [books]);
+
   return (
     <div>
       <div className={classes.header}>
@@ -145,44 +215,46 @@ export default function Dashboard({ collections }) {
                   <Chip
                     label="Self Help"
                     color="secondary"
-                    avatar={<Avatar>8</Avatar>}
-                    onClick={() => console.log("Hello...")}
+                    avatar={<Avatar>{count.selfhelp.length}</Avatar>}
+                    onClick={() => router.push(`/collection?genre=selfhelp`)}
                   />
                   <Chip
                     label="Autobiography"
                     color="secondary"
-                    avatar={<Avatar>2</Avatar>}
-                    onClick={() => console.log("Hello...")}
+                    avatar={<Avatar>{count.autobiography.length}</Avatar>}
+                    onClick={() =>
+                      router.push(`/collection?genre=autobiography`)
+                    }
                   />
                   <Chip
                     label="Business"
                     color="secondary"
-                    avatar={<Avatar>12</Avatar>}
-                    onClick={() => console.log("Hello...")}
+                    avatar={<Avatar>{count.business.length}</Avatar>}
+                    onClick={() => router.push(`/collection?genre=business`)}
                   />
                   <Chip
                     label="Biography"
                     color="secondary"
-                    avatar={<Avatar>2</Avatar>}
-                    onClick={() => console.log("Hello...")}
+                    avatar={<Avatar>{count.biography.length}</Avatar>}
+                    onClick={() => router.push(`/collection?genre=biography`)}
                   />
                   <Chip
                     label="History"
                     color="secondary"
-                    avatar={<Avatar>4</Avatar>}
-                    onClick={() => console.log("Hello...")}
+                    avatar={<Avatar>{count.history.length}</Avatar>}
+                    onClick={() => router.push(`/collection?genre=history`)}
                   />
                   <Chip
                     label="Philosophy"
                     color="secondary"
-                    avatar={<Avatar>5</Avatar>}
-                    onClick={() => console.log("Hello...")}
+                    avatar={<Avatar>{count.philosophy.length}</Avatar>}
+                    onClick={() => router.push(`/collection?genre=philosophy`)}
                   />
                   <Chip
                     label="Science"
                     color="secondary"
-                    avatar={<Avatar>3</Avatar>}
-                    onClick={() => console.log("Hello...")}
+                    avatar={<Avatar>{count.science.length}</Avatar>}
+                    onClick={() => router.push(`/collection?genre=science`)}
                   />
                 </div>
               </div>
@@ -210,7 +282,11 @@ export default function Dashboard({ collections }) {
                         variant="square"
                         style={{ margin: "0 10px" }}
                       />{" "}
-                      {book.title}
+                      <Link href={`/book/info?id=${book._id}`}>
+                        <a style={{ color: theme.palette.secondary.light }}>
+                          {book.title}
+                        </a>
+                      </Link>
                     </ListItem>
                   ))
                 )}
