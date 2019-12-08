@@ -38,15 +38,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function SearchComponent({ updateSearch }) {
+export default function SearchComponent({ updateSearch, placeholder }) {
   const classes = useStyles();
 
   return (
     <Paper component="form" className={classes.root}>
       <InputBase
         className={classes.input}
-        placeholder="Search Books"
-        inputProps={{ "aria-label": "search books" }}
+        placeholder={placeholder}
+        inputProps={{ "aria-label": { placeholder } }}
         onChange={updateSearch}
       />
 

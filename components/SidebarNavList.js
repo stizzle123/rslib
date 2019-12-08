@@ -75,7 +75,10 @@ export default function SidebarNavList() {
             <ListItemIcon>
               <AccountBoxIcon />
             </ListItemIcon>
-            <ListItemText primary="User Management" />
+            <ListItemText
+              primary="User Management"
+              onClick={() => router.push("/users")}
+            />
           </ListItem>
           <Divider light />
           <ListItem button>

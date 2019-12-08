@@ -1,35 +1,26 @@
 import React, { useState, useEffect } from "react";
-import {
-  makeStyles,
-  withStyles,
-  Button,
-  Avatar,
-  Typography,
-  IconButton,
-  CircularProgress
-} from "@material-ui/core";
+import { makeStyles, withStyles } from "@material-ui/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
 import TableFooter from "@material-ui/core/TableFooter";
 import TablePagination from "@material-ui/core/TablePagination";
-import Chip from "@material-ui/core/Chip";
+import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import TablePaginationActions from "./TablePaginationActions";
+import {
+  TableHead,
+  Typography,
+  CircularProgress,
+  IconButton,
+  useTheme
+} from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
-import Tooltip from "@material-ui/core/Tooltip";
-import EditIcon from "@material-ui/icons/Edit";
 import axios from "axios";
 import baseUrl from "../utils/baseUrl";
-import TablePaginationActions from "./TablePaginationActions";
-import SearchComponent from "./SearchComponent";
 import { capitalize } from "../utils/capitalize";
-import BorrowModal from "./BorrowModal";
-import DeleteModal from "./DeleteModal";
-import { useRouter } from "next/router";
 import { darken } from "@material-ui/core/styles";
-import Link from "next/link";
+import SearchComponent from "./SearchComponent";
 
 const StyledTableCell = withStyles(theme => ({
   head: {
@@ -50,7 +41,6 @@ const StyledTableRow = withStyles(theme => ({
       backgroundColor: theme.palette.background.default
     },
     "&:hover": {
-      // cursor: "pointer",
       backgroundColor: darken(theme.palette.background.default, 0.01)
     }
   }
@@ -72,15 +62,19 @@ const useStyles = makeStyles(theme => ({
     }
   },
   root: {
-    width: "100%",
-    margin: "auto"
+    width: "100%"
   },
   table: {
     minWidth: 500
-    // position: "relative"
   },
   tableWrapper: {
     overflowX: "auto"
+  },
+  tableHeader: {
+    backgroundImage:
+      "linear-gradient(323deg, rgba(255, 255, 255, 0.01) 0%, rgba(255, 255, 255, 0.01) 16.667%,rgba(46, 46, 46, 0.01) 16.667%, rgba(46, 46, 46, 0.01) 33.334%,rgba(226, 226, 226, 0.01) 33.334%, rgba(226, 226, 226, 0.01) 50.001000000000005%,rgba(159, 159, 159, 0.01) 50.001%, rgba(159, 159, 159, 0.01) 66.668%,rgba(149, 149, 149, 0.01) 66.668%, rgba(149, 149, 149, 0.01) 83.33500000000001%,rgba(43, 43, 43, 0.01) 83.335%, rgba(43, 43, 43, 0.01) 100.002%),linear-gradient(346deg, rgba(166, 166, 166, 0.03) 0%, rgba(166, 166, 166, 0.03) 25%,rgba(240, 240, 240, 0.03) 25%, rgba(240, 240, 240, 0.03) 50%,rgba(121, 121, 121, 0.03) 50%, rgba(121, 121, 121, 0.03) 75%,rgba(40, 40, 40, 0.03) 75%, rgba(40, 40, 40, 0.03) 100%),linear-gradient(347deg, rgba(209, 209, 209, 0.01) 0%, rgba(209, 209, 209, 0.01) 25%,rgba(22, 22, 22, 0.01) 25%, rgba(22, 22, 22, 0.01) 50%,rgba(125, 125, 125, 0.01) 50%, rgba(125, 125, 125, 0.01) 75%,rgba(205, 205, 205, 0.01) 75%, rgba(205, 205, 205, 0.01) 100%),linear-gradient(84deg, rgba(195, 195, 195, 0.01) 0%, rgba(195, 195, 195, 0.01) 14.286%,rgba(64, 64, 64, 0.01) 14.286%, rgba(64, 64, 64, 0.01) 28.572%,rgba(67, 67, 67, 0.01) 28.572%, rgba(67, 67, 67, 0.01) 42.858%,rgba(214, 214, 214, 0.01) 42.858%, rgba(214, 214, 214, 0.01) 57.144%,rgba(45, 45, 45, 0.01) 57.144%, rgba(45, 45, 45, 0.01) 71.42999999999999%,rgba(47, 47, 47, 0.01) 71.43%, rgba(47, 47, 47, 0.01) 85.71600000000001%,rgba(172, 172, 172, 0.01) 85.716%, rgba(172, 172, 172, 0.01) 100.002%),linear-gradient(73deg, rgba(111, 111, 111, 0.03) 0%, rgba(111, 111, 111, 0.03) 16.667%,rgba(202, 202, 202, 0.03) 16.667%, rgba(202, 202, 202, 0.03) 33.334%,rgba(57, 57, 57, 0.03) 33.334%, rgba(57, 57, 57, 0.03) 50.001000000000005%,rgba(197, 197, 197, 0.03) 50.001%, rgba(197, 197, 197, 0.03) 66.668%,rgba(97, 97, 97, 0.03) 66.668%, rgba(97, 97, 97, 0.03) 83.33500000000001%,rgba(56, 56, 56, 0.03) 83.335%, rgba(56, 56, 56, 0.03) 100.002%),linear-gradient(132deg, rgba(88, 88, 88, 0.03) 0%, rgba(88, 88, 88, 0.03) 20%,rgba(249, 249, 249, 0.03) 20%, rgba(249, 249, 249, 0.03) 40%,rgba(2, 2, 2, 0.03) 40%, rgba(2, 2, 2, 0.03) 60%,rgba(185, 185, 185, 0.03) 60%, rgba(185, 185, 185, 0.03) 80%,rgba(196, 196, 196, 0.03) 80%, rgba(196, 196, 196, 0.03) 100%),linear-gradient(142deg, rgba(160, 160, 160, 0.03) 0%, rgba(160, 160, 160, 0.03) 12.5%,rgba(204, 204, 204, 0.03) 12.5%, rgba(204, 204, 204, 0.03) 25%,rgba(108, 108, 108, 0.03) 25%, rgba(108, 108, 108, 0.03) 37.5%,rgba(191, 191, 191, 0.03) 37.5%, rgba(191, 191, 191, 0.03) 50%,rgba(231, 231, 231, 0.03) 50%, rgba(231, 231, 231, 0.03) 62.5%,rgba(70, 70, 70, 0.03) 62.5%, rgba(70, 70, 70, 0.03) 75%,rgba(166, 166, 166, 0.03) 75%, rgba(166, 166, 166, 0.03) 87.5%,rgba(199, 199, 199, 0.03) 87.5%, rgba(199, 199, 199, 0.03) 100%),linear-gradient(238deg, rgba(116, 116, 116, 0.02) 0%, rgba(116, 116, 116, 0.02) 20%,rgba(141, 141, 141, 0.02) 20%, rgba(141, 141, 141, 0.02) 40%,rgba(152, 152, 152, 0.02) 40%, rgba(152, 152, 152, 0.02) 60%,rgba(61, 61, 61, 0.02) 60%, rgba(61, 61, 61, 0.02) 80%,rgba(139, 139, 139, 0.02) 80%, rgba(139, 139, 139, 0.02) 100%),linear-gradient(188deg, rgba(227, 227, 227, 0.01) 0%, rgba(227, 227, 227, 0.01) 20%,rgba(105, 105, 105, 0.01) 20%, rgba(105, 105, 105, 0.01) 40%,rgba(72, 72, 72, 0.01) 40%, rgba(72, 72, 72, 0.01) 60%,rgba(33, 33, 33, 0.01) 60%, rgba(33, 33, 33, 0.01) 80%,rgba(57, 57, 57, 0.01) 80%, rgba(57, 57, 57, 0.01) 100%),linear-gradient(90deg, hsl(237,0%,13%),hsl(237,0%,13%))",
+    color: "#fff",
+    textAlign: "center"
   },
   spinner: {
     position: "absolute",
@@ -90,61 +84,42 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Books({ _id, name }) {
+export default function UsersCollection() {
   const classes = useStyles();
-  const router = useRouter();
-  const [books, setBooks] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const theme = useTheme();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [error, setError] = useState("");
   const [search, setSearch] = useState("");
-  const [book, setBook] = useState([]);
-  const URL = `${baseUrl}/api/books`;
-  const [open, setOpen] = React.useState(false);
-  const [deleteOpen, setDeleteOpen] = useState(false);
-
-  const handleClickOpen = id => {
-    setBook(books.filter(book => book._id === id));
-    setOpen(true);
-  };
-
-  const handleClickDeleteOpen = id => {
-    setBook(books.filter(book => book._id === id));
-    setDeleteOpen(true);
-  };
-
-  const handleDeleteClose = () => {
-    setDeleteOpen(false);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const [loading, setLoading] = useState(false);
+  const [users, setUsers] = useState([]);
+  const URL = `${baseUrl}/api/users`;
 
   useEffect(() => {
     const abortController = new AbortController();
     setLoading(true);
+
     axios
       .get(URL)
       .then(res => {
+        setUsers(res.data);
         setLoading(false);
-        setBooks(res.data);
       })
       .catch(err => {
-        console.error(err);
+        console.error(err.response.data);
+        setError(err.response.data);
       });
-
     return () => {
       abortController.abort();
     };
   }, [URL]);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
   const updateSearch = e => {
     setSearch(e.target.value.substr(0, 20));
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
   };
 
   const handleChangeRowsPerPage = event => {
@@ -152,134 +127,78 @@ export default function Books({ _id, name }) {
     setPage(0);
   };
 
-  const filteredBook = () =>
-    books.filter(book => {
+  const filteredUser = () =>
+    users.filter(user => {
       if (search !== "") {
         return (
-          book.authorName.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
-          book.title.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
-          book.genre.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
-          book.status.toLowerCase().indexOf(search.toLowerCase()) !== -1
+          user.name.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
+          user.department.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
+          user.email.toLowerCase().indexOf(search.toLowerCase()) !== -1
         );
       } else {
-        return book;
+        return user;
       }
     });
 
-  const onDeleteBook = id => {
-    setBooks(books.filter(book => book._id !== id));
-    setDeleteOpen(false);
-  };
-
   return (
     <>
-      <BorrowModal
-        name={name}
-        book={book}
-        open={open}
-        handleClose={handleClose}
-      />
-      <DeleteModal
-        book={book}
-        deleteOpen={deleteOpen}
-        onDeleteBook={onDeleteBook}
-        handleDeleteClose={handleDeleteClose}
-      />
-
       <div className={classes.base}>
         <SearchComponent
           updateSearch={updateSearch}
-          placeholder="Search Books"
+          placeholder="Search Users"
         />
         <Typography variant="h4" component="h6" gutterBottom>
-          All Available Books
+          User Management
         </Typography>
         <Paper className={classes.root}>
           <div className={classes.tableWrapper}>
             {loading ? (
               <CircularProgress className={classes.spinner} size={60} />
             ) : (
-              <Table className={classes.table} aria-label="customized table">
+              <Table
+                className={classes.table}
+                aria-label="custom pagination table"
+              >
                 <TableHead>
                   <TableRow>
-                    <StyledTableCell>Book Cover</StyledTableCell>
-                    <StyledTableCell align="right">Title</StyledTableCell>
-                    <StyledTableCell align="right">Author</StyledTableCell>
-                    <StyledTableCell align="right">Genre</StyledTableCell>
-                    <StyledTableCell align="right">Quantity</StyledTableCell>
-                    <StyledTableCell align="right">Status</StyledTableCell>
+                    <StyledTableCell>Name</StyledTableCell>
+                    <StyledTableCell align="right">Email</StyledTableCell>
+                    <StyledTableCell align="right">Department</StyledTableCell>
                     <StyledTableCell align="right">Actions</StyledTableCell>
                   </TableRow>
                 </TableHead>
-
                 <TableBody>
                   {(rowsPerPage > 0
-                    ? filteredBook().slice(
+                    ? filteredUser().slice(
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
                       )
-                    : filteredBook()
-                  ).map(book => (
-                    <StyledTableRow key={book._id}>
+                    : filteredUser()
+                  ).map(user => (
+                    <StyledTableRow key={user._id}>
                       <StyledTableCell component="th" scope="row">
-                        <Avatar
-                          variant="square"
-                          src={book.imageUrl}
-                          style={{ margin: "auto" }}
-                        />
+                        {capitalize(user.name)}
                       </StyledTableCell>
                       <StyledTableCell align="right">
-                        <Link href={`/book/info?id=${book._id}`}>
-                          <a style={{ color: "#333" }}>{book.title}</a>
-                        </Link>
+                        {user.email}
                       </StyledTableCell>
                       <StyledTableCell align="right">
-                        {capitalize(book.authorName)}
+                        {user.department}
                       </StyledTableCell>
                       <StyledTableCell align="right">
-                        {capitalize(book.genre)}
-                      </StyledTableCell>
-                      <StyledTableCell align="right">
-                        {book.quantity}
-                      </StyledTableCell>
-                      <StyledTableCell align="right">
-                        <Chip
+                        <IconButton
                           color="secondary"
-                          label={status ? "checked out" : "available"}
-                          disabled={true}
-                        />
-                      </StyledTableCell>
-                      <StyledTableCell align="right">
-                        <Tooltip title="Edit">
-                          <IconButton
-                            color="secondary"
-                            onClick={() =>
-                              router.push(`/book/edit?id=${book._id}`)
-                            }
-                          >
-                            <EditIcon color="secondary" />
-                          </IconButton>
-                        </Tooltip>
-                        <Button
-                          size="small"
-                          variant="outlined"
-                          color="secondary"
-                          onClick={() => handleClickOpen(book._id)}
+                          onClick={() => console.log(user._id)}
                         >
-                          Borrow
-                        </Button>
-
-                        <Tooltip title="Delete">
-                          <IconButton
-                            onClick={() => handleClickDeleteOpen(book._id)}
-                          >
-                            <DeleteIcon color="error" />
-                          </IconButton>
-                        </Tooltip>
+                          <DeleteIcon
+                            style={{ color: theme.palette.secondary.red }}
+                          />
+                        </IconButton>
                       </StyledTableCell>
                     </StyledTableRow>
                   ))}
                 </TableBody>
+
                 <TableFooter>
                   <TableRow>
                     <TablePagination
@@ -290,7 +209,7 @@ export default function Books({ _id, name }) {
                         { label: "All", value: -1 }
                       ]}
                       colSpan={3}
-                      count={filteredBook().length}
+                      count={filteredUser().length}
                       rowsPerPage={rowsPerPage}
                       page={page}
                       SelectProps={{
