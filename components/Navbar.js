@@ -13,6 +13,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import SettingsIcon from "@material-ui/icons/Settings";
 import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
+import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import {
   Drawer,
@@ -68,9 +69,10 @@ const useStyles = makeStyles(theme => ({
     color: "#fff",
     fontSize: theme.spacing(2.5),
     fontWeight: "900",
+    alignItems: "center",
     // display: "none",
     [theme.breakpoints.up("md")]: {
-      display: "block"
+      display: "flex"
     }
   },
   search: {
@@ -83,7 +85,7 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(2),
     marginLeft: 0,
     width: "100%",
-    // display: "none",
+    display: "none",
     [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing(3),
       width: "auto",
@@ -352,19 +354,19 @@ const Navbar = ({ id, name, avatar, collections }) => {
 
       <List>
         <ListItem>
-          <ListItemText primary="recently borrowed The Lean Startup" />
+          <ListItemText primary="* recently borrowed The Lean Startup" />
           <IconButton edge="end">
             <DeleteIcon />
           </IconButton>
         </ListItem>
         <ListItem>
-          <ListItemText primary="1 overdue submission" />
+          <ListItemText primary="* 1 overdue submission" />
           <IconButton edge="end">
             <DeleteIcon />
           </IconButton>
         </ListItem>
         <ListItem>
-          <ListItemText primary="Newly created account" />
+          <ListItemText primary="* Newly created account" />
           <IconButton edge="end">
             <DeleteIcon />
           </IconButton>
@@ -462,7 +464,19 @@ const Navbar = ({ id, name, avatar, collections }) => {
 
           <div className={classes.sectionDesktop}>
             <Link href="/">
-              <a className={classes.titleNav}>RS Library</a>
+              <a className={classes.titleNav}>
+                RS Library
+                <Avatar
+                  src="/images/rslibrary-logo.png"
+                  variant="circle"
+                  style={{
+                    width: "40px",
+                    height: "40px",
+                    marginLeft: 10
+                  }}
+                  onClick={() => router.replace("/")}
+                />
+              </a>
             </Link>
           </div>
           <Avatar

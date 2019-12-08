@@ -33,7 +33,9 @@ const useStyles = makeStyles(theme => ({
     margin: "auto",
     marginTop: "10px",
     objectPosition: "50% 50%",
-    objectFit: "contain"
+    objectFit: "contain",
+    border: "6px solid #424242",
+    borderRadius: 5
   }
 }));
 

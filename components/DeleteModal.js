@@ -3,6 +3,7 @@ import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 
 import {
   Divider,
@@ -10,10 +11,12 @@ import {
   makeStyles,
   Avatar,
   DialogContent,
-  DialogContentText
+  DialogContentText,
+  Typography
 } from "@material-ui/core";
 import { capitalize } from "../utils/capitalize";
-import { fade, darken } from "@material-ui/core/styles";
+import { darken } from "@material-ui/core/styles";
+import { useTheme } from "@material-ui/styles";
 
 const useStyles = makeStyles(theme => ({
   danger: {
@@ -35,6 +38,7 @@ export default function DeleteModal({
   book
 }) {
   const classes = useStyles();
+  const theme = useTheme();
   return (
     <div>
       {book.map(book => (
@@ -47,29 +51,28 @@ export default function DeleteModal({
           aria-labelledby="max-width-dialog-title"
         >
           <DialogTitle>
-            Are You sure you want to delete this Book?{" "}
-            <span className={classes.title}>{book.title}</span>
+            <span
+              style={{
+                display: "flex",
+                alignItems: "center"
+              }}
+            >
+              Delete <DeleteForeverIcon />
+            </span>
           </DialogTitle>
           <DialogContent>
             <DialogContentText>
-              <strong>By</strong>:{" "}
-              <span className={classes.title}>
+              Are You sure you want to delete{" "}
+              <span style={{ color: theme.palette.secondary.grey }}>
+                "{book.title}"
+              </span>{" "}
+              by{" "}
+              <span style={{ color: theme.palette.secondary.grey }}>
                 {capitalize(book.authorName)}
               </span>
+              ?
             </DialogContentText>
-            <Avatar
-              src={book.imageUrl}
-              variant="square"
-              style={{
-                margin: "auto",
-                objectFit: "contain",
-                objectPosition: "50% 50%",
-                width: 150,
-                height: 200
-              }}
-            />
           </DialogContent>
-          <Divider variant="middle" />
           <DialogActions>
             <Grid container justify="space-around" alignItems="center">
               <Button
