@@ -8,6 +8,7 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import TablePaginationActions from "./TablePaginationActions";
+import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import {
   TableHead,
   Typography,
@@ -81,6 +82,14 @@ const useStyles = makeStyles(theme => ({
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)"
+  },
+  header: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+    // [theme.breakpoints.down("sm")]: {
+    //   fontSize: "0.8rem"
+    // }
   }
 }));
 
@@ -147,8 +156,13 @@ export default function UsersCollection() {
           updateSearch={updateSearch}
           placeholder="Search Users"
         />
-        <Typography variant="h4" component="h6" gutterBottom>
-          User Management
+        <Typography
+          className={classes.header}
+          variant="h4"
+          component="h6"
+          gutterBottom
+        >
+          <AccountBoxIcon fontSize="large" /> User Management
         </Typography>
         <Paper className={classes.root}>
           <div className={classes.tableWrapper}>
