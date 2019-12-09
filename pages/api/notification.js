@@ -9,6 +9,9 @@ export default async (req, res) => {
     case "GET":
       await handleGetNotification(req, res);
       break;
+    case "DELETE":
+      await handleDeleteNotification(req, res);
+      break;
 
     default:
       res.status(405).json(`Method ${req.method} not allowed`);
@@ -26,6 +29,18 @@ const handleGetNotification = async (req, res) => {
       process.env.JWT_SECRET
     );
     const data = await Notification.find({ user: userId });
+    res.status(200).json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(error);
+  }
+};
+
+const handleDeleteNotification = async (req, res) => {
+  const id = req.body.id;
+
+  try {
+    const data = await Notification.findOneAndDelete({ _id: id });
     res.status(200).json(data);
   } catch (error) {
     console.error(error);

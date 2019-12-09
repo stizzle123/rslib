@@ -111,7 +111,7 @@ export default function Dashboard({ collections }) {
       }
     });
     let selfhelp = books.filter(book => {
-      if (book.genre === "self help") {
+      if (book.genre === "selfhelp") {
         return book;
       }
     });

@@ -17,7 +17,7 @@ import { Avatar, makeStyles, Divider } from "@material-ui/core";
 import Snackbar from "@material-ui/core/Snackbar";
 import Fade from "@material-ui/core/Fade";
 import { capitalize } from "../utils/capitalize";
-import moment from "moment";
+
 import axios from "axios";
 import baseUrl from "../utils/baseUrl";
 
@@ -79,7 +79,7 @@ export default function BorrowModal({ handleClose, open, book, name, userId }) {
         returnDate: selectedDate
       };
       const response = await axios.post(`${baseUrl}/api/log`, payload);
-      console.log({ data: response.data });
+
       handleClose();
     } catch (error) {
       console.error(error);

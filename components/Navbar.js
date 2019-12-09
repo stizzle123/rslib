@@ -288,6 +288,17 @@ const Navbar = ({ id, name, avatar, collections, notification }) => {
     setAnchorEl(null);
   };
 
+  const handleDeleteNotification = async id => {
+    const data = { id };
+    try {
+      const res = await axios.delete(`${baseUrl}/api/notification`, { data });
+      console.log(res.data);
+      router.reload();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const isActive = path => {
     return router.pathname === path;
   };
@@ -355,14 +366,17 @@ const Navbar = ({ id, name, avatar, collections, notification }) => {
       <List>
         {notification.length > 0 ? (
           notification.map(notify => (
-            <>
+            <div key={notify._id}>
               <ListItem>
                 <ListItemText primary={notify.message} />
-                <IconButton edge="end">
+                <IconButton
+                  edge="end"
+                  onClick={() => handleDeleteNotification(notify._id)}
+                >
                   <DeleteIcon />
                 </IconButton>
               </ListItem>
-            </>
+            </div>
           ))
         ) : (
           <ListItem>

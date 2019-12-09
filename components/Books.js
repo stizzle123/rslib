@@ -124,6 +124,7 @@ export default function Books({ _id, name }) {
 
   const handleClose = () => {
     setOpen(false);
+    router.reload();
   };
 
   useEffect(() => {
@@ -200,7 +201,6 @@ export default function Books({ _id, name }) {
     setDeleteOpen(false);
   };
 
-  console.log(log);
   return (
     <>
       <BorrowModal
@@ -279,7 +279,8 @@ export default function Books({ _id, name }) {
                           label={
                             book.quantity > 0 ? "available" : "unavailable"
                           }
-                          disabled={true}
+                          variant="outlined"
+                          // disabled={true}
                         />
                       </StyledTableCell>
                       <StyledTableCell align="right">

@@ -17,12 +17,12 @@ const notificationSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const autopopulateUser = function(next) {
-  this.populate("user", "_id name avatar email department");
-  next();
-};
+// const autopopulateUser = function(next) {
+//   this.populate("user", "_id name avatar email department");
+//   next();
+// };
 
-notificationSchema.pre("find", autopopulateUser);
+// notificationSchema.pre("find", autopopulateUser);
 
 export default mongoose.models.Notification ||
   mongoose.model("Notification", notificationSchema);

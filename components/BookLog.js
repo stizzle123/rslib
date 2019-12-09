@@ -9,6 +9,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import TablePaginationActions from "./TablePaginationActions";
 import ArchiveIcon from "@material-ui/icons/Archive";
+import Chip from "@material-ui/core/Chip";
 import {
   TableHead,
   Typography,
@@ -213,7 +214,12 @@ export default function BookLog() {
                       </StyledTableCell>
 
                       <StyledTableCell align="right">
-                        {log.status}
+                        {/* {log.status} */}
+                        <Chip
+                          variant="outlined"
+                          color="secondary"
+                          label={log.status}
+                        />
                       </StyledTableCell>
                       <StyledTableCell align="right">
                         {log.borrower.email}

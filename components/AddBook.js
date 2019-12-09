@@ -115,7 +115,8 @@ const INIT_STATE = {
   title: "",
   genre: "",
   imageUrl: "",
-  summary: ""
+  summary: "",
+  quantity: ""
 };
 
 export default function AddBook({ _id }) {
@@ -167,9 +168,9 @@ export default function AddBook({ _id }) {
       setLoading(true);
       const url = `${baseUrl}/api/book`;
 
-      const { authorName, title, genre, summary, imageUrl } = state;
+      const { authorName, title, genre, summary, imageUrl, quantity } = state;
 
-      const payload = { authorName, title, genre, summary };
+      const payload = { authorName, title, genre, summary, quantity };
       if (imageUrl) {
         payload.imageUrl = imageUrl;
       }
@@ -274,20 +275,28 @@ export default function AddBook({ _id }) {
               </InputLabel>
               <Select
                 labelId="demo-simple-select-outlined-label"
-                id="genre"
-                name="genre"
-                value={state.genre}
+                value="autobiography"
                 onChange={handleChange}
+                inputProps={{
+                  name: "genre",
+                  id: "genre"
+                }}
               >
-                <MenuItem value="select genre" disabled={true}>
-                  Select Genre
-                </MenuItem>
                 {genres.map((genre, i) => (
                   <MenuItem key={i} value={genre.value}>
                     {genre.name}
                   </MenuItem>
                 ))}
               </Select>
+            </FormControl>
+            <FormControl margin="normal" fullWidth required>
+              <InputLabel htmlFor="quantity">Quantity</InputLabel>
+              <Input
+                type="number"
+                name="quantity"
+                value={state.quantity}
+                onChange={handleChange}
+              />
             </FormControl>
             <FormControl fullWidth>
               <TextField

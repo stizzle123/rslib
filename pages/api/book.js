@@ -23,7 +23,11 @@ export default async (req, res) => {
 const handleCreateBook = async (req, res) => {
   const data = { ...req.body };
   try {
-    const book = await new Book(data).save();
+    const payload = {
+      ...data,
+      totalQty: data.quantity
+    };
+    const book = await new Book(payload).save();
 
     res.status(200).json(book);
   } catch (error) {
