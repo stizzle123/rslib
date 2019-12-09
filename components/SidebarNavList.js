@@ -12,6 +12,7 @@ import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
 import CollectionsIcon from "@material-ui/icons/Collections";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import SettingsIcon from "@material-ui/icons/Settings";
+import ArchiveIcon from "@material-ui/icons/Archive";
 import Router, { useRouter } from "next/router";
 import { fade, lighten } from "@material-ui/core/styles";
 
@@ -53,32 +54,29 @@ export default function SidebarNavList() {
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
           </ListItem>
-          <ListItem button>
+          <ListItem button onClick={() => router.push("/books/add")}>
             <ListItemIcon>
               <LibraryBooksIcon />
             </ListItemIcon>
-            <ListItemText
-              primary="Add Books"
-              onClick={() => router.push("/books/add")}
-            />
+            <ListItemText primary="Add Books" />
           </ListItem>
-          <ListItem button>
+          <ListItem button onClick={() => router.push("/books")}>
             <ListItemIcon>
               <CollectionsIcon />
             </ListItemIcon>
-            <ListItemText
-              primary="Book Collections"
-              onClick={() => router.push("/books")}
-            />
+            <ListItemText primary="Book Collections" />
           </ListItem>
-          <ListItem button>
+          <ListItem button onClick={() => router.push("/log")}>
+            <ListItemIcon>
+              <ArchiveIcon />
+            </ListItemIcon>
+            <ListItemText primary="Book Log" />
+          </ListItem>
+          <ListItem button onClick={() => router.push("/users")}>
             <ListItemIcon>
               <AccountBoxIcon />
             </ListItemIcon>
-            <ListItemText
-              primary="User Management"
-              onClick={() => router.push("/users")}
-            />
+            <ListItemText primary="User Management" />
           </ListItem>
           <Divider light />
           <ListItem button>

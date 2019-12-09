@@ -219,7 +219,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Navbar = ({ id, name, avatar, collections }) => {
+const Navbar = ({ id, name, avatar, collections, notification }) => {
   const classes = useStyles();
   const router = useRouter();
   const URL = `${baseUrl}/api/books`;
@@ -353,43 +353,23 @@ const Navbar = ({ id, name, avatar, collections }) => {
       </Typography>
 
       <List>
-        <ListItem>
-          <ListItemText primary="* recently borrowed The Lean Startup" />
-          <IconButton edge="end">
-            <DeleteIcon />
-          </IconButton>
-        </ListItem>
-        <ListItem>
-          <ListItemText primary="* 1 overdue submission" />
-          <IconButton edge="end">
-            <DeleteIcon />
-          </IconButton>
-        </ListItem>
-        <ListItem>
-          <ListItemText primary="* Newly created account" />
-          <IconButton edge="end">
-            <DeleteIcon />
-          </IconButton>
-        </ListItem>
+        {notification.length > 0 ? (
+          notification.map(notify => (
+            <>
+              <ListItem>
+                <ListItemText primary={notify.message} />
+                <IconButton edge="end">
+                  <DeleteIcon />
+                </IconButton>
+              </ListItem>
+            </>
+          ))
+        ) : (
+          <ListItem>
+            <ListItemText primary="You have 0 Notifications" />
+          </ListItem>
+        )}
       </List>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          // height: "80%",
-          flexDirection: "column"
-        }}
-      >
-        {/* <Typography
-          variant="subtitle1"
-          style={{
-            marginTop: "40px"
-          }}
-        >
-          You have 0 Notifications
-        </Typography> */}
-      </div>
     </div>
   );
 
@@ -533,11 +513,11 @@ const Navbar = ({ id, name, avatar, collections }) => {
               <div>
                 <>
                   <IconButton
-                    aria-label="show 3 new collections"
+                    aria-label="show notifications"
                     color="inherit"
                     onClick={toggleDrawer("right", true)}
                   >
-                    <Badge badgeContent={3} color="secondary">
+                    <Badge badgeContent={notification.length} color="secondary">
                       <NotificationsIcon />
                     </Badge>
                   </IconButton>

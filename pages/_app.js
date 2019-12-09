@@ -29,7 +29,8 @@ export class MyApp extends App {
         ctx.pathname === "/bookcollections" ||
         ctx.pathname === "/book/edit" ||
         ctx.pathname === "/book/info" ||
-        ctx.pathname === "/collection";
+        ctx.pathname === "/collection" ||
+        ctx.pathname === "/log";
       if (isProtectedRoute) {
         redirectUser(ctx, "/login");
       }
@@ -42,10 +43,16 @@ export class MyApp extends App {
           `${baseUrl}/api/collections`,
           payload
         );
+        const notificationData = await axios.get(
+          `${baseUrl}/api/notification`,
+          payload
+        );
         const user = response.data;
         const collections = collectionData.data;
+        const notification = notificationData.data;
         pageProps.user = user;
         pageProps.collections = collections;
+        pageProps.notification = notification;
         const isRoot = user.role === "root";
         const isAdmin = user.role === "admin";
         const isLoggedIn =

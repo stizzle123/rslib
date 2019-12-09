@@ -5,10 +5,10 @@ import axios from "axios";
 import baseUrl from "../utils/baseUrl";
 import MyCollections from "../components/MyCollections";
 
-function bookcollections({ user, collections }) {
+function bookcollections({ user, collections, notification }) {
   return (
-    <Layout {...user} collections={collections}>
-      <MyCollections {...collections} {...user} />
+    <Layout {...user} collections={collections} notification={notification}>
+      <MyCollections {...collections} {...user} notification={notification} />
     </Layout>
   );
 }

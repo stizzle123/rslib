@@ -1,5 +1,5 @@
 import "date-fns";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -14,8 +14,12 @@ import {
 } from "@material-ui/pickers";
 import Grid from "@material-ui/core/Grid";
 import { Avatar, makeStyles, Divider } from "@material-ui/core";
+import Snackbar from "@material-ui/core/Snackbar";
+import Fade from "@material-ui/core/Fade";
 import { capitalize } from "../utils/capitalize";
 import moment from "moment";
+import axios from "axios";
+import baseUrl from "../utils/baseUrl";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -39,13 +43,26 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function BorrowModal({ handleClose, open, book, name }) {
+export default function BorrowModal({ handleClose, open, book, name, userId }) {
   const classes = useStyles();
   const date = new Date();
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     checked: false
   });
-  const [selectedDate, setSelectedDate] = React.useState(date);
+  const [loading, setLoading] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(date);
+  const [snack, setSnack] = useState({
+    open: false,
+    Transition: Fade,
+    openError: false,
+    error: ""
+  });
+
+  const showError = err => {
+    const error = (err.response && err.response.data) || err.message;
+    setSnack({ error, openError: true });
+    setLoading(false);
+  };
 
   const handleDateChange = date => {
     setSelectedDate(date);
@@ -54,13 +71,39 @@ export default function BorrowModal({ handleClose, open, book, name }) {
     setState({ ...state, [name]: event.target.checked });
   };
 
-  const handleBorrow = book => {
-    // console.log(selectedDate, book);
-    handleClose();
+  const handleBorrow = async book => {
+    try {
+      const payload = {
+        borrower: userId,
+        book: book._id,
+        returnDate: selectedDate
+      };
+      const response = await axios.post(`${baseUrl}/api/log`, payload);
+      console.log({ data: response.data });
+      handleClose();
+    } catch (error) {
+      console.error(error);
+      showError(error);
+    }
   };
 
   return (
     <div className={classes.root}>
+      {snack.error && (
+        <Snackbar
+          open={snack.openError}
+          onClose={handleClose}
+          TransitionComponent={snack.Transition}
+          ContentProps={{
+            "aria-describedby": "message-id"
+          }}
+          message={
+            <span id="message-id" style={{ color: "red" }}>
+              {snack.error}
+            </span>
+          }
+        />
+      )}
       {book.map(book => (
         <Dialog
           fullWidth={true}

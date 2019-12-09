@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import User from "./User";
+import Book from "./Book";
 import mongodbErrorHandler from "mongoose-mongodb-errors";
 
 const { ObjectId } = mongoose.Schema.Types;
@@ -45,17 +46,22 @@ const bookSchema = new mongoose.Schema(
       trim: true,
       min: 0
     },
-    borrowers: [{ type: ObjectId, ref: "User" }]
+    totalQty: {
+      type: Number,
+      default: 1,
+      trim: true
+    }
   },
   { timestamps: true }
 );
 
-// bookSchema.plugin(mongodbErrorHandler);
 const populateBorrowers = function(next) {
   this.populate("borrowers", "_id name avatar department");
+
   next();
 };
 
 bookSchema.pre("findOne", populateBorrowers);
+bookSchema.plugin(mongodbErrorHandler);
 
 export default mongoose.models.Book || mongoose.model("Book", bookSchema);
