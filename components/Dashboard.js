@@ -83,7 +83,9 @@ export default function Dashboard({ collections }) {
     legal: []
   });
   const [loading, setLoading] = useState(false);
+  const [log, setLog] = useState([]);
   const latestBookUrl = `${baseUrl}/api/latestbooks`;
+  const logUrl = `${baseUrl}/api/log`;
 
   useEffect(() => {
     let abortController = new AbortController();
@@ -159,6 +161,20 @@ export default function Dashboard({ collections }) {
       abortController.abort();
     };
   }, [books]);
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    axios
+      .get(logUrl)
+      .then(res => {
+        setLog(res.data);
+      })
+      .catch(err => console.error(err));
+
+    return () => {
+      abortController.abort();
+    };
+  }, [logUrl]);
 
   return (
     <div>
@@ -261,10 +277,11 @@ export default function Dashboard({ collections }) {
               <Divider />
               <div style={{ margin: "20px 0" }}>
                 <Typography variant="subtitle2">
-                  Checked out: <span className={classes.spanIt}>18</span>
+                  Checked out:{" "}
+                  <span className={classes.spanIt}>{log.length}</span>
                 </Typography>
                 <Typography variant="subtitle2">
-                  Overdue: <span className={classes.spanIt}>6</span>
+                  Overdue: <span className={classes.spanIt}>0</span>
                 </Typography>
               </div>
             </Paper>
