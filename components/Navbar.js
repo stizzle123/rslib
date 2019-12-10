@@ -219,7 +219,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Navbar = ({ id, name, avatar, collections, notification }) => {
+const Navbar = ({ id, name, avatar, collections, notification, role }) => {
   const classes = useStyles();
   const router = useRouter();
   const URL = `${baseUrl}/api/books`;
@@ -235,6 +235,7 @@ const Navbar = ({ id, name, avatar, collections, notification }) => {
     auth: false
   });
   const [search, setSearch] = useState("");
+  const [notifications, setNotifications] = useState([]);
 
   const open = Boolean(anchorEl);
 
@@ -245,6 +246,14 @@ const Navbar = ({ id, name, avatar, collections, notification }) => {
       setState(prevState => ({ ...prevState, auth: false }));
     }
   }, [state.auth]);
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    setNotifications(notification);
+    return () => {
+      abortController.abort();
+    };
+  }, [notification]);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -292,8 +301,9 @@ const Navbar = ({ id, name, avatar, collections, notification }) => {
     const data = { id };
     try {
       const res = await axios.delete(`${baseUrl}/api/notification`, { data });
-      console.log(res.data);
-      router.reload();
+      setNotifications(prevState => prevState._id !== res.data._id);
+
+      // console.log(res.data);
     } catch (error) {
       console.error(error);
     }
@@ -344,7 +354,7 @@ const Navbar = ({ id, name, avatar, collections, notification }) => {
       </ListItem>
 
       <Divider light />
-      <SidebarNavList />
+      <SidebarNavList role={role} />
     </div>
   );
 
@@ -364,8 +374,8 @@ const Navbar = ({ id, name, avatar, collections, notification }) => {
       </Typography>
 
       <List>
-        {notification.length > 0 ? (
-          notification.map(notify => (
+        {notifications.length > 0 ? (
+          notifications.map(notify => (
             <div key={notify._id}>
               <ListItem>
                 <ListItemText primary={notify.message} />
@@ -531,7 +541,10 @@ const Navbar = ({ id, name, avatar, collections, notification }) => {
                     color="inherit"
                     onClick={toggleDrawer("right", true)}
                   >
-                    <Badge badgeContent={notification.length} color="secondary">
+                    <Badge
+                      badgeContent={notifications.length}
+                      color="secondary"
+                    >
                       <NotificationsIcon />
                     </Badge>
                   </IconButton>

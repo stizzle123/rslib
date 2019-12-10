@@ -93,7 +93,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function UsersCollection() {
+export default function UsersCollection({ users }) {
   const classes = useStyles();
   const theme = useTheme();
   const [page, setPage] = useState(0);
@@ -101,27 +101,31 @@ export default function UsersCollection() {
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
-  const [users, setUsers] = useState([]);
+  const [collection, setCollection] = useState([]);
   const URL = `${baseUrl}/api/users`;
 
   useEffect(() => {
     const abortController = new AbortController();
     setLoading(true);
 
-    axios
-      .get(URL)
-      .then(res => {
-        setUsers(res.data);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error(err.response.data);
-        setError(err.response.data);
-      });
+    setCollection(users);
+
+    setLoading(false);
+
+    // axios
+    //   .get(URL)
+    //   .then(res => {
+    //     setCollection(res.data);
+    //     setLoading(false);
+    //   })
+    //   .catch(err => {
+    //     console.error(err.response.data);
+    //     setError(err.response.data);
+    //   });
     return () => {
       abortController.abort();
     };
-  }, [URL]);
+  }, [users]);
 
   const updateSearch = e => {
     setSearch(e.target.value.substr(0, 20));
@@ -137,7 +141,7 @@ export default function UsersCollection() {
   };
 
   const filteredUser = () =>
-    users.filter(user => {
+    collection.filter(user => {
       if (search !== "") {
         return (
           user.name.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||

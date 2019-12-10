@@ -1,7 +1,15 @@
 import Container from "@material-ui/core/Container";
 import Navbar from "./Navbar";
 
-const Layout = ({ children, _id, name, avatar, collections, notification }) => {
+const Layout = ({
+  children,
+  _id,
+  name,
+  avatar,
+  collections,
+  notification,
+  role
+}) => {
   return (
     <>
       <Navbar
@@ -10,6 +18,7 @@ const Layout = ({ children, _id, name, avatar, collections, notification }) => {
         avatar={avatar}
         collections={collections}
         notification={notification}
+        role={role}
       />
       {children}
     </>

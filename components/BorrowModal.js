@@ -13,7 +13,14 @@ import {
   KeyboardDatePicker
 } from "@material-ui/pickers";
 import Grid from "@material-ui/core/Grid";
-import { Avatar, makeStyles, Divider } from "@material-ui/core";
+import {
+  Avatar,
+  makeStyles,
+  Divider,
+  IconButton,
+  CircularProgress
+} from "@material-ui/core";
+
 import Snackbar from "@material-ui/core/Snackbar";
 import Fade from "@material-ui/core/Fade";
 import { capitalize } from "../utils/capitalize";
@@ -55,7 +62,9 @@ export default function BorrowModal({ handleClose, open, book, name, userId }) {
     open: false,
     Transition: Fade,
     openError: false,
-    error: ""
+    error: "",
+    success: false,
+    message: ""
   });
 
   const showError = err => {
@@ -71,7 +80,16 @@ export default function BorrowModal({ handleClose, open, book, name, userId }) {
     setState({ ...state, [name]: event.target.checked });
   };
 
+  const showSuccess = msg => {
+    setSnack({ success: true, message: msg });
+  };
+
+  const handleCloseSuccess = () => {
+    setSnack({ success: false });
+  };
+
   const handleBorrow = async book => {
+    setLoading(true);
     try {
       const payload = {
         borrower: userId,
@@ -79,11 +97,13 @@ export default function BorrowModal({ handleClose, open, book, name, userId }) {
         returnDate: selectedDate
       };
       const response = await axios.post(`${baseUrl}/api/log`, payload);
-
+      setLoading(false);
       handleClose();
+      showSuccess("Book was borrowed successfully");
     } catch (error) {
       console.error(error);
       showError(error);
+      setLoading(false);
     }
   };
 
@@ -102,6 +122,22 @@ export default function BorrowModal({ handleClose, open, book, name, userId }) {
               {snack.error}
             </span>
           }
+        />
+      )}
+      {snack.success && (
+        <Snackbar
+          open={snack.success}
+          onClose={handleCloseSuccess}
+          TransitionComponent={snack.Transition}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right"
+          }}
+          ContentProps={{
+            "aria-describedby": "message-id"
+          }}
+          // autoHideDuration={6000}
+          message={<span id="message-id-2">{snack.message}</span>}
         />
       )}
       {book.map(book => (
@@ -174,9 +210,16 @@ export default function BorrowModal({ handleClose, open, book, name, userId }) {
                 onClick={() => handleBorrow(book)}
                 color="secondary"
                 style={{ marginRight: "30px" }}
-                disabled={!state.checked}
+                disabled={!state.checked || loading}
               >
-                Borrow
+                {loading ? (
+                  <span>
+                    Loading...
+                    <CircularProgress size={10} />
+                  </span>
+                ) : (
+                  <span>Borrow</span>
+                )}
               </Button>
             </Grid>
           </DialogActions>

@@ -1,11 +1,12 @@
 import Layout from "../components/Layout";
-import { Typography } from "@material-ui/core";
 import UsersCollection from "../components/UsersCollection";
 
-export default function users({ user, collections, notification }) {
+function users({ user, collections, notification, users }) {
   return (
     <Layout {...user} collections={collections} notification={notification}>
-      <UsersCollection />
+      <UsersCollection users={users} />
     </Layout>
   );
 }
+
+export default users;

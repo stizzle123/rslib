@@ -47,12 +47,18 @@ export class MyApp extends App {
           `${baseUrl}/api/notification`,
           payload
         );
+        const usersCollection = await axios.get(
+          `${baseUrl}/api/users`,
+          payload
+        );
+
         const user = response.data;
         const collections = collectionData.data;
         const notification = notificationData.data;
         pageProps.user = user;
         pageProps.collections = collections;
         pageProps.notification = notification;
+        pageProps.users = usersCollection.data;
         const isRoot = user.role === "root";
         const isAdmin = user.role === "admin";
         const isLoggedIn =

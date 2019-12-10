@@ -6,7 +6,11 @@ import {
   InputLabel,
   Input,
   Button,
-  IconButton
+  IconButton,
+  Grid,
+  Card,
+  CardMedia,
+  CardContent
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import LockIcon from "@material-ui/icons/Lock";
@@ -94,84 +98,185 @@ export default function Login() {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockIcon />
-        </Avatar>
-        <Typography variant="h5" component="h1">
-          Login
-        </Typography>
-        {snack.error && (
-          <Snackbar
-            open={snack.openError}
-            onClose={handleClose}
-            TransitionComponent={snack.Transition}
-            ContentProps={{
-              "aria-describedby": "message-id"
-            }}
-            message={
-              <span id="message-id" style={{ color: "red" }}>
-                {snack.error}
-              </span>
-            }
-          />
-        )}
-        <form onSubmit={handleSubmit} className={classes.form}>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="email">Email</InputLabel>
-            <Input
-              name="email"
-              type="email"
-              value={state.email}
-              onChange={handleChange}
-            />
-          </FormControl>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="password">Password</InputLabel>
-            <Input
-              name="password"
-              type={showPassword ? "text" : "password"}
-              value={state.password}
-              onChange={handleChange}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
+      <Card className={classes.flex}>
+        <CardMedia
+          image="/images/book-chapter-seven.jpg"
+          className={classes.cover}
+          alt="Book chapter"
+        />
+        <CardContent>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Assumenda,
+          eveniet nemo facere eaque cum et modi ipsam dolorem eum quisquam? Nam
+          maiores voluptates optio quas nobis nesciunt eaque velit provident.
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero corporis
+          magni suscipit dolor veritatis nisi facilis similique, mollitia
+          molestias, odio culpa consequatur voluptate natus porro recusandae cum
+          maxime aliquid sit.
+        </CardContent>
+      </Card>
+      {/* <Card className={classes.flex}>
+        <CardMedia
+          image="/images/book-chapter-seven.jpg"
+          className={classes.cover}
+          alt="Book chapter"
+        />
+        <CardContent className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockIcon />
+          </Avatar>
+          <Typography variant="h5" component="h1">
+            Login
+          </Typography>
+          {snack.error && (
+            <Snackbar
+              open={snack.openError}
+              onClose={handleClose}
+              TransitionComponent={snack.Transition}
+              ContentProps={{
+                "aria-describedby": "message-id"
+              }}
+              message={
+                <span id="message-id" style={{ color: "red" }}>
+                  {snack.error}
+                </span>
               }
             />
-          </FormControl>
-          <Button
-            disabled={loading || disabled}
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            {loading ? (
-              <span className={classes.flex}>
-                Loading... <CircularProgress size="1rem" />
-              </span>
-            ) : (
-              <span>Login</span>
-            )}
-          </Button>
-          <div className={classes.gridIt}>
-            <Link href="/signup">
-              <a>Don't have an account? Sign up</a>
-            </Link>
-            <Link href="/forgotpassword">
-              <a>Forgot password?</a>
-            </Link>
-          </div>
-        </form>
-      </Paper>
+          )}
+          <form onSubmit={handleSubmit} className={classes.form}>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="email">Email</InputLabel>
+              <Input
+                name="email"
+                type="email"
+                value={state.email}
+                onChange={handleChange}
+              />
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="password">Password</InputLabel>
+              <Input
+                name="password"
+                type={showPassword ? "text" : "password"}
+                value={state.password}
+                onChange={handleChange}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+            <Button
+              disabled={loading || disabled}
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              {loading ? (
+                <span className={classes.flex}>
+                  Loading... <CircularProgress size="1rem" />
+                </span>
+              ) : (
+                <span>Login</span>
+              )}
+            </Button>
+            <div className={classes.gridIt}>
+              <Link href="/signup">
+                <a>Don't have an account? Sign up</a>
+              </Link>
+              <Link href="/forgotpassword">
+                <a>Forgot password?</a>
+              </Link>
+            </div>
+          </form>
+        </CardContent>
+      </Card> */}
+      {/* <Paper className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockIcon />
+          </Avatar>
+          <Typography variant="h5" component="h1">
+            Login
+          </Typography>
+          {snack.error && (
+            <Snackbar
+              open={snack.openError}
+              onClose={handleClose}
+              TransitionComponent={snack.Transition}
+              ContentProps={{
+                "aria-describedby": "message-id"
+              }}
+              message={
+                <span id="message-id" style={{ color: "red" }}>
+                  {snack.error}
+                </span>
+              }
+            />
+          )}
+          <form onSubmit={handleSubmit} className={classes.form}>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="email">Email</InputLabel>
+              <Input
+                name="email"
+                type="email"
+                value={state.email}
+                onChange={handleChange}
+              />
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="password">Password</InputLabel>
+              <Input
+                name="password"
+                type={showPassword ? "text" : "password"}
+                value={state.password}
+                onChange={handleChange}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+            <Button
+              disabled={loading || disabled}
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              {loading ? (
+                <span className={classes.flex}>
+                  Loading... <CircularProgress size="1rem" />
+                </span>
+              ) : (
+                <span>Login</span>
+              )}
+            </Button>
+            <div className={classes.gridIt}>
+              <Link href="/signup">
+                <a>Don't have an account? Sign up</a>
+              </Link>
+              <Link href="/forgotpassword">
+                <a>Forgot password?</a>
+              </Link>
+            </div>
+          </form>
+        </Paper> */}
     </div>
   );
 }
@@ -179,9 +284,13 @@ export default function Login() {
 const useStyles = makeStyles(theme => ({
   root: {
     width: "auto",
-    display: "block",
-    marginLeft: theme.spacing(3),
-    marginRight: theme.spacing(3),
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    // marginLeft: theme.spacing(3),
+    // marginRight: theme.spacing(3),
+    // textAlign: "center",
+    // margin: "auto",
     [theme.breakpoints.up("md")]: {
       width: 400,
       marginLeft: "auto",
@@ -193,7 +302,8 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
+    width: "100%"
   },
   avatar: {
     margin: theme.spacing(2),
@@ -209,7 +319,8 @@ const useStyles = makeStyles(theme => ({
   flex: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    marginTop: 30
   },
   forgotPass: {
     float: "right",
@@ -218,7 +329,18 @@ const useStyles = makeStyles(theme => ({
   },
   gridIt: {
     display: "flex",
-    justifyContent: "space-around",
+    justifyContent: "space-around"
+  },
+  flex: {
+    display: "grid",
+    gridTemplateColumns: "repeat(2, 1fr)",
+    // width: "80vw",
+    margin: "auto",
+    // justifyContent: "center",
     marginTop: 20
+  },
+  cover: {
+    width: 1700,
+    height: 500
   }
 }));

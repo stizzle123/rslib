@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function SidebarNavList() {
+export default function SidebarNavList({ role }) {
   const router = useRouter();
   const classes = useStyles();
 
@@ -54,37 +54,45 @@ export default function SidebarNavList() {
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
           </ListItem>
-          <ListItem button onClick={() => router.push("/books/add")}>
-            <ListItemIcon>
-              <LibraryBooksIcon />
-            </ListItemIcon>
-            <ListItemText primary="Add Books" />
-          </ListItem>
+          {role === "admin" && (
+            <ListItem button onClick={() => router.push("/books/add")}>
+              <ListItemIcon>
+                <LibraryBooksIcon />
+              </ListItemIcon>
+              <ListItemText primary="Add Books" />
+            </ListItem>
+          )}
           <ListItem button onClick={() => router.push("/books")}>
             <ListItemIcon>
               <CollectionsIcon />
             </ListItemIcon>
             <ListItemText primary="Book Collections" />
           </ListItem>
-          <ListItem button onClick={() => router.push("/log")}>
-            <ListItemIcon>
-              <ArchiveIcon />
-            </ListItemIcon>
-            <ListItemText primary="Book Log" />
-          </ListItem>
-          <ListItem button onClick={() => router.push("/users")}>
-            <ListItemIcon>
-              <AccountBoxIcon />
-            </ListItemIcon>
-            <ListItemText primary="User Management" />
-          </ListItem>
+          {role === "admin" && (
+            <ListItem button onClick={() => router.push("/log")}>
+              <ListItemIcon>
+                <ArchiveIcon />
+              </ListItemIcon>
+              <ListItemText primary="Book Log" />
+            </ListItem>
+          )}
+          {role === "admin" && (
+            <ListItem button onClick={() => router.push("/users")}>
+              <ListItemIcon>
+                <AccountBoxIcon />
+              </ListItemIcon>
+              <ListItemText primary="User Management" />
+            </ListItem>
+          )}
           <Divider light />
-          <ListItem button>
-            <ListItemIcon>
-              <SettingsIcon />
-            </ListItemIcon>
-            <ListItemText primary="Permissions" />
-          </ListItem>
+          {role === "admin" && (
+            <ListItem button onClick={() => router.push("/permissions")}>
+              <ListItemIcon>
+                <SettingsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Permissions" />
+            </ListItem>
+          )}
         </List>
       </>
       <span className={classes.bottomPosition}>

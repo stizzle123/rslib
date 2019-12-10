@@ -7,7 +7,8 @@ import {
   List,
   ListItem,
   CircularProgress,
-  Button
+  Button,
+  Tooltip
 } from "@material-ui/core";
 import { makeStyles, useTheme } from "@material-ui/styles";
 import Avatar from "@material-ui/core/Avatar";
@@ -37,7 +38,7 @@ const useStyles = makeStyles(theme => ({
   grid: {
     display: "grid",
     gridTemplateColumns: "repeat(2, 1fr)",
-    alignItems: "start",
+    // alignItems: "start",
     justifyContent: "center",
     gridGap: "10px",
     [theme.breakpoints.down("sm")]: {
@@ -46,7 +47,7 @@ const useStyles = makeStyles(theme => ({
   },
   gridIt: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))",
+    gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))",
     gridGap: 6,
     // margin: "20px 0",
     "& > *": {
@@ -201,21 +202,15 @@ export default function Dashboard({ collections }) {
                     color="secondary"
                     style={{ marginLeft: "5px" }}
                   />
-                  Total Books as at {moment(Date.now()).format("MMMM Do, YYYY")}{" "}
+                  <strong>
+                    Total Books as at{" "}
+                    {moment(Date.now()).format("MMMM Do, YYYY")}{" "}
+                  </strong>
                 </Typography>
                 <>
                   <Typography variant="h1" component="h1">
                     {books.length}
                   </Typography>
-                  <sup
-                    style={{
-                      marginTop: "50px",
-                      marginLeft: "-3px",
-                      fontWeight: 700
-                    }}
-                  >
-                    books
-                  </sup>
                 </>
               </div>
               <Divider />
@@ -225,7 +220,7 @@ export default function Dashboard({ collections }) {
                   gutterBottom
                   style={{ marginTop: 10 }}
                 >
-                  Book Count by Genre
+                  <strong> Book Count by Genre</strong>
                 </Typography>
                 <div className={classes.gridIt}>
                   <Chip
@@ -275,30 +270,31 @@ export default function Dashboard({ collections }) {
                 </div>
               </div>
               <Divider />
-              <div style={{ margin: "20px 0" }}>
+              <div style={{ margin: "20px 0", fontStyle: "bold" }}>
                 <Typography variant="subtitle2">
-                  Checked out:{" "}
-                  <span className={classes.spanIt}>{log.length}</span>
+                  <strong>
+                    Checked out:{" "}
+                    <span className={classes.spanIt}>{log.length}</span>
+                  </strong>
                 </Typography>
                 <Typography variant="subtitle2">
-                  Overdue: <span className={classes.spanIt}>0</span>
+                  <strong>
+                    Overdue: <span className={classes.spanIt}>0</span>
+                  </strong>
                 </Typography>
               </div>
             </Paper>
             <Paper className={classes.paper}>
-              <Typography variant="subtitle1">New Arrivals</Typography>
+              <Typography variant="subtitle1">
+                <strong>New Arrivals</strong>
+              </Typography>
               <List>
                 {loading ? (
                   <CircularProgress />
                 ) : (
                   latestbooks.map((book, i) => (
                     <ListItem key={book._id}>
-                      {i + 1}{" "}
-                      <Avatar
-                        src={book.imageUrl}
-                        variant="square"
-                        style={{ margin: "0 10px" }}
-                      />{" "}
+                      <span style={{ marginRight: 5 }}>{i + 1}</span>{" "}
                       <Link href={`/book/info?id=${book._id}`}>
                         <a style={{ color: theme.palette.secondary.light }}>
                           {book.title}

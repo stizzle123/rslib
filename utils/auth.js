@@ -4,7 +4,8 @@ import Router from "next/router";
 var inADay = 1;
 export function handleLogin(token) {
   cookie.set("token", token, { expires: inADay });
-  Router.push("/account");
+  // Router.push("/account");
+  Router.push("/dashboard");
 }
 
 export function handleSignup() {
