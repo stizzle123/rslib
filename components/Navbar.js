@@ -53,6 +53,7 @@ import axios from "axios";
 import baseUrl from "../utils/baseUrl";
 import { capitalize } from "../utils/capitalize";
 import { useTheme } from "@material-ui/styles";
+import moment from "moment";
 
 Router.onRouteChangeStart = () => NProgress.start();
 Router.onRouteChangeComplete = () => NProgress.done();
@@ -375,12 +376,16 @@ const Navbar = ({ id, name, avatar, collections, notification, role }) => {
         </Tooltip>
       </Typography>
 
-      <List>
+      <List style={{ overflowX: "hidden" }}>
         {notifications.length > 0 ? (
           notifications.map(notify => (
             <div key={notify._id}>
               <ListItem dense={false}>
-                <ListItemText primary={notify.message} />
+                <ListItemText
+                  primary={notify.message}
+                  secondary={moment(notify.createdAt).fromNow()}
+                  style={{ fontSize: "0.6rem" }}
+                />
                 <IconButton
                   edge="end"
                   onClick={() => handleDeleteNotification(notify._id)}
@@ -397,10 +402,10 @@ const Navbar = ({ id, name, avatar, collections, notification, role }) => {
               flexDirection: "column"
             }}
           >
-            <ListItemText primary="You have 0 Notifications" />
+            <ListItemText primary="You have 0 Notification" />
             <div>
               <Avatar
-                src="/images/waiting.svg"
+                src="/images/mello.svg"
                 style={{ width: 400, height: "auto" }}
               />
             </div>
@@ -418,8 +423,12 @@ const Navbar = ({ id, name, avatar, collections, notification, role }) => {
       {search && (
         <Paper elevation={10} className={classes.searchContainer}>
           <Avatar
-            style={{ margin: "auto" }}
-            src="/images/rslibrary-logo.png"
+            style={{
+              margin: "auto",
+              boxShadow: "0 0 10px rgba(225,225,225,0.9)",
+              border: "3px solid #fefefe"
+            }}
+            src="/images/rslibrary-logo.jpg"
             variant="circle"
           />
           <Grid container justify="space-between" alignItems="center">
@@ -484,12 +493,14 @@ const Navbar = ({ id, name, avatar, collections, notification, role }) => {
               <a className={classes.titleNav}>
                 RS Library
                 <Avatar
-                  src="/images/rslibrary-logo.png"
+                  src="/images/rslibrary-logo.jpg"
                   variant="circle"
                   style={{
                     width: "40px",
                     height: "40px",
-                    marginLeft: 10
+                    marginLeft: 10,
+                    boxShadow: "0 0 4px rgba(225,225,225,0.9)",
+                    border: "3px solid #fefefe"
                   }}
                   onClick={() => router.replace("/")}
                 />
@@ -497,9 +508,14 @@ const Navbar = ({ id, name, avatar, collections, notification, role }) => {
             </Link>
           </div>
           <Avatar
-            src="/images/rslibrary-logo.png"
+            src="/images/rslibrary-logo.jpg"
             variant="circle"
-            style={{ width: "40px", height: "40px", marginRight: 15 }}
+            style={{
+              width: "40px",
+              height: "40px",
+              marginRight: 15,
+              boxShadow: "0 0 4px rgba(225,225,225,0.9)"
+            }}
             onClick={() => router.replace("/")}
             className={classes.sectionMobile}
           />

@@ -275,7 +275,7 @@ export default function AddBook({ _id }) {
               </InputLabel>
               <Select
                 labelId="demo-simple-select-outlined-label"
-                value="autobiography"
+                value={state.genre}
                 onChange={handleChange}
                 inputProps={{
                   name: "genre",

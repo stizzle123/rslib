@@ -29,6 +29,7 @@ const INITIAL_STATE = {
   avatar: "",
   name: "",
   about: "",
+  email: "",
   openError: false
 };
 
@@ -51,6 +52,7 @@ export default function Profile({ _id }) {
           name: res.data.name,
           about: res.data.about,
           avatar: res.data.avatar,
+          email: res.data.email,
           openError: false
         }));
       })
@@ -106,8 +108,8 @@ export default function Profile({ _id }) {
       setLoading(true);
       const url = `${baseUrl}/api/user`;
 
-      const { name, about } = state;
-      const payload = { name, about, _id };
+      const { name, about, email } = state;
+      const payload = { name, about, _id, email };
       const response = await axios.patch(url, payload);
 
       setLoading(false);
@@ -176,6 +178,15 @@ export default function Profile({ _id }) {
                 type="text"
                 name="name"
                 value={state.name}
+                onChange={handleChange}
+              />
+            </FormControl>
+            <FormControl margin="normal" fullWidth required>
+              <InputLabel htmlFor="name">Email</InputLabel>
+              <Input
+                type="text"
+                name="email"
+                value={state.email}
                 onChange={handleChange}
               />
             </FormControl>

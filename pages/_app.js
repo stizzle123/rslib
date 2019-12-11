@@ -64,12 +64,16 @@ export class MyApp extends App {
         const isLoggedIn =
           (user && ctx.pathname === "/login") || ctx.pathname === "/signup";
         const isNotPermitted =
-          !(isRoot || isAdmin) && ctx.pathname === "/create";
+          !(isRoot || isAdmin) &&
+          ctx.pathname === "/books/add" &&
+          ctx.pathname === "/log" &&
+          ctx.pathname === "/permissions" &&
+          ctx.pathname === "/users";
         if (isNotPermitted) {
-          redirectUser(ctx, "/");
+          redirectUser(ctx, "/dashboard");
         }
         if (isLoggedIn) {
-          redirectUser(ctx, "/");
+          redirectUser(ctx, "/dashboard");
         }
       } catch (error) {
         console.error("Error getting current user ", error);

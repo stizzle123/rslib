@@ -97,9 +97,15 @@ export default function SidebarNavList({ role }) {
       </>
       <span className={classes.bottomPosition}>
         <Avatar
-          src="/images/rslibrary-logo.png"
+          src="/images/rslibrary-logo.jpg"
           variant="circle"
-          style={{ margin: "auto", width: "60px", height: "60px" }}
+          style={{
+            margin: "auto",
+            width: "60px",
+            height: "60px",
+            boxShadow: "0 0 4px rgba(225,225,225,0.9)",
+            border: "3px solid #fefefe"
+          }}
         />
         <span className={classes.footerColor}>
           Copyright &copy; RS LIBRARY {new Date().getFullYear()}

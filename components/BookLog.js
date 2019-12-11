@@ -15,9 +15,11 @@ import {
   Typography,
   CircularProgress,
   IconButton,
-  useTheme
+  useTheme,
+  Button
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
+import CheckIcon from "@material-ui/icons/Check";
 import axios from "axios";
 import baseUrl from "../utils/baseUrl";
 import { capitalize } from "../utils/capitalize";
@@ -241,6 +243,16 @@ export default function BookLog() {
                         {log.book.totalQty}
                       </StyledTableCell>
                       <StyledTableCell align="right">
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          disabled={log.status === "in-use"}
+                          size="small"
+                          onClick={() => console.log(user._id)}
+                        >
+                          Closeout <CheckIcon />
+                        </Button>
+
                         <IconButton
                           color="secondary"
                           onClick={() => console.log(user._id)}
