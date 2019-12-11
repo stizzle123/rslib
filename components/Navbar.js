@@ -26,7 +26,8 @@ import {
   CardContent,
   CardMedia,
   CardHeader,
-  Grid
+  Grid,
+  ListItemAvatar
 } from "@material-ui/core";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
@@ -36,6 +37,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import Checkbox from "@material-ui/core/Checkbox";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
+import CheckIcon from "@material-ui/icons/Check";
 import ClearIcon from "@material-ui/icons/Clear";
 import Fade from "@material-ui/core/Fade";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -377,7 +379,7 @@ const Navbar = ({ id, name, avatar, collections, notification, role }) => {
         {notifications.length > 0 ? (
           notifications.map(notify => (
             <div key={notify._id}>
-              <ListItem>
+              <ListItem dense={false}>
                 <ListItemText primary={notify.message} />
                 <IconButton
                   edge="end"
@@ -389,8 +391,19 @@ const Navbar = ({ id, name, avatar, collections, notification, role }) => {
             </div>
           ))
         ) : (
-          <ListItem>
+          <ListItem
+            style={{
+              display: "flex",
+              flexDirection: "column"
+            }}
+          >
             <ListItemText primary="You have 0 Notifications" />
+            <div>
+              <Avatar
+                src="/images/waiting.svg"
+                style={{ width: 400, height: "auto" }}
+              />
+            </div>
           </ListItem>
         )}
       </List>

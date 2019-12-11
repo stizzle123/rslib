@@ -28,7 +28,10 @@ const bookLogSchema = new mongoose.Schema(
 
 const autoPopulateUserAndBook = function(next) {
   this.populate("borrower", "_id name avatar department email");
-  this.populate("book", "_id title author imageUrl genre authorName");
+  this.populate(
+    "book",
+    "_id title author imageUrl genre authorName quantity totalQty"
+  );
   next();
 };
 

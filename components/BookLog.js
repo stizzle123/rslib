@@ -191,6 +191,10 @@ export default function BookLog() {
                     <StyledTableCell align="right">Status</StyledTableCell>
                     <StyledTableCell align="right">Borrower</StyledTableCell>
                     <StyledTableCell align="right">Return Date</StyledTableCell>
+                    <StyledTableCell align="right">
+                      Available Qty
+                    </StyledTableCell>
+                    <StyledTableCell align="right">Total Qty</StyledTableCell>
                     <StyledTableCell align="right">Actions</StyledTableCell>
                   </TableRow>
                 </TableHead>
@@ -226,6 +230,15 @@ export default function BookLog() {
                       </StyledTableCell>
                       <StyledTableCell align="right">
                         {moment(log.returnDate).format("Do MMMM, YYYY")}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        {log.book.quantity}
+                      </StyledTableCell>
+                      <StyledTableCell
+                        align="right"
+                        style={{ color: theme.palette.secondary }}
+                      >
+                        {log.book.totalQty}
                       </StyledTableCell>
                       <StyledTableCell align="right">
                         <IconButton

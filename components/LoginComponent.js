@@ -98,204 +98,112 @@ export default function Login() {
   const classes = useStyles();
   return (
     <div className={classes.root}>
+      <Typography variant="h3" component="h1">
+        LOGIN
+      </Typography>
       <Card className={classes.flex}>
         <CardMedia
-          image="/images/book-chapter-seven.jpg"
+          image="/images/teacup.jpg"
           className={classes.cover}
           alt="Book chapter"
         />
-        <CardContent>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Assumenda,
-          eveniet nemo facere eaque cum et modi ipsam dolorem eum quisquam? Nam
-          maiores voluptates optio quas nobis nesciunt eaque velit provident.
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero corporis
-          magni suscipit dolor veritatis nisi facilis similique, mollitia
-          molestias, odio culpa consequatur voluptate natus porro recusandae cum
-          maxime aliquid sit.
+        <CardContent className={classes.content}>
+          <Avatar className={classes.avatar}>
+            <LockIcon />
+          </Avatar>
+          <Typography variant="h5" component="h1">
+            Login
+          </Typography>
+          {snack.error && (
+            <Snackbar
+              open={snack.openError}
+              onClose={handleClose}
+              TransitionComponent={snack.Transition}
+              ContentProps={{
+                "aria-describedby": "message-id"
+              }}
+              message={
+                <span id="message-id" style={{ color: "red" }}>
+                  {snack.error}
+                </span>
+              }
+            />
+          )}
+          <form onSubmit={handleSubmit} className={classes.form}>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="email">Email</InputLabel>
+              <Input
+                name="email"
+                type="email"
+                value={state.email}
+                onChange={handleChange}
+              />
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="password">Password</InputLabel>
+              <Input
+                name="password"
+                type={showPassword ? "text" : "password"}
+                value={state.password}
+                onChange={handleChange}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+            <Button
+              disabled={loading || disabled}
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              {loading ? (
+                <span className={classes.flexBtn}>
+                  Loading... <CircularProgress size="1rem" />
+                </span>
+              ) : (
+                <span>Login</span>
+              )}
+            </Button>
+            <div className={classes.gridIt}>
+              <Link href="/signup">
+                <a>Don't have an account? Sign up</a>
+              </Link>
+              <Link href="/forgotpassword">
+                <a>Forgot password?</a>
+              </Link>
+            </div>
+          </form>
         </CardContent>
       </Card>
-      {/* <Card className={classes.flex}>
-        <CardMedia
-          image="/images/book-chapter-seven.jpg"
-          className={classes.cover}
-          alt="Book chapter"
-        />
-        <CardContent className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockIcon />
-          </Avatar>
-          <Typography variant="h5" component="h1">
-            Login
-          </Typography>
-          {snack.error && (
-            <Snackbar
-              open={snack.openError}
-              onClose={handleClose}
-              TransitionComponent={snack.Transition}
-              ContentProps={{
-                "aria-describedby": "message-id"
-              }}
-              message={
-                <span id="message-id" style={{ color: "red" }}>
-                  {snack.error}
-                </span>
-              }
-            />
-          )}
-          <form onSubmit={handleSubmit} className={classes.form}>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="email">Email</InputLabel>
-              <Input
-                name="email"
-                type="email"
-                value={state.email}
-                onChange={handleChange}
-              />
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="password">Password</InputLabel>
-              <Input
-                name="password"
-                type={showPassword ? "text" : "password"}
-                value={state.password}
-                onChange={handleChange}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                    >
-                      {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-            <Button
-              disabled={loading || disabled}
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              {loading ? (
-                <span className={classes.flex}>
-                  Loading... <CircularProgress size="1rem" />
-                </span>
-              ) : (
-                <span>Login</span>
-              )}
-            </Button>
-            <div className={classes.gridIt}>
-              <Link href="/signup">
-                <a>Don't have an account? Sign up</a>
-              </Link>
-              <Link href="/forgotpassword">
-                <a>Forgot password?</a>
-              </Link>
-            </div>
-          </form>
-        </CardContent>
-      </Card> */}
-      {/* <Paper className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockIcon />
-          </Avatar>
-          <Typography variant="h5" component="h1">
-            Login
-          </Typography>
-          {snack.error && (
-            <Snackbar
-              open={snack.openError}
-              onClose={handleClose}
-              TransitionComponent={snack.Transition}
-              ContentProps={{
-                "aria-describedby": "message-id"
-              }}
-              message={
-                <span id="message-id" style={{ color: "red" }}>
-                  {snack.error}
-                </span>
-              }
-            />
-          )}
-          <form onSubmit={handleSubmit} className={classes.form}>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="email">Email</InputLabel>
-              <Input
-                name="email"
-                type="email"
-                value={state.email}
-                onChange={handleChange}
-              />
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="password">Password</InputLabel>
-              <Input
-                name="password"
-                type={showPassword ? "text" : "password"}
-                value={state.password}
-                onChange={handleChange}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                    >
-                      {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-            <Button
-              disabled={loading || disabled}
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              {loading ? (
-                <span className={classes.flex}>
-                  Loading... <CircularProgress size="1rem" />
-                </span>
-              ) : (
-                <span>Login</span>
-              )}
-            </Button>
-            <div className={classes.gridIt}>
-              <Link href="/signup">
-                <a>Don't have an account? Sign up</a>
-              </Link>
-              <Link href="/forgotpassword">
-                <a>Forgot password?</a>
-              </Link>
-            </div>
-          </form>
-        </Paper> */}
     </div>
   );
 }
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: "auto",
+    padding: theme.spacing(8),
+    textAlign: "center",
+    backgroundImage:
+      "linear-gradient(45deg, rgba(14, 14, 14,0.03) 0%, rgba(14, 14, 14,0.03) 38%,rgba(250, 250, 250,0.03) 38%, rgba(250, 250, 250,0.03) 45%,rgba(113, 113, 113,0.03) 45%, rgba(113, 113, 113,0.03) 100%),linear-gradient(135deg, rgba(148, 148, 148,0.03) 0%, rgba(148, 148, 148,0.03) 36%,rgba(219, 219, 219,0.03) 36%, rgba(219, 219, 219,0.03) 63%,rgba(62, 62, 62,0.03) 63%, rgba(62, 62, 62,0.03) 100%),linear-gradient(90deg, rgb(255,255,255),rgb(255,255,255))"
+  },
+
+  content: {
     display: "flex",
-    justifyContent: "center",
+    flexDirection: "column",
     alignItems: "center",
-    // marginLeft: theme.spacing(3),
-    // marginRight: theme.spacing(3),
-    // textAlign: "center",
-    // margin: "auto",
-    [theme.breakpoints.up("md")]: {
-      width: 400,
-      marginLeft: "auto",
-      marginRight: "auto"
-    }
+    padding: theme.spacing(6),
+    width: "100%"
   },
   paper: {
     marginTop: theme.spacing(8),
@@ -316,12 +224,7 @@ const useStyles = makeStyles(theme => ({
   submit: {
     marginTop: theme.spacing(2)
   },
-  flex: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 30
-  },
+
   forgotPass: {
     float: "right",
     display: "inline-block",
@@ -332,15 +235,25 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "space-around"
   },
   flex: {
-    display: "grid",
-    gridTemplateColumns: "repeat(2, 1fr)",
-    // width: "80vw",
-    margin: "auto",
-    // justifyContent: "center",
-    marginTop: 20
+    display: "flex",
+    marginTop: "30px",
+    marginLeft: "auto",
+    marginRight: "auto",
+    // height: "100%",
+    [theme.breakpoints.down("md")]: {
+      flexDirection: "column"
+    }
   },
   cover: {
-    width: 1700,
-    height: 500
+    width: "100%",
+    objectFit: "contain",
+    objectPosition: "center"
+
+    // height: 300
+  },
+  flexBtn: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
   }
 }));

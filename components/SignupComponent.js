@@ -8,7 +8,10 @@ import {
   Button,
   IconButton,
   Select,
-  MenuItem
+  MenuItem,
+  Card,
+  CardContent,
+  CardMedia
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import PersonIcon from "@material-ui/icons/Person";
@@ -97,124 +100,129 @@ export default function Signup() {
 
   return (
     <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <PersonIcon />
-        </Avatar>
-        <Typography variant="h5" component="h1">
-          Sign Up
-        </Typography>
+      <Typography variant="h3" component="h1">
+        SIGN UP
+      </Typography>
+      <Card className={classes.flex}>
+        <CardMedia
+          image="/images/library.jpg"
+          alt="Tea Cup"
+          className={classes.cover}
+        />
+        <CardContent className={classes.content}>
+          <Avatar className={classes.avatar}>
+            <PersonIcon />
+          </Avatar>
+          <Typography variant="h5" component="h1">
+            Sign Up
+          </Typography>
 
-        <form onSubmit={handleSubmit} className={classes.form}>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="name">Name</InputLabel>
-            <Input
-              name="name"
-              type="text"
-              value={state.name}
-              onChange={handleChange}
-            />
-          </FormControl>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="email">Email</InputLabel>
-            <Input
-              name="email"
-              type="email"
-              value={state.email}
-              onChange={handleChange}
-            />
-          </FormControl>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="department">Department</InputLabel>
-            <Select
-              value={state.department}
-              onChange={handleChange}
-              inputProps={{
-                name: "department",
-                id: "department"
-              }}
+          <form onSubmit={handleSubmit} className={classes.form}>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="name">Name</InputLabel>
+              <Input
+                name="name"
+                type="text"
+                value={state.name}
+                onChange={handleChange}
+              />
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="email">Email</InputLabel>
+              <Input
+                name="email"
+                type="email"
+                value={state.email}
+                onChange={handleChange}
+              />
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="department">Department</InputLabel>
+              <Select
+                value={state.department}
+                onChange={handleChange}
+                inputProps={{
+                  name: "department",
+                  id: "department"
+                }}
+              >
+                {departments.map((dept, i) => (
+                  <MenuItem key={i} value={dept.name}>
+                    {dept.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="password">Password</InputLabel>
+              <Input
+                name="password"
+                type={state.showPassword ? "text" : "password"}
+                value={state.password}
+                onChange={handleChange}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {state.showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              disabled={state.isLoading || disabled}
             >
-              {departments.map((dept, i) => (
-                <MenuItem key={i} value={dept.name}>
-                  {dept.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="password">Password</InputLabel>
-            <Input
-              name="password"
-              type={state.showPassword ? "text" : "password"}
-              value={state.password}
-              onChange={handleChange}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {state.showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
+              {state.isLoading ? (
+                <span className={classes.flexBtn}>
+                  Signing up... <CircularProgress size="1rem" />
+                </span>
+              ) : (
+                <span>Sign Up</span>
+              )}
+            </Button>
+            <Link href="/login">
+              <a className={classes.loginLink}>
+                Already have an account? Try Login in
+              </a>
+            </Link>
+          </form>
+
+          {state.error && (
+            <Snackbar
+              open={state.openError}
+              onClose={handleClose}
+              TransitionComponent={state.Transition}
+              ContentProps={{
+                "aria-describedby": "message-id"
+              }}
+              message={
+                <span id="message-id" style={{ color: "red" }}>
+                  {state.error}
+                </span>
               }
             />
-          </FormControl>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            disabled={state.isLoading || disabled}
-          >
-            {state.isLoading ? (
-              <span>
-                Signing up... <CircularProgress size="1rem" />
-              </span>
-            ) : (
-              <span>Sign Up</span>
-            )}
-          </Button>
-          <Link href="/login">
-            <a className={classes.loginLink}>
-              Already have an account? Try Login in
-            </a>
-          </Link>
-        </form>
-
-        {state.error && (
-          <Snackbar
-            open={state.openError}
-            onClose={handleClose}
-            TransitionComponent={state.Transition}
-            ContentProps={{
-              "aria-describedby": "message-id"
-            }}
-            message={
-              <span id="message-id" style={{ color: "red" }}>
-                {state.error}
-              </span>
-            }
-          />
-        )}
-      </Paper>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: "auto",
-    display: "block",
-    marginLeft: theme.spacing(3),
-    marginRight: theme.spacing(3),
-    [theme.breakpoints.up("md")]: {
-      width: 400,
-      marginLeft: "auto",
-      marginRight: "auto"
-    }
+    padding: theme.spacing(8),
+    textAlign: "center",
+    backgroundImage:
+      "linear-gradient(33deg, transparent 0%, transparent 8%,rgba(9, 9, 9,0.02) 8%, rgba(9, 9, 9,0.02) 59%,transparent 59%, transparent 100%),linear-gradient(234deg, transparent 0%, transparent 32%,rgba(225, 225, 225,0.02) 32%, rgba(225, 225, 225,0.02) 99%,transparent 99%, transparent 100%),linear-gradient(312deg, transparent 0%, transparent 24%,rgba(93, 93, 93,0.02) 24%, rgba(93, 93, 93,0.02) 58%,transparent 58%, transparent 100%),linear-gradient(90deg, rgb(255,255,255),rgb(255,255,255))"
   },
   paper: {
     marginTop: theme.spacing(8),
@@ -237,5 +245,34 @@ const useStyles = makeStyles(theme => ({
   loginLink: {
     marginTop: 10,
     display: "block"
+  },
+  flex: {
+    display: "flex",
+    marginTop: "30px",
+    marginLeft: "auto",
+    marginRight: "auto",
+    // height: "100%",
+    [theme.breakpoints.down("md")]: {
+      flexDirection: "column"
+    }
+  },
+  cover: {
+    width: "100%",
+    objectFit: "contain",
+    objectPosition: "center"
+
+    // height: 300
+  },
+  content: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: theme.spacing(6),
+    width: "100%"
+  },
+  flexBtn: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
   }
 }));
