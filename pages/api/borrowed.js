@@ -2,7 +2,7 @@ import BookLog from "../../models/BookLog";
 import jwt from "jsonwebtoken";
 import connectDb from "../../utils/connectDb";
 
-connectDb();
+// connectDb();
 
 export default async (req, res) => {
   switch (req.method) {

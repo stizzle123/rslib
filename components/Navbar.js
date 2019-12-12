@@ -304,7 +304,9 @@ const Navbar = ({ id, name, avatar, collections, notification, role }) => {
     const data = { id };
     try {
       const res = await axios.delete(`${baseUrl}/api/notification`, { data });
-      setNotifications(prevState => prevState._id !== res.data._id);
+      setNotifications(prevState =>
+        prevState.filter(notify => notify._id !== res.data._id)
+      );
 
       // console.log(res.data);
     } catch (error) {
@@ -584,7 +586,10 @@ const Navbar = ({ id, name, avatar, collections, notification, role }) => {
                   color="inherit"
                   onClick={() => router.push(`/bookcollections`)}
                 >
-                  <Badge badgeContent={collections.length} color="secondary">
+                  <Badge
+                    badgeContent={collections.books.length}
+                    color="secondary"
+                  >
                     <Icon className="fas fa-shopping-bag" />
                   </Badge>
                 </IconButton>

@@ -6,7 +6,7 @@ import Collection from "../../models/Collection";
 import connectDb from "../../utils/connectDb";
 const { ObjectId } = mongoose.Types;
 
-connectDb();
+// connectDb();
 
 export default async (req, res) => {
   switch (req.method) {

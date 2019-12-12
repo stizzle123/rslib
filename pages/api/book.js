@@ -1,7 +1,7 @@
 import Book from "../../models/Book";
 import connectDb from "../../utils/connectDb";
 
-connectDb();
+// connectDb();
 
 export default async (req, res) => {
   switch (req.method) {
@@ -37,7 +37,7 @@ const handleCreateBook = async (req, res) => {
 };
 
 const handleGetBook = async (req, res) => {
-  const id = req.body.id;
+  const { id } = req.query;
   try {
     const book = await Book.findById({ _id: id });
     res.status(200).json(book);

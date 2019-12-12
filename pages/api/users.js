@@ -2,7 +2,7 @@ import User from "../../models/User";
 import connectDb from "../../utils/connectDb";
 import jwt from "jsonwebtoken";
 
-connectDb();
+// connectDb();
 
 export default async (req, res) => {
   if (!("authorization" in req.headers)) {
