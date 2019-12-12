@@ -108,46 +108,15 @@ export default function Dashboard({ collections }) {
 
   useEffect(() => {
     let abortController = new AbortController();
-    let business = books.filter(book => {
-      if (book.genre === "business") {
-        return book;
-      }
-    });
-    let selfhelp = books.filter(book => {
-      if (book.genre === "selfhelp") {
-        return book;
-      }
-    });
-    let autobiography = books.filter(book => {
-      if (book.genre === "autobiography") {
-        return book;
-      }
-    });
-    let biography = books.filter(book => {
-      if (book.genre === "biography") {
-        return book;
-      }
-    });
-    let science = books.filter(book => {
-      if (book.genre === "science") {
-        return book;
-      }
-    });
-    let history = books.filter(book => {
-      if (book.genre === "history") {
-        return book;
-      }
-    });
-    let philosophy = books.filter(book => {
-      if (book.genre === "philosophy") {
-        return book;
-      }
-    });
-    let legal = books.filter(book => {
-      if (book.genre === "legal") {
-        return book;
-      }
-    });
+
+    let business = getGenre("business");
+    let selfhelp = getGenre("selfhelp");
+    let history = getGenre("history");
+    let autobiography = getGenre("autobiography");
+    let biography = getGenre("biography");
+    let science = getGenre("science");
+    let philosophy = getGenre("philosophy");
+    let legal = getGenre("legal");
     setCount(prevState => ({
       business,
       selfhelp,
@@ -162,6 +131,14 @@ export default function Dashboard({ collections }) {
       abortController.abort();
     };
   }, [books]);
+
+  const getGenre = key => {
+    return books.filter(book => {
+      if (book.genre === key) {
+        return book;
+      }
+    });
+  };
 
   useEffect(() => {
     const abortController = new AbortController();

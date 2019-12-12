@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import User from "../../models/User";
 
-// connectDb();
+connectDb();
 
 export default async (req, res) => {
   const { email, password } = req.body;

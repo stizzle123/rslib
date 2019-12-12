@@ -501,7 +501,6 @@ const Navbar = ({ id, name, avatar, collections, notification, role }) => {
                     width: "40px",
                     height: "40px",
                     marginLeft: 10,
-                    boxShadow: "0 0 4px rgba(225,225,225,0.9)",
                     border: "3px solid #fefefe"
                   }}
                   onClick={() => router.replace("/")}
@@ -546,16 +545,22 @@ const Navbar = ({ id, name, avatar, collections, notification, role }) => {
             {!state.auth && (
               <>
                 <Button
-                  color={isActive("/signup") ? "secondary" : "inherit"}
+                  color="inherit"
                   onClick={() => router.push("/signup")}
-                  style={{ fontWeight: "700" }}
+                  style={{
+                    fontWeight: "700",
+                    background: isActive("/signup") ? "#283593" : "none"
+                  }}
                 >
                   Signup
                 </Button>
                 <Button
-                  color={isActive("/login") ? "secondary" : "inherit"}
+                  color="inherit"
                   onClick={() => router.push("/login")}
-                  style={{ fontWeight: "700" }}
+                  style={{
+                    fontWeight: "700",
+                    background: isActive("/login") ? "#283593" : "none"
+                  }}
                 >
                   Login
                 </Button>

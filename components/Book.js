@@ -6,12 +6,21 @@ import {
   CardMedia,
   CardContent,
   Button,
-  CircularProgress
+  CircularProgress,
+  Divider,
+  Box,
+  CardActions,
+  Avatar,
+  CardHeader,
+  Container
 } from "@material-ui/core";
 import ScrollAnimation from "react-animate-on-scroll";
+import Rating from "@material-ui/lab/Rating";
 import { useRouter } from "next/router";
 import baseUrl from "../utils/baseUrl";
 import axios from "axios";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,14 +40,14 @@ const useStyles = makeStyles(theme => ({
     margin: "auto",
     // height: "100%",
     [theme.breakpoints.down("md")]: {
-      flexDirection: "column",
-      textAlign: "center"
+      flexDirection: "column"
     }
   },
   media: {
     width: 300,
-    // height: 300,
+    height: 300,
     backgroundSize: "contain",
+    backgroundPosition: "center",
     // paddingTop: "56.25%" // 16:9,
     [theme.breakpoints.down("md")]: {
       width: "100%"
@@ -49,6 +58,11 @@ const useStyles = makeStyles(theme => ({
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)"
+  },
+  cardReview: {
+    margin: "auto",
+    width: "auto",
+    marginBottom: 30
   }
 }));
 
@@ -75,39 +89,162 @@ export default function Book() {
 
   return (
     <div className={classes.root}>
+      <Typography variant="h3" align="center" gutterBottom>
+        Book Info
+      </Typography>
       {loading ? (
         <div className={classes.centered}>
           <CircularProgress color="secondary" />
         </div>
       ) : (
-        <Card className={classes.card}>
-          {detail.imageUrl && (
-            <CardMedia
-              className={classes.media}
-              image={detail.imageUrl}
-              title={detail.title}
-            />
-          )}
-          <CardContent>
-            <ScrollAnimation animateIn="fadeInUp" delay={300}>
-              <Typography variant="h3" component="h1" gutterBottom>
-                Title: {detail.title}
-              </Typography>
-              <Typography variant="h6" gutterBottom>
-                Author: {detail.authorName}
-              </Typography>
-              <Typography variant="overline" gutterBottom>
-                Summary:{" "}
-                {detail.summary ? detail.summary : "No Summary for this book"}
-              </Typography>
-            </ScrollAnimation>
-            <ScrollAnimation animateIn="fadeInUp" delay={500}>
-              <Button variant="contained" color="secondary">
-                Borrow this Book
-              </Button>
-            </ScrollAnimation>
-          </CardContent>
-        </Card>
+        <Container>
+          <Card className={classes.card}>
+            <>
+              {detail.imageUrl && (
+                <CardMedia
+                  className={classes.media}
+                  image={detail.imageUrl}
+                  title={detail.title}
+                />
+              )}
+            </>
+            <CardContent>
+              <ScrollAnimation animateIn="fadeInUp" delay={300}>
+                <Typography variant="h3" component="h6" gutterBottom>
+                  {detail.title}
+                </Typography>
+                <Typography variant="overline" component="h1" gutterBottom>
+                  Author: <strong>{detail.authorName}</strong>
+                </Typography>
+                <Typography variant="overline" gutterBottom>
+                  Summary:{" "}
+                  <strong>
+                    {detail.summary
+                      ? detail.summary
+                      : "No Summary for this book"}
+                  </strong>
+                </Typography>
+              </ScrollAnimation>
+
+              <ScrollAnimation animateIn="fadeInUp" delay={1000}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginBottom: 20
+                  }}
+                >
+                  <Typography
+                    variant="subtitle1"
+                    style={{ textAlign: "center" }}
+                  >
+                    <Rating readOnly name="read-only" value={4} />
+                    {/* <Box>2,350</Box> */}
+                  </Typography>
+                  <Typography
+                    style={{ marginLeft: "auto" }}
+                    variant="subtitle2"
+                  >
+                    4/5
+                  </Typography>
+                </div>
+              </ScrollAnimation>
+
+              <ScrollAnimation animateIn="fadeInUp" delay={800}>
+                <Button variant="contained" color="secondary">
+                  Borrow this Book
+                </Button>
+              </ScrollAnimation>
+            </CardContent>
+          </Card>
+          <Divider variant="middle" style={{ margin: "20px 0" }} light />
+          <Container>
+            <Typography variant="h6" gutterBottom align="justify">
+              Top Reviews
+            </Typography>
+            <Card className={classes.cardReview}>
+              <CardHeader
+                avatar={
+                  <Avatar aria-label="recipe" className={classes.avatar}>
+                    J
+                  </Avatar>
+                }
+                title="John"
+                action={
+                  <IconButton color="inherit" aria-label="delete">
+                    <DeleteIcon color="error" />
+                  </IconButton>
+                }
+              />
+              <CardContent>
+                <Box style={{ marginBottom: 20 }}>
+                  <Rating size="small" readOnly name="read-only" value={4} />
+                  <small style={{ display: "block" }}>December 14, 2019</small>
+                </Box>
+                <Typography>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Soluta, in? Suscipit ipsam corporis quisquam deleniti eos fuga
+                  illum sequi, sunt libero, minus similique nam assumenda error
+                  quos! Similique, autem eveniet.
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card className={classes.cardReview}>
+              <CardHeader
+                avatar={
+                  <Avatar aria-label="recipe" className={classes.avatar}>
+                    J
+                  </Avatar>
+                }
+                title="Jane"
+                action={
+                  <IconButton color="inherit" aria-label="delete">
+                    <DeleteIcon color="error" />
+                  </IconButton>
+                }
+              />
+              <CardContent>
+                <Box style={{ marginBottom: 20 }}>
+                  <Rating size="small" readOnly name="read-only" value={3} />
+                  <small style={{ display: "block" }}>December 24, 2019</small>
+                </Box>
+                <Typography>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Soluta, in? Suscipit ipsam corporis quisquam deleniti eos fuga
+                  illum sequi, sunt libero, minus similique nam assumenda error
+                  quos! Similique, autem eveniet.
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card className={classes.cardReview}>
+              <CardHeader
+                avatar={
+                  <Avatar aria-label="recipe" className={classes.avatar}>
+                    K
+                  </Avatar>
+                }
+                title="Kenneth"
+                action={
+                  <IconButton color="inherit" aria-label="delete">
+                    <DeleteIcon color="error" />
+                  </IconButton>
+                }
+              />
+              <CardContent>
+                <Box style={{ marginBottom: 20 }}>
+                  <Rating size="small" readOnly name="read-only" value={5} />
+                  <small style={{ display: "block" }}>December 29, 2019</small>
+                </Box>
+                <Typography>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Soluta, in? Suscipit ipsam corporis quisquam deleniti eos fuga
+                  illum sequi, sunt libero, minus similique nam assumenda error
+                  quos! Similique, autem eveniet.
+                </Typography>
+              </CardContent>
+            </Card>
+          </Container>
+        </Container>
       )}
     </div>
   );
