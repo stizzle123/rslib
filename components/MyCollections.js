@@ -85,6 +85,7 @@ export default function MyCollections({ books, createdAt, _id }) {
   const router = useRouter();
   const [getId, setGetId] = useState("");
   const [getBooks, setGetBooks] = useState([]);
+  const [book, setBook] = useState([]);
   const [open, setOpen] = useState(false);
   const URL = `${baseUrl}/api/collections`;
 
@@ -97,8 +98,9 @@ export default function MyCollections({ books, createdAt, _id }) {
   }, [books]);
 
   const handleClickOpen = id => {
-    setGetId(id);
+    setBook(books.filter(book => book._id === id));
     setOpen(true);
+    setGetId(id);
   };
 
   const handleClose = () => {
@@ -169,38 +171,6 @@ export default function MyCollections({ books, createdAt, _id }) {
                   <EditIcon />
                 </IconButton>
               </CardActions>
-
-              <Dialog
-                open={open}
-                TransitionComponent={Transition}
-                keepMounted
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-slide-title"
-                aria-describedby="alert-dialog-slide-description"
-              >
-                <DialogTitle id="alert-dialog-slide-title">
-                  {`Are you sure you want to delete ${book.title}?`}
-                </DialogTitle>
-
-                <DialogActions>
-                  <Button
-                    onClick={handleClose}
-                    variant="contained"
-                    color="secondary"
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    onClick={handleDelete}
-                    style={{
-                      background: theme.palette.secondary.red,
-                      color: "#fff"
-                    }}
-                  >
-                    Delete
-                  </Button>
-                </DialogActions>
-              </Dialog>
             </Card>
           ))
         ) : (
@@ -225,6 +195,58 @@ export default function MyCollections({ books, createdAt, _id }) {
           </>
         )}
       </div>
+      <DeleteModal
+        book={book}
+        handleClose={handleClose}
+        handleDelete={handleDelete}
+        Transition={Transition}
+        open={open}
+        theme={theme}
+      />
     </div>
+  );
+}
+
+function DeleteModal({
+  book,
+  open,
+  Transition,
+  handleClose,
+  handleDelete,
+  theme
+}) {
+  return (
+    <>
+      {book.map(book => (
+        <Dialog
+          key={book._id}
+          open={open}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle id="alert-dialog-slide-title">
+            {`Are you sure you want to delete ${book.title}?`}
+          </DialogTitle>
+
+          <DialogActions>
+            <Button onClick={handleClose} variant="contained" color="secondary">
+              Cancel
+            </Button>
+            <Button
+              onClick={handleDelete}
+              style={{
+                background: theme.palette.secondary.red,
+                color: "#fff"
+              }}
+            >
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
+      ))}
+    </>
   );
 }
