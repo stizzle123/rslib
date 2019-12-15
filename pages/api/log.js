@@ -16,6 +16,12 @@ export default async (req, res) => {
     case "GET":
       await handleGetLogs(req, res);
       break;
+    case "PATCH":
+      await handleUpdateLog(req, res);
+      break;
+    case "DELETE":
+      await handleDeleteLog(req, res);
+      break;
     default:
       res.status(405).json(`Method ${req.method} not allowed`);
       break;
@@ -59,6 +65,32 @@ const handleGetLogs = async (req, res) => {
   try {
     const logs = await BookLog.find();
     res.status(200).json(logs);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(error);
+  }
+};
+
+const handleUpdateLog = async (req, res) => {
+  const data = { ...req.body };
+  try {
+    const updatedLog = await BookLog.findOneAndUpdate(
+      { _id: data.id },
+      { $set: { status: "closedout" } },
+      { new: true }
+    );
+    res.status(200).json(updatedLog);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(error);
+  }
+};
+
+const handleDeleteLog = async (req, res) => {
+  const id = req.body.id;
+  try {
+    const bookLog = await BookLog.findOneAndDelete({ _id: id });
+    res.status(200).json("Book has been removed successfully", bookLog);
   } catch (error) {
     console.error(error);
     res.status(500).json(error);

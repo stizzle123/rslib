@@ -14,6 +14,7 @@ import {
   CardHeader,
   Container
 } from "@material-ui/core";
+
 import ScrollAnimation from "react-animate-on-scroll";
 import Rating from "@material-ui/lab/Rating";
 import { useRouter } from "next/router";
@@ -21,6 +22,7 @@ import baseUrl from "../utils/baseUrl";
 import axios from "axios";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
+import Modal from "./Modal";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -50,7 +52,8 @@ const useStyles = makeStyles(theme => ({
     backgroundPosition: "center",
     // paddingTop: "56.25%" // 16:9,
     [theme.breakpoints.down("md")]: {
-      width: "100%"
+      // width: "100%"
+      display: "none"
     }
   },
   centered: {
@@ -63,14 +66,25 @@ const useStyles = makeStyles(theme => ({
     margin: "auto",
     width: "auto",
     marginBottom: 30
+  },
+  avatar2: {
+    width: 150,
+    height: 200,
+    margin: "auto",
+    marginTop: "10px",
+    objectPosition: "50% 50%",
+    objectFit: "contain",
+    border: "6px solid #424242",
+    borderRadius: 5
   }
 }));
 
-export default function Book() {
+export default function Book({ _id, name, role }) {
   const router = useRouter();
   const classes = useStyles();
   const URL = `${baseUrl}/api/book`;
   const [detail, setDetail] = useState({});
+  const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -87,8 +101,23 @@ export default function Book() {
       .catch(err => console.error(err));
   }, [URL]);
 
+  const handleClickOpen = id => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <div className={classes.root}>
+      <Modal
+        name={name}
+        userId={_id}
+        book={detail}
+        open={open}
+        handleClose={handleClose}
+      />
       <Typography variant="h3" align="center" gutterBottom>
         Book Info
       </Typography>
@@ -151,7 +180,11 @@ export default function Book() {
               </ScrollAnimation>
 
               <ScrollAnimation animateIn="fadeInUp" delay={800}>
-                <Button variant="contained" color="secondary">
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => handleClickOpen(detail._id)}
+                >
                   Borrow this Book
                 </Button>
               </ScrollAnimation>

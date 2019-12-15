@@ -174,9 +174,10 @@ export default function BorrowModal({ handleClose, open, book, name, userId }) {
                 inputProps={{ "aria-label": "secondary checkbox" }}
               />{" "}
               <small>
-                I {capitalize(name)}, do hereby agree to return this book in
-                good condition and be held accountable for any misplacement or
-                damage done to the integrity of this book.
+                I {capitalize(name)}, do hereby agree to return this book on or
+                before the return date in good condition and be held accountable
+                for any misplacement or damage done to the integrity of this
+                book.
               </small>
             </>
           </DialogContent>

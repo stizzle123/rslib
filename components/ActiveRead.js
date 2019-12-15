@@ -23,6 +23,9 @@ import CheckIcon from "@material-ui/icons/Check";
 import { capitalize } from "../utils/capitalize";
 import { darken } from "@material-ui/core/styles";
 import moment from "moment";
+import baseUrl from "../utils/baseUrl";
+import axios from "axios";
+import { useRouter } from "next/router";
 
 const StyledTableCell = withStyles(theme => ({
   head: {
@@ -94,13 +97,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function ActiveRead({ reads, loading }) {
+export default function ActiveRead({ reads, id, loading, setLoading }) {
   const classes = useStyles();
+  const router = useRouter();
   const theme = useTheme();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [load, setLoad] = useState(false);
   const [error, setError] = useState("");
-  const [search, setSearch] = useState("");
+  const URL = `${baseUrl}/api/return`;
 
   //   const updateSearch = e => {
   //     setSearch(e.target.value.substr(0, 20));
@@ -113,6 +118,26 @@ export default function ActiveRead({ reads, loading }) {
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+  };
+
+  const handleBookReturn = async (bookId, logId) => {
+    const payload = {
+      borrower: id,
+      book: bookId,
+      _id: logId,
+      status: "returned"
+    };
+    setLoad(true);
+    try {
+      const response = await axios.patch(URL, payload);
+      setLoad(false);
+      setTimeout(() => {
+        router.reload();
+      }, 300);
+    } catch (error) {
+      console.error(error);
+      setLoad(false);
+    }
   };
 
   return (
@@ -159,7 +184,9 @@ export default function ActiveRead({ reads, loading }) {
                     <StyledTableCell align="right">
                       <Chip
                         variant="outlined"
-                        color="secondary"
+                        color={
+                          read.status === "in-use" ? "secondary" : "primary"
+                        }
                         label={read.status}
                       />
                     </StyledTableCell>
@@ -171,10 +198,25 @@ export default function ActiveRead({ reads, loading }) {
                         color="secondary"
                         variant="contained"
                         // size="small"
+                        onClick={() =>
+                          handleBookReturn(read.book._id, read._id)
+                        }
+                        disabled={
+                          load ||
+                          read.status === "returned" ||
+                          read.status === "closedout"
+                        }
                       >
-                        Return Book
+                        {load ? (
+                          <span>
+                            Loading...
+                            <CircularProgress size={10} />
+                          </span>
+                        ) : (
+                          <span>Return Book</span>
+                        )}
                       </Button>
-                      {read.status !== "in-use" ? (
+                      {read.status === "closedout" ? (
                         <IconButton>
                           <DeleteIcon color="error" />
                         </IconButton>

@@ -86,7 +86,8 @@ export default function Account({
   email,
   name,
   department,
-  createdAt
+  createdAt,
+  _id
 }) {
   const classes = useStyles();
   const router = useRouter();
@@ -218,7 +219,7 @@ export default function Account({
                   height: 9,
                   borderRadius: "50%",
                   backgroundColor: theme.palette.secondary.light,
-
+                  animationDuration: "1.5s",
                   boxShadow: "0 0 2px rgba(0,0,0,0.8)"
                 }}
               />
@@ -236,7 +237,12 @@ export default function Account({
               />
             )}
           </Typography>
-          <ActiveRead reads={reads} loading={loading} />
+          <ActiveRead
+            reads={reads}
+            setLoading={setLoading}
+            loading={loading}
+            id={_id}
+          />
         </>
 
         <div style={{ textAlign: "center", margin: "50px 0" }}>

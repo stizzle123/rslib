@@ -205,7 +205,7 @@ export default function Profile({ _id }) {
             <Button
               type="submit"
               fullWidth
-              disabled={!(state.name && state.about) || loading}
+              disabled={!(state.name && state.email) || loading}
               variant="contained"
               color="primary"
               className={classes.submit}

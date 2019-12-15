@@ -665,7 +665,11 @@ const Navbar = ({ id, name, avatar, collections, notification, role }) => {
           <Drawer open={state.left} onClose={toggleDrawer("left", false)}>
             {sideList("left")}
           </Drawer>
-          <Drawer open={state.right} anchor="right">
+          <Drawer
+            open={state.right}
+            anchor="right"
+            onClose={toggleDrawer("right", false)}
+          >
             {notifyList("right")}
           </Drawer>
         </>

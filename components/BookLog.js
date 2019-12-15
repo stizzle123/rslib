@@ -26,6 +26,7 @@ import { capitalize } from "../utils/capitalize";
 import { darken } from "@material-ui/core/styles";
 import SearchComponent from "./SearchComponent";
 import moment from "moment";
+import { useRouter } from "next/router";
 
 const StyledTableCell = withStyles(theme => ({
   head: {
@@ -99,12 +100,14 @@ const useStyles = makeStyles(theme => ({
 
 export default function BookLog() {
   const classes = useStyles();
+  const router = useRouter();
   const theme = useTheme();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
+  const [load, setLoad] = useState(false);
   const [logs, setLogs] = useState([]);
   const URL = `${baseUrl}/api/log`;
 
@@ -138,6 +141,33 @@ export default function BookLog() {
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+  };
+
+  const handleCloseOutLog = async id => {
+    const payload = { id };
+    setLoad(true);
+    try {
+      await axios.patch(URL, payload);
+      setLoad(false);
+      setTimeout(() => {
+        router.reload();
+      }, 300);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleDeleteLog = async id => {
+    const data = { id };
+    try {
+      const res = await axios.delete(URL, { data });
+
+      setTimeout(() => {
+        router.reload();
+      }, 300);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const filteredLogs = () =>
@@ -223,7 +253,9 @@ export default function BookLog() {
                         {/* {log.status} */}
                         <Chip
                           variant="outlined"
-                          color="secondary"
+                          color={
+                            log.status === "in-use" ? "secondary" : "primary"
+                          }
                           label={log.status}
                         />
                       </StyledTableCell>
@@ -246,22 +278,34 @@ export default function BookLog() {
                         <Button
                           variant="contained"
                           color="secondary"
-                          disabled={log.status === "in-use"}
+                          disabled={
+                            load ||
+                            log.status === "in-use" ||
+                            log.status === "closedout"
+                          }
                           size="small"
-                          onClick={() => console.log(user._id)}
+                          onClick={() => handleCloseOutLog(log._id)}
                         >
-                          Closeout <CheckIcon />
+                          {load ? (
+                            <span>Loading...</span>
+                          ) : (
+                            <span>Closeout</span>
+                          )}{" "}
+                          <CheckIcon />
                         </Button>
 
                         <IconButton
                           color="secondary"
-                          onClick={() => console.log(user._id)}
-                          disabled={log.status === "in-use"}
+                          onClick={() => handleDeleteLog(log._id)}
+                          disabled={
+                            log.status === "in-use" || log.status === "returned"
+                          }
                         >
                           <DeleteIcon
                             style={{
                               color:
-                                log.status === "in-use"
+                                log.status === "in-use" ||
+                                log.status === "returned"
                                   ? theme.palette.secondary.grey
                                   : theme.palette.secondary.red
                             }}
