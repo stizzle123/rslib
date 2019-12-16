@@ -10,7 +10,12 @@ import {
   CardHeader,
   Paper,
   Divider,
-  Button
+  Button,
+  TextField,
+  FormControl,
+  DialogContent,
+  DialogContentText,
+  CircularProgress
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Collapse from "@material-ui/core/Collapse";
@@ -19,8 +24,7 @@ import IconButton from "@material-ui/core/IconButton";
 import moment from "moment";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
+import Rating from "@material-ui/lab/Rating";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import { useRouter } from "next/router";
@@ -57,7 +61,11 @@ const useStyles = makeStyles(theme => ({
   card: {
     maxWidth: 545,
     width: "80%",
-    margin: "auto"
+    margin: "auto",
+    "&:nth-of-type(odd)": {
+      backgroundImage:
+        "repeating-linear-gradient(135deg, rgba(209, 209, 209,0.01) 0px, rgba(209, 209, 209,0.01) 33px,rgba(180, 180, 180,0.01) 33px, rgba(180, 180, 180,0.01) 66px,rgba(151, 151, 151,0.01) 66px, rgba(151, 151, 151,0.01) 99px,rgba(122, 122, 122,0.01) 99px, rgba(122, 122, 122,0.01) 132px,rgba(94, 94, 94,0.01) 132px, rgba(94, 94, 94,0.01) 165px,rgba(65, 65, 65,0.01) 165px, rgba(65, 65, 65,0.01) 198px,rgba(36, 36, 36,0.01) 198px, rgba(36, 36, 36,0.01) 231px,rgba(7, 7, 7,0.01) 231px, rgba(7, 7, 7,0.01) 264px),repeating-linear-gradient(45deg, rgba(11, 11, 11,0.01) 0px, rgba(11, 11, 11,0.01) 33px,rgba(34, 34, 34,0.01) 33px, rgba(34, 34, 34,0.01) 66px,rgba(56, 56, 56,0.01) 66px, rgba(56, 56, 56,0.01) 99px,rgba(79, 79, 79,0.01) 99px, rgba(79, 79, 79,0.01) 132px,rgba(102, 102, 102,0.01) 132px, rgba(102, 102, 102,0.01) 165px,rgba(125, 125, 125,0.01) 165px, rgba(125, 125, 125,0.01) 198px,rgba(147, 147, 147,0.01) 198px, rgba(147, 147, 147,0.01) 231px,rgba(170, 170, 170,0.01) 231px, rgba(170, 170, 170,0.01) 264px),linear-gradient(90deg, #FFF,#FFF)"
+    }
   },
   expand: {
     transform: "rotate(0deg)",
@@ -79,7 +87,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function MyCollections({ books, createdAt, _id }) {
+export default function MyCollections({ books, createdAt, user }) {
   const classes = useStyles();
   const theme = useTheme();
   const router = useRouter();
@@ -87,7 +95,17 @@ export default function MyCollections({ books, createdAt, _id }) {
   const [getBooks, setGetBooks] = useState([]);
   const [book, setBook] = useState([]);
   const [open, setOpen] = useState(false);
+  const [openRating, setOpenRating] = useState(false);
+  const [value, setValue] = React.useState(0);
+  const [expanded, setExpanded] = React.useState(false);
   const URL = `${baseUrl}/api/collections`;
+
+  const handleExpandClick = id => {
+    const isBook = getBooks.filter(book => book._id === id);
+    if (Boolean(isBook)) {
+      setExpanded(!expanded);
+    }
+  };
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -103,8 +121,23 @@ export default function MyCollections({ books, createdAt, _id }) {
     setGetId(id);
   };
 
+  const handleOpenRating = id => {
+    setBook(books.filter(book => book._id === id));
+    setOpenRating(true);
+    setGetId(id);
+  };
+
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleCloseRating = () => {
+    setOpenRating(false);
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    console.log(user);
   };
 
   const handleDelete = async () => {
@@ -135,7 +168,7 @@ export default function MyCollections({ books, createdAt, _id }) {
       </Typography>
       <div className={classes.container}>
         {getBooks.length !== 0 ? (
-          getBooks.map(book => (
+          getBooks.map((book, i) => (
             <Card className={classes.card} key={book._id}>
               <CardHeader
                 title={book.title}
@@ -149,6 +182,7 @@ export default function MyCollections({ books, createdAt, _id }) {
                   </IconButton>
                 }
               />
+
               <Divider variant="middle" light style={{ marginBottom: 20 }} />
               <CardMedia
                 image={book.imageUrl}
@@ -167,10 +201,12 @@ export default function MyCollections({ books, createdAt, _id }) {
                   className={classes.expand}
                   color="secondary"
                   aria-label="Write a review"
+                  onClick={() => handleOpenRating(book._id)}
                 >
                   <EditIcon />
                 </IconButton>
               </CardActions>
+              <Divider light variant="middle" />
             </Card>
           ))
         ) : (
@@ -195,14 +231,25 @@ export default function MyCollections({ books, createdAt, _id }) {
           </>
         )}
       </div>
-      <DeleteModal
-        book={book}
-        handleClose={handleClose}
-        handleDelete={handleDelete}
-        Transition={Transition}
-        open={open}
-        theme={theme}
-      />
+      <>
+        <DeleteModal
+          book={book}
+          handleClose={handleClose}
+          handleDelete={handleDelete}
+          Transition={Transition}
+          open={open}
+          theme={theme}
+        />
+        <RateModal
+          book={book}
+          handleClose={handleCloseRating}
+          // handleSubmit={handleSubmit}
+          Transition={Transition}
+          open={openRating}
+          theme={theme}
+          user={user}
+        />
+      </>
     </div>
   );
 }
@@ -226,6 +273,7 @@ function DeleteModal({
           onClose={handleClose}
           aria-labelledby="alert-dialog-slide-title"
           aria-describedby="alert-dialog-slide-description"
+          style={{ width: "100%", height: "auto" }}
         >
           <DialogTitle id="alert-dialog-slide-title">
             {`Are you sure you want to delete ${book.title}?`}
@@ -248,5 +296,106 @@ function DeleteModal({
         </Dialog>
       ))}
     </>
+  );
+}
+
+function RateModal({ book, open, Transition, handleClose, theme, user }) {
+  const [ratings, setRatings] = useState(0);
+  const [review, setReview] = useState("");
+  const [loading, setLoading] = useState(false);
+  const URL = `${baseUrl}/api/rating`;
+
+  const handleChange = e => {
+    setReview(e.target.value);
+  };
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    const payload = {
+      user: user._id,
+      ratings,
+      review,
+      book: book[0]._id
+    };
+    setLoading(true);
+    try {
+      const res = await axios.post(URL, payload);
+      setReview("");
+      setRatings(0);
+      setLoading(false);
+      setTimeout(() => handleClose(), 500);
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Paper style={{ width: "100%" }}>
+      {book.map(book => (
+        <Dialog
+          key={book._id}
+          open={open}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-slide-title"
+          style={{ width: "100%", height: "auto" }}
+          fullWidth
+        >
+          <DialogContent>
+            <form onSubmit={handleSubmit}>
+              <Typography paragraph>
+                Rate <strong>"{book.title}"</strong>
+              </Typography>
+              <Typography paragraph>
+                <Rating
+                  id={`simple-controlled-${book._id}`}
+                  name="simple-controlled"
+                  value={ratings}
+                  onChange={(event, newValue) => {
+                    setRatings(newValue);
+                  }}
+                />
+              </Typography>
+              <div>
+                <TextField
+                  id={`outlined-secondary-1`}
+                  label="Write a review"
+                  variant="outlined"
+                  color="secondary"
+                  placeholder="Write a review"
+                  fullWidth
+                  style={{ marginBottom: "20px" }}
+                  helperText={`${review.length}/80 characters`}
+                  onChange={handleChange}
+                  inputProps={{
+                    maxLength: 80
+                  }}
+                  value={review}
+                />
+              </div>
+              <Button
+                type="submit"
+                variant="contained"
+                color="secondary"
+                fullWidth
+                style={{ marginBottom: "20px" }}
+                disabled={loading || !review || !ratings}
+              >
+                {loading ? (
+                  <span>
+                    Loading...
+                    <CircularProgress size="1rem" />
+                  </span>
+                ) : (
+                  <span>Post</span>
+                )}
+              </Button>
+            </form>
+          </DialogContent>
+        </Dialog>
+      ))}
+    </Paper>
   );
 }

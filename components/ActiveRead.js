@@ -106,14 +106,20 @@ export default function ActiveRead({ reads, id, loading, setLoading }) {
   const [load, setLoad] = useState(false);
   const [error, setError] = useState("");
   const URL = `${baseUrl}/api/return`;
-
-  //   const updateSearch = e => {
-  //     setSearch(e.target.value.substr(0, 20));
-  //   };
+  const [books, setBooks] = useState([]);
+  const [getId, setGetId] = useState("");
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    setBooks(reads);
+    return () => {
+      abortController.abort();
+    };
+  }, [reads]);
 
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(parseInt(event.target.value, 10));
@@ -121,6 +127,7 @@ export default function ActiveRead({ reads, id, loading, setLoading }) {
   };
 
   const handleBookReturn = async (bookId, logId) => {
+    setGetId(logId);
     const payload = {
       borrower: id,
       book: bookId,
@@ -131,9 +138,13 @@ export default function ActiveRead({ reads, id, loading, setLoading }) {
     try {
       const response = await axios.patch(URL, payload);
       setLoad(false);
-      setTimeout(() => {
-        router.reload();
-      }, 300);
+      let arr = [
+        ...books.map(book =>
+          book._id === response.data._id ? response.data : book
+        )
+      ];
+
+      setBooks(arr);
     } catch (error) {
       console.error(error);
       setLoad(false);
@@ -168,11 +179,11 @@ export default function ActiveRead({ reads, id, loading, setLoading }) {
 
               <TableBody>
                 {(rowsPerPage > 0
-                  ? reads.slice(
+                  ? books.slice(
                       page * rowsPerPage,
                       page * rowsPerPage + rowsPerPage
                     )
-                  : reads
+                  : books
                 ).map(read => (
                   <StyledTableRow key={read._id}>
                     <StyledTableCell component="th" scope="row">
@@ -202,27 +213,27 @@ export default function ActiveRead({ reads, id, loading, setLoading }) {
                           handleBookReturn(read.book._id, read._id)
                         }
                         disabled={
-                          load ||
+                          (load && read._id === getId) ||
                           read.status === "returned" ||
                           read.status === "closedout"
                         }
                       >
-                        {load ? (
+                        {load && read._id === getId ? (
                           <span>
                             Loading...
                             <CircularProgress size={10} />
                           </span>
                         ) : (
-                          <span>Return Book</span>
+                          <span>Return</span>
                         )}
                       </Button>
-                      {read.status === "closedout" ? (
+                      {/* {read.status === "closedout" ? (
                         <IconButton>
                           <DeleteIcon color="error" />
                         </IconButton>
                       ) : (
                         ""
-                      )}
+                      )} */}
                     </StyledTableCell>
                   </StyledTableRow>
                 ))}
@@ -237,7 +248,7 @@ export default function ActiveRead({ reads, id, loading, setLoading }) {
                       { label: "All", value: -1 }
                     ]}
                     colSpan={3}
-                    count={reads.length}
+                    count={books.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     SelectProps={{

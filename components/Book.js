@@ -23,6 +23,7 @@ import axios from "axios";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Modal from "./Modal";
+import moment from "moment";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -83,9 +84,12 @@ export default function Book({ _id, name, role }) {
   const router = useRouter();
   const classes = useStyles();
   const URL = `${baseUrl}/api/book`;
+  const BOOKREVIEWURL = `${baseUrl}/api/bookreview`;
+  const [reviews, setReviews] = useState([]);
   const [detail, setDetail] = useState({});
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [load, setLoad] = useState(false);
 
   useEffect(() => {
     const payload = {
@@ -100,6 +104,23 @@ export default function Book({ _id, name, role }) {
       })
       .catch(err => console.error(err));
   }, [URL]);
+
+  useEffect(() => {
+    const payload = {
+      params: { id: router.query.id }
+    };
+    setLoad(true);
+    axios
+      .get(BOOKREVIEWURL, payload)
+      .then(res => {
+        setReviews(res.data);
+        setLoad(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setLoad(false);
+      });
+  }, [BOOKREVIEWURL]);
 
   const handleClickOpen = id => {
     setOpen(true);
@@ -195,87 +216,58 @@ export default function Book({ _id, name, role }) {
             <Typography variant="h6" gutterBottom align="justify">
               Top Reviews
             </Typography>
-            <Card className={classes.cardReview}>
-              <CardHeader
-                avatar={
-                  <Avatar aria-label="recipe" className={classes.avatar}>
-                    J
-                  </Avatar>
-                }
-                title="John"
-                action={
-                  <IconButton color="inherit" aria-label="delete">
-                    <DeleteIcon color="error" />
-                  </IconButton>
-                }
+            {load ? (
+              <CircularProgress
+                size="3rem"
+                style={{
+                  position: "absolute",
+                  left: "50%"
+                }}
               />
-              <CardContent>
-                <Box style={{ marginBottom: 20 }}>
-                  <Rating size="small" readOnly name="read-only" value={4} />
-                  <small style={{ display: "block" }}>December 14, 2019</small>
-                </Box>
-                <Typography>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Soluta, in? Suscipit ipsam corporis quisquam deleniti eos fuga
-                  illum sequi, sunt libero, minus similique nam assumenda error
-                  quos! Similique, autem eveniet.
+            ) : reviews.length ? (
+              reviews.map(review => (
+                <Card className={classes.cardReview} key={review._id}>
+                  <CardHeader
+                    avatar={
+                      <Avatar
+                        aria-label="recipe"
+                        src={review.user.avatar}
+                        alt={review.user.name}
+                        className={classes.avatar}
+                      />
+                    }
+                    title="John"
+                    action={
+                      review.user._id === _id && (
+                        <IconButton color="inherit" aria-label="delete">
+                          <DeleteIcon color="error" />
+                        </IconButton>
+                      )
+                    }
+                  />
+                  <CardContent>
+                    <Box style={{ marginBottom: 20 }}>
+                      <Rating
+                        size="small"
+                        readOnly
+                        name="read-only"
+                        value={review.ratings}
+                      />
+                      <small style={{ display: "block" }}>
+                        {moment(review.createdAt).format("Do MMMM, YYYY")}
+                      </small>
+                    </Box>
+                    <Typography>{review.review}</Typography>
+                  </CardContent>
+                </Card>
+              ))
+            ) : (
+              <Card style={{ padding: 60 }}>
+                <Typography variant="h3" align="center" color="textSecondary">
+                  No Reviews for this book
                 </Typography>
-              </CardContent>
-            </Card>
-            <Card className={classes.cardReview}>
-              <CardHeader
-                avatar={
-                  <Avatar aria-label="recipe" className={classes.avatar}>
-                    J
-                  </Avatar>
-                }
-                title="Jane"
-                action={
-                  <IconButton color="inherit" aria-label="delete">
-                    <DeleteIcon color="error" />
-                  </IconButton>
-                }
-              />
-              <CardContent>
-                <Box style={{ marginBottom: 20 }}>
-                  <Rating size="small" readOnly name="read-only" value={3} />
-                  <small style={{ display: "block" }}>December 24, 2019</small>
-                </Box>
-                <Typography>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Soluta, in? Suscipit ipsam corporis quisquam deleniti eos fuga
-                  illum sequi, sunt libero, minus similique nam assumenda error
-                  quos! Similique, autem eveniet.
-                </Typography>
-              </CardContent>
-            </Card>
-            <Card className={classes.cardReview}>
-              <CardHeader
-                avatar={
-                  <Avatar aria-label="recipe" className={classes.avatar}>
-                    K
-                  </Avatar>
-                }
-                title="Kenneth"
-                action={
-                  <IconButton color="inherit" aria-label="delete">
-                    <DeleteIcon color="error" />
-                  </IconButton>
-                }
-              />
-              <CardContent>
-                <Box style={{ marginBottom: 20 }}>
-                  <Rating size="small" readOnly name="read-only" value={5} />
-                  <small style={{ display: "block" }}>December 29, 2019</small>
-                </Box>
-                <Typography>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Soluta, in? Suscipit ipsam corporis quisquam deleniti eos fuga
-                  illum sequi, sunt libero, minus similique nam assumenda error
-                  quos! Similique, autem eveniet.
-                </Typography>
-              </CardContent>
-            </Card>
+              </Card>
+            )}
           </Container>
         </Container>
       )}

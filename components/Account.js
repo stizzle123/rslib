@@ -94,8 +94,11 @@ export default function Account({
   const theme = useTheme();
   const [reads, setReads] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [load, setLoad] = useState(false);
+  const [reviews, setReviews] = useState([]);
 
   const URL = `${baseUrl}/api/borrowed`;
+  const REVIEWSURL = `${baseUrl}/api/myreviews`;
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -120,6 +123,31 @@ export default function Account({
       abortController.abort();
     };
   }, [URL]);
+
+  useEffect(() => {
+    const abortController = new AbortController();
+
+    const token = Cookie.get("token");
+    const payload = { headers: { Authorization: token } };
+
+    setLoad(true);
+
+    axios
+      .get(REVIEWSURL, payload)
+      .then(reviews => {
+        setReviews(reviews.data);
+        setLoad(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setLoad(false);
+      });
+
+    return () => {
+      abortController.abort();
+    };
+  }, [REVIEWSURL]);
+
   return (
     <div className={classes.root}>
       <Typography
@@ -205,7 +233,7 @@ export default function Account({
           <Typography variant="h6" gutterBottom>
             My Review(s)
           </Typography>
-          <MyReview />
+          <MyReview load={load} setLoad={setLoad} reviews={reviews} />
         </>
         <>
           <Typography variant="h6" gutterBottom>

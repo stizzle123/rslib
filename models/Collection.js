@@ -21,7 +21,7 @@ const CollectionSchema = new mongoose.Schema(
 
 const autoPopulateUserAndCollections = function(next) {
   this.populate("user", "_id name avatar department email");
-  this.populate("books", "_id author imageUrl genre title summary");
+  this.populate("books", "_id authorName imageUrl genre title summary");
   next();
 };
 

@@ -5,7 +5,8 @@ import {
   ListItemText,
   Divider,
   makeStyles,
-  Avatar
+  Avatar,
+  Icon
 } from "@material-ui/core";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
@@ -86,12 +87,20 @@ export default function SidebarNavList({ role }) {
           )}
           <Divider light />
           {role === "admin" && (
-            <ListItem button onClick={() => router.push("/permissions")}>
-              <ListItemIcon>
-                <SettingsIcon />
-              </ListItemIcon>
-              <ListItemText primary="Permissions" />
-            </ListItem>
+            <>
+              <ListItem button onClick={() => router.push("/permissions")}>
+                <ListItemIcon>
+                  <SettingsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Permissions" />
+              </ListItem>
+              <ListItem button>
+                <ListItemIcon>
+                  <Icon className="fas fa-paper-plane" />
+                </ListItemIcon>
+                <ListItemText primary="Book Requests" />
+              </ListItem>
+            </>
           )}
         </List>
       </>

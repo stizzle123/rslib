@@ -108,6 +108,7 @@ export default function BookLog() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [load, setLoad] = useState(false);
+  const [logId, setLogId] = useState("");
   const [logs, setLogs] = useState([]);
   const URL = `${baseUrl}/api/log`;
 
@@ -144,6 +145,7 @@ export default function BookLog() {
   };
 
   const handleCloseOutLog = async id => {
+    setLogId(id);
     const payload = { id };
     setLoad(true);
     try {
@@ -279,14 +281,14 @@ export default function BookLog() {
                           variant="contained"
                           color="secondary"
                           disabled={
-                            load ||
+                            (load && log._id === logId) ||
                             log.status === "in-use" ||
                             log.status === "closedout"
                           }
                           size="small"
                           onClick={() => handleCloseOutLog(log._id)}
                         >
-                          {load ? (
+                          {load && log._id === logId ? (
                             <span>Loading...</span>
                           ) : (
                             <span>Closeout</span>
@@ -294,7 +296,7 @@ export default function BookLog() {
                           <CheckIcon />
                         </Button>
 
-                        <IconButton
+                        {/* <IconButton
                           color="secondary"
                           onClick={() => handleDeleteLog(log._id)}
                           disabled={
@@ -310,7 +312,7 @@ export default function BookLog() {
                                   : theme.palette.secondary.red
                             }}
                           />
-                        </IconButton>
+                        </IconButton> */}
                       </StyledTableCell>
                     </StyledTableRow>
                   ))}

@@ -18,6 +18,7 @@ import {
   useTheme,
   Button
 } from "@material-ui/core";
+import Rating from "@material-ui/lab/Rating";
 import DeleteIcon from "@material-ui/icons/Delete";
 import CheckIcon from "@material-ui/icons/Check";
 import axios from "axios";
@@ -97,7 +98,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function MyReview() {
+export default function MyReview({ load, setLoad, reviews }) {
   const classes = useStyles();
   const theme = useTheme();
   const [page, setPage] = useState(0);
@@ -140,64 +141,92 @@ export default function MyReview() {
     setPage(0);
   };
 
-  const filteredLogs = () =>
-    logs.filter(log => {
-      if (search !== "") {
-        return (
-          log.status.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
-          log.borrower.name.toLowerCase().indexOf(search.toLowerCase()) !==
-            -1 ||
-          log.borrower.email.toLowerCase().indexOf(search.toLowerCase()) !==
-            -1 ||
-          log.borrower.department
-            .toLowerCase()
-            .indexOf(search.toLowerCase()) !== -1 ||
-          log.book.title.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
-          log.book.genre.toLowerCase().indexOf(search.toLowerCase()) !== -1 ||
-          log.book.authorName.toLowerCase().indexOf(search.toLowerCase()) !== -1
-        );
-      } else {
-        return log;
-      }
-    });
-
   return (
     <div style={{ marginBottom: 60 }}>
       {/* <SearchComponent updateSearch={updateSearch} placeholder="Search Users" /> */}
 
       <Paper className={classes.root}>
         <div className={classes.tableWrapper}>
-          <Table className={classes.table} aria-label="custom pagination table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell>Title</StyledTableCell>
-                <StyledTableCell align="right">Author</StyledTableCell>
-                <StyledTableCell align="right">Reviewed Date</StyledTableCell>
-                <StyledTableCell align="right">Ratings</StyledTableCell>
-                <StyledTableCell align="right">Actions</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody></TableBody>
+          {load ? (
+            <CircularProgress
+              style={{
+                position: "absolute",
+                left: "50%"
+              }}
+            />
+          ) : (
+            <Table
+              className={classes.table}
+              aria-label="custom pagination table"
+            >
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell>Title</StyledTableCell>
+                  <StyledTableCell align="right">Author</StyledTableCell>
+                  <StyledTableCell align="right">Reviewed Date</StyledTableCell>
+                  <StyledTableCell align="right">Ratings</StyledTableCell>
+                  <StyledTableCell align="right">Actions</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {(rowsPerPage > 0
+                  ? reviews.slice(
+                      page * rowsPerPage,
+                      page * rowsPerPage + rowsPerPage
+                    )
+                  : reviews
+                ).map(review => (
+                  <StyledTableRow key={review._id}>
+                    <StyledTableCell component="th" scope="row">
+                      {review.book.title}
+                    </StyledTableCell>
+                    <StyledTableCell align="right">
+                      {review.book.authorName}
+                    </StyledTableCell>
+                    <StyledTableCell align="right">
+                      {moment(review.createdAt).format("Do MMMM, YYYY")}
+                    </StyledTableCell>
+                    <StyledTableCell align="right">
+                      <Rating
+                        name="read-only"
+                        value={review.ratings}
+                        readOnly
+                      />
+                    </StyledTableCell>
+                    <StyledTableCell align="right">
+                      <IconButton color="secondary">
+                        <DeleteIcon color="error" />
+                      </IconButton>
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))}
+              </TableBody>
 
-            <TableFooter>
-              <TableRow>
-                <TablePagination
-                  rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-                  colSpan={3}
-                  count={filteredLogs().length}
-                  rowsPerPage={rowsPerPage}
-                  page={page}
-                  SelectProps={{
-                    inputProps: { "aria-label": "rows per page" },
-                    native: true
-                  }}
-                  onChangePage={handleChangePage}
-                  onChangeRowsPerPage={handleChangeRowsPerPage}
-                  ActionsComponent={TablePaginationActions}
-                />
-              </TableRow>
-            </TableFooter>
-          </Table>
+              <TableFooter>
+                <TableRow>
+                  <TablePagination
+                    rowsPerPageOptions={[
+                      5,
+                      10,
+                      25,
+                      { label: "All", value: -1 }
+                    ]}
+                    colSpan={3}
+                    count={reviews.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    SelectProps={{
+                      inputProps: { "aria-label": "rows per page" },
+                      native: true
+                    }}
+                    onChangePage={handleChangePage}
+                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                    ActionsComponent={TablePaginationActions}
+                  />
+                </TableRow>
+              </TableFooter>
+            </Table>
+          )}
         </div>
       </Paper>
     </div>

@@ -8,7 +8,7 @@ import MyCollections from "../components/MyCollections";
 function bookcollections({ user, collections, notification }) {
   return (
     <Layout {...user} collections={collections} notification={notification}>
-      <MyCollections {...collections} {...user} notification={notification} />
+      <MyCollections {...collections} user={user} notification={notification} />
     </Layout>
   );
 }

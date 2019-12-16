@@ -37,6 +37,7 @@ const autoPopulateUserAndBook = function(next) {
 
 bookLogSchema.pre("findOne", autoPopulateUserAndBook);
 bookLogSchema.pre("find", autoPopulateUserAndBook);
+bookLogSchema.pre("findOneAndUpdate", autoPopulateUserAndBook);
 
 bookLogSchema.plugin(mongodbErrorHandler);
 
