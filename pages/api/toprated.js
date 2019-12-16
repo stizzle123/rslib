@@ -1,0 +1,28 @@
+import Rating from "../../models/Rating";
+import jwt from "jsonwebtoken";
+
+import connectDb from "../../utils/connectDb";
+
+export default async (req, res) => {
+  switch (req.method) {
+    case "GET":
+      await handleGetRatings(req, res);
+      break;
+
+    default:
+      res.status(405).json(`Method ${req.method} not allowed`);
+      break;
+  }
+};
+
+const handleGetRatings = async (req, res) => {
+  try {
+    const ratings = await Rating.find()
+      .sort({ createdAt: "desc" })
+      .limit(10);
+    res.status(200).json(ratings);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(error);
+  }
+};
