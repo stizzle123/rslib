@@ -85,11 +85,13 @@ export default function Book({ _id, name, role }) {
   const classes = useStyles();
   const URL = `${baseUrl}/api/book`;
   const BOOKREVIEWURL = `${baseUrl}/api/bookreview`;
+  const RATINGURL = `${baseUrl}/api/bookrating`;
   const [reviews, setReviews] = useState([]);
   const [detail, setDetail] = useState({});
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [load, setLoad] = useState(false);
+  const [rating, setRating] = useState({});
 
   useEffect(() => {
     const payload = {
@@ -121,6 +123,20 @@ export default function Book({ _id, name, role }) {
         setLoad(false);
       });
   }, [BOOKREVIEWURL]);
+
+  useEffect(() => {
+    const payload = {
+      params: { id: router.query.id }
+    };
+    axios
+      .get(RATINGURL, payload)
+      .then(res => {
+        setRating(res.data);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }, [RATINGURL]);
 
   const handleClickOpen = id => {
     setOpen(true);
@@ -188,14 +204,14 @@ export default function Book({ _id, name, role }) {
                     variant="subtitle1"
                     style={{ textAlign: "center" }}
                   >
-                    <Rating readOnly name="read-only" value={4} />
+                    <Rating readOnly name="read-only" value={rating.ratings} />
                     {/* <Box>2,350</Box> */}
                   </Typography>
                   <Typography
                     style={{ marginLeft: "auto" }}
                     variant="subtitle2"
                   >
-                    4/5
+                    {rating.ratings}/5
                   </Typography>
                 </div>
               </ScrollAnimation>
@@ -236,7 +252,26 @@ export default function Book({ _id, name, role }) {
                         className={classes.avatar}
                       />
                     }
-                    title="John"
+                    title={
+                      <div
+                        style={{
+                          display: "grid",
+                          gridRowGap: 2
+                        }}
+                      >
+                        <small>{review.user.name.toUpperCase()}</small>
+
+                        <Rating
+                          size="small"
+                          readOnly
+                          name="read-only"
+                          value={review.ratings}
+                        />
+                        <small style={{ display: "block" }}>
+                          {moment(review.createdAt).format("Do MMMM, YYYY")}
+                        </small>
+                      </div>
+                    }
                     action={
                       review.user._id === _id && (
                         <IconButton color="inherit" aria-label="delete">
@@ -245,19 +280,9 @@ export default function Book({ _id, name, role }) {
                       )
                     }
                   />
+                  <Divider variant="middle" light />
                   <CardContent>
-                    <Box style={{ marginBottom: 20 }}>
-                      <Rating
-                        size="small"
-                        readOnly
-                        name="read-only"
-                        value={review.ratings}
-                      />
-                      <small style={{ display: "block" }}>
-                        {moment(review.createdAt).format("Do MMMM, YYYY")}
-                      </small>
-                    </Box>
-                    <Typography>{review.review}</Typography>
+                    <Typography variant="subtitle1">{review.review}</Typography>
                   </CardContent>
                 </Card>
               ))
