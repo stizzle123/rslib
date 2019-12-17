@@ -255,6 +255,7 @@ export default function ActiveRead({ reads, id, loading, setLoading }) {
                 onChangeRowsPerPage={handleChangeRowsPerPage}
                 ActionsComponent={TablePaginationActions}
                 component="div"
+                style={{ overflow: "none" }}
               />
             </TableContainer>
           )}
