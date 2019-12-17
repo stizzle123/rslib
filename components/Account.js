@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   makeStyles,
+  withStyles,
   Paper,
   Avatar,
   Typography,
@@ -23,6 +24,7 @@ import ActiveRead from "./ActiveRead";
 import { useTheme } from "@material-ui/styles";
 import axios from "axios";
 import baseUrl from "../utils/baseUrl";
+import Badge from "@material-ui/core/Badge";
 
 import Cookie from "js-cookie";
 
@@ -80,6 +82,35 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.secondary.light
   }
 }));
+
+const StyledBadge = withStyles(theme => ({
+  badge: {
+    backgroundColor: "#44b700",
+    color: "#44b700",
+    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+    "&::after": {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      borderRadius: "50%",
+      animation: "$ripple 1.2s infinite ease-in-out",
+      border: "1px solid currentColor",
+      content: '""'
+    }
+  },
+  "@keyframes ripple": {
+    "0%": {
+      transform: "scale(.8)",
+      opacity: 1
+    },
+    "100%": {
+      transform: "scale(2.4)",
+      opacity: 0
+    }
+  }
+}))(Badge);
 
 export default function Account({
   avatar,
@@ -239,17 +270,14 @@ export default function Account({
           <Typography variant="h6" gutterBottom>
             My Active Read(s){" "}
             {reads.length ? (
-              <span
-                className="animated infinite flash delay-5s"
-                style={{
-                  display: "inline-block",
-                  width: 9,
-                  height: 9,
-                  borderRadius: "50%",
-                  backgroundColor: theme.palette.secondary.light,
-                  animationDuration: "1.5s",
-                  boxShadow: "0 0 2px rgba(0,0,0,0.8)"
+              <StyledBadge
+                overlap="circle"
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right"
                 }}
+                variant="dot"
+                style={{ marginLeft: 5 }}
               />
             ) : (
               <span

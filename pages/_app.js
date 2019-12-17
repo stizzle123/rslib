@@ -51,6 +51,7 @@ export class MyApp extends App {
           `${baseUrl}/api/users`,
           payload
         );
+        await axios.get(`${baseUrl}/api/overdue`, payload);
 
         const user = response.data;
         const collections = collectionData.data;

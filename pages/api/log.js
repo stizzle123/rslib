@@ -73,6 +73,7 @@ const handleGetLogs = async (req, res) => {
 
 const handleUpdateLog = async (req, res) => {
   const data = { ...req.body };
+
   try {
     const updatedLog = await BookLog.findOneAndUpdate(
       { _id: data.id },

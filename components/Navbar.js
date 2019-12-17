@@ -44,7 +44,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EmailIcon from "@material-ui/icons/Email";
 import Router, { useRouter } from "next/router";
 import Link from "next/link";
-import { fade, makeStyles } from "@material-ui/core/styles";
+import { fade, makeStyles, withStyles } from "@material-ui/core/styles";
 import CloseIcon from "@material-ui/icons/Close";
 import NProgress from "nprogress";
 import SidebarNavList from "./SidebarNavList";
@@ -228,8 +228,40 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     backgroundImage:
       "linear-gradient(90deg, rgba(125, 125, 125, 0) 0%, rgba(125, 125, 125, 0) 7%,rgba(194, 194, 194, 0) 7%, rgba(194, 194, 194, 0) 29%,rgba(124, 124, 124, 0) 29%, rgba(124, 124, 124, 0) 57%,rgba(237, 237, 237, 0) 57%, rgba(237, 237, 237, 0) 59%,rgba(110, 110, 110, 0) 59%, rgba(110, 110, 110, 0) 100%),linear-gradient(90deg, rgba(6, 6, 6, 0.01) 0%, rgba(6, 6, 6, 0.01) 20%,rgba(210, 210, 210, 0.01) 20%, rgba(210, 210, 210, 0.01) 64%,rgba(10, 10, 10, 0.01) 64%, rgba(10, 10, 10, 0.01) 82%,rgba(72, 72, 72, 0.01) 82%, rgba(72, 72, 72, 0.01) 88%,rgba(127, 127, 127, 0.01) 88%, rgba(127, 127, 127, 0.01) 100%),linear-gradient(90deg, rgba(4, 4, 4, 0.06) 0%, rgba(4, 4, 4, 0.06) 56%,rgba(6, 6, 6, 0.06) 56%, rgba(6, 6, 6, 0.06) 65%,rgba(110, 110, 110, 0.06) 65%, rgba(110, 110, 110, 0.06) 83%,rgba(136, 136, 136, 0.06) 83%, rgba(136, 136, 136, 0.06) 100%),linear-gradient(349deg, rgba(137, 137, 137, 0.02) 0%, rgba(137, 137, 137, 0.02) 43%,rgba(112, 112, 112, 0.02) 43%, rgba(112, 112, 112, 0.02) 100%),linear-gradient(47deg, rgba(184, 184, 184, 0.06) 0%, rgba(184, 184, 184, 0.06) 36%,rgba(32, 32, 32, 0.06) 36%, rgba(32, 32, 32, 0.06) 100%),linear-gradient(83deg, rgba(222, 222, 222, 0.07) 0%, rgba(222, 222, 222, 0.07) 98%,rgba(143, 143, 143, 0.07) 98%, rgba(143, 143, 143, 0.07) 100%),repeating-linear-gradient(0deg, rgba(244, 244, 244, 0.08) 0px, rgba(244, 244, 244, 0.08) 72px,rgba(155, 155, 155, 0.08) 72px, rgba(155, 155, 155, 0.08) 179px,rgba(102, 102, 102, 0.08) 179px, rgba(102, 102, 102, 0.08) 477px,rgba(133, 133, 133, 0.08) 477px, rgba(133, 133, 133, 0.08) 580px,rgba(83, 83, 83, 0.08) 580px, rgba(83, 83, 83, 0.08) 614px),repeating-linear-gradient(135deg, rgba(115, 115, 115, 0.03) 0px, rgba(115, 115, 115, 0.03) 266px,rgba(99, 99, 99, 0.03) 266px, rgba(99, 99, 99, 0.03) 273px,rgba(115, 115, 115, 0.03) 273px, rgba(115, 115, 115, 0.03) 351px,rgba(229, 229, 229, 0.03) 351px, rgba(229, 229, 229, 0.03) 439px),repeating-linear-gradient(45deg, rgba(72, 72, 72, 0.01) 0px, rgba(72, 72, 72, 0.01) 232px,rgba(65, 65, 65, 0.01) 232px, rgba(65, 65, 65, 0.01) 345px,rgba(140, 140, 140, 0.01) 345px, rgba(140, 140, 140, 0.01) 348px,rgba(26, 26, 26, 0.01) 348px, rgba(26, 26, 26, 0.01) 547px),repeating-linear-gradient(45deg, rgba(68, 68, 68, 0.05) 0px, rgba(68, 68, 68, 0.05) 115px,rgba(182, 182, 182, 0.05) 115px, rgba(182, 182, 182, 0.05) 246px,rgba(14, 14, 14, 0.05) 246px, rgba(14, 14, 14, 0.05) 272px,rgba(80, 80, 80, 0.05) 272px, rgba(80, 80, 80, 0.05) 298px,rgba(37, 37, 37, 0.05) 298px, rgba(37, 37, 37, 0.05) 434px),repeating-linear-gradient(135deg, rgba(46, 46, 46, 0.03) 0px, rgba(46, 46, 46, 0.03) 107px,rgba(169, 169, 169, 0.03) 107px, rgba(169, 169, 169, 0.03) 182px,rgba(71, 71, 71, 0.03) 182px, rgba(71, 71, 71, 0.03) 321px,rgba(182, 182, 182, 0.03) 321px, rgba(182, 182, 182, 0.03) 359px),linear-gradient(90deg, #084da4 0%,#01aeb6 100%)"
+  },
+  avatarButton: {
+    position: "relative"
   }
 }));
+
+const StyledBadge = withStyles(theme => ({
+  badge: {
+    backgroundColor: "#44b700",
+    color: "#44b700",
+    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+    "&::after": {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      borderRadius: "50%",
+      animation: "$ripple 1.2s infinite ease-in-out",
+      border: "1px solid currentColor",
+      content: '""'
+    }
+  },
+  "@keyframes ripple": {
+    "0%": {
+      transform: "scale(.8)",
+      opacity: 1
+    },
+    "100%": {
+      transform: "scale(2.4)",
+      opacity: 0
+    }
+  }
+}))(Badge);
 
 const Navbar = ({ id, name, avatar, collections, notification, role }) => {
   const classes = useStyles();
@@ -355,15 +387,23 @@ const Navbar = ({ id, name, avatar, collections, notification, role }) => {
     >
       <ListItem>
         <ListItemIcon style={{ minWidth: "12px" }}>
-          <Avatar
-            alt={name}
-            src={avatar}
-            className={classes.avatar}
-            style={{ left: "-13px" }}
-          />
+          <StyledBadge
+            overlap="circle"
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right"
+            }}
+            variant="dot"
+          >
+            <Avatar alt={name} src={avatar} />
+          </StyledBadge>
         </ListItemIcon>
         <ListItemText
-          primary={<Typography variant="overline">{name}</Typography>}
+          primary={
+            <Typography variant="overline" style={{ marginLeft: 20 }}>
+              {name}
+            </Typography>
+          }
         />
       </ListItem>
 
@@ -609,8 +649,21 @@ const Navbar = ({ id, name, avatar, collections, notification, role }) => {
                 </IconButton>
               </div>
               <div className={classes.sectionDesktop}>
-                <IconButton aria-label="Avatar" onClick={handleClick}>
-                  <Avatar src={avatar} className={classes.avatar} alt={name} />{" "}
+                <IconButton
+                  aria-label="Avatar"
+                  onClick={handleClick}
+                  className={classes.avatarButton}
+                >
+                  <StyledBadge
+                    overlap="circle"
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "right"
+                    }}
+                    variant="dot"
+                  >
+                    <Avatar alt={name} src={avatar} />
+                  </StyledBadge>
                 </IconButton>
 
                 <Menu

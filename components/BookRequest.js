@@ -23,6 +23,11 @@ const useStyles = makeStyles(theme => ({
 export default function BookRequest() {
   const classes = useStyles();
   const theme = useTheme();
+
+  const handleSubmit = e => {
+    e.preventDefault();
+  };
+
   return (
     <div className={classes.root}>
       <Typography
@@ -35,7 +40,7 @@ export default function BookRequest() {
         Request A Book{" "}
         <Icon className="fas fa-paper-plane" style={{ marginLeft: 10 }} />
       </Typography>
-      <form className={classes.form}>
+      <form className={classes.form} onSubmit={handleSubmit}>
         <TextField
           id="title"
           label="Book Title"
