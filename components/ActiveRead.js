@@ -95,6 +95,11 @@ const useStyles = makeStyles(theme => ({
     // [theme.breakpoints.down("sm")]: {
     //   fontSize: "0.8rem"
     // }
+  },
+  pagination: {
+    "&.MuiTablePagination-root": {
+      overflow: "none"
+    }
   }
 }));
 
@@ -255,7 +260,7 @@ export default function ActiveRead({ reads, id, loading, setLoading }) {
                 onChangeRowsPerPage={handleChangeRowsPerPage}
                 ActionsComponent={TablePaginationActions}
                 component="div"
-                style={{ overflow: "none" }}
+                className={classes.pagination}
               />
             </TableContainer>
           )}
