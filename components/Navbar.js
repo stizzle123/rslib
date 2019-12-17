@@ -558,7 +558,7 @@ const Navbar = ({ id, name, avatar, collections, notification, role }) => {
                   onClick={() => router.push("/signup")}
                   style={{
                     fontWeight: "700",
-                    background: isActive("/signup") ? "#283593" : "none"
+                    background: isActive("/signup") ? "#6573c3" : "none"
                   }}
                 >
                   Signup
@@ -568,7 +568,7 @@ const Navbar = ({ id, name, avatar, collections, notification, role }) => {
                   onClick={() => router.push("/login")}
                   style={{
                     fontWeight: "700",
-                    background: isActive("/login") ? "#283593" : "none"
+                    background: isActive("/login") ? "#6573c3" : "none"
                   }}
                 >
                   Login

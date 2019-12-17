@@ -12,7 +12,8 @@ import {
   CardActions,
   Avatar,
   CardHeader,
-  Container
+  Container,
+  Chip
 } from "@material-ui/core";
 
 import ScrollAnimation from "react-animate-on-scroll";
@@ -77,6 +78,10 @@ const useStyles = makeStyles(theme => ({
     objectFit: "contain",
     border: "6px solid #424242",
     borderRadius: 5
+  },
+  badge: {
+    color: theme.palette.secondary.light,
+    borderColor: theme.palette.secondary.light
   }
 }));
 
@@ -211,7 +216,14 @@ export default function Book({ _id, name, role }) {
                     style={{ marginLeft: "auto" }}
                     variant="subtitle2"
                   >
-                    {rating.ratings}/5
+                    <Chip
+                      variant="outlined"
+                      size="small"
+                      label={<span>{rating.ratings || 0} / 5</span>}
+                      // color="secondary"
+                      className={classes.badge}
+                    />
+                    {/* {rating.ratings || 0}/5 */}
                   </Typography>
                 </div>
               </ScrollAnimation>
@@ -221,8 +233,13 @@ export default function Book({ _id, name, role }) {
                   variant="contained"
                   color="secondary"
                   onClick={() => handleClickOpen(detail._id)}
+                  disabled={detail.quantity === 0}
                 >
-                  Borrow this Book
+                  {detail.quantity === 0 ? (
+                    <span>Unavailable</span>
+                  ) : (
+                    <span>Borrow this Book</span>
+                  )}
                 </Button>
               </ScrollAnimation>
             </CardContent>

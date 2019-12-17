@@ -91,7 +91,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Books({ _id, name, role }) {
+export default function Collection({ _id, name, role }) {
   const classes = useStyles();
   const router = useRouter();
   const [books, setBooks] = useState([]);
@@ -100,7 +100,7 @@ export default function Books({ _id, name, role }) {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [search, setSearch] = useState("");
   const [book, setBook] = useState([]);
-  const URL = `${baseUrl}/api/books`;
+  const URL = `${baseUrl}/api/genre`;
   const LOG_URL = `${baseUrl}/api/log`;
   const [open, setOpen] = React.useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
@@ -140,8 +140,11 @@ export default function Books({ _id, name, role }) {
   useEffect(() => {
     const abortController = new AbortController();
     setLoading(true);
+    const payload = {
+      params: { genre: router.query.genre }
+    };
     axios
-      .get(URL)
+      .get(URL, payload)
       .then(res => {
         setLoading(false);
         setBooks(res.data);
@@ -224,7 +227,7 @@ export default function Books({ _id, name, role }) {
           placeholder="Search Books"
         />
         <Typography variant="h4" component="h6" gutterBottom>
-          All Available Books
+          All Books by Genre
         </Typography>
         <Paper className={classes.root}>
           <div className={classes.tableWrapper}>

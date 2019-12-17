@@ -5,11 +5,13 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableFooter from "@material-ui/core/TableFooter";
 import TablePagination from "@material-ui/core/TablePagination";
+import TableContainer from "@material-ui/core/TableContainer";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import TablePaginationActions from "./TablePaginationActions";
 import ArchiveIcon from "@material-ui/icons/Archive";
 import Chip from "@material-ui/core/Chip";
+
 import {
   TableHead,
   Typography,
@@ -71,7 +73,8 @@ const useStyles = makeStyles(theme => ({
     width: "100%"
   },
   table: {
-    minWidth: 500
+    minWidth: 650
+    // marginBottom: 20
   },
   tableWrapper: {
     overflowX: "auto"
@@ -213,135 +216,131 @@ export default function BookLog() {
             {loading ? (
               <CircularProgress className={classes.spinner} size={60} />
             ) : (
-              <Table
-                className={classes.table}
-                aria-label="custom pagination table"
-              >
-                <TableHead>
-                  <TableRow>
-                    <StyledTableCell>Title</StyledTableCell>
-                    <StyledTableCell align="right">Author</StyledTableCell>
-                    <StyledTableCell align="right">Genre</StyledTableCell>
-                    <StyledTableCell align="right">Status</StyledTableCell>
-                    <StyledTableCell align="right">Borrower</StyledTableCell>
-                    <StyledTableCell align="right">Return Date</StyledTableCell>
-                    <StyledTableCell align="right">
-                      Available Qty
-                    </StyledTableCell>
-                    <StyledTableCell align="right">Total Qty</StyledTableCell>
-                    <StyledTableCell align="right">Actions</StyledTableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {(rowsPerPage > 0
-                    ? filteredLogs().slice(
-                        page * rowsPerPage,
-                        page * rowsPerPage + rowsPerPage
-                      )
-                    : filteredLogs()
-                  ).map(log => (
-                    <StyledTableRow key={log._id}>
-                      <StyledTableCell component="th" scope="row">
-                        {log.book.title}
+              <TableContainer component={Paper}>
+                <Table
+                  className={classes.table}
+                  aria-label="custom pagination table"
+                >
+                  <TableHead>
+                    <TableRow>
+                      <StyledTableCell>Title</StyledTableCell>
+                      <StyledTableCell align="right">Author</StyledTableCell>
+                      <StyledTableCell align="right">Genre</StyledTableCell>
+                      <StyledTableCell align="right">Status</StyledTableCell>
+                      <StyledTableCell align="right">Borrower</StyledTableCell>
+                      <StyledTableCell align="right">
+                        Return Date
                       </StyledTableCell>
                       <StyledTableCell align="right">
-                        {log.book.authorName}
+                        Available Qty
                       </StyledTableCell>
-                      <StyledTableCell align="right">
-                        {log.book.genre}
-                      </StyledTableCell>
+                      <StyledTableCell align="right">Total Qty</StyledTableCell>
+                      <StyledTableCell align="right">Actions</StyledTableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {(rowsPerPage > 0
+                      ? filteredLogs().slice(
+                          page * rowsPerPage,
+                          page * rowsPerPage + rowsPerPage
+                        )
+                      : filteredLogs()
+                    ).map(log => (
+                      <StyledTableRow key={log._id}>
+                        <StyledTableCell component="th" scope="row">
+                          {log.book.title}
+                        </StyledTableCell>
+                        <StyledTableCell align="right">
+                          {log.book.authorName}
+                        </StyledTableCell>
+                        <StyledTableCell align="right">
+                          {log.book.genre}
+                        </StyledTableCell>
 
-                      <StyledTableCell align="right">
-                        {/* {log.status} */}
-                        <Chip
-                          variant="outlined"
-                          color={
-                            log.status === "in-use" ? "secondary" : "primary"
-                          }
-                          label={log.status}
-                        />
-                      </StyledTableCell>
-                      <StyledTableCell align="right">
-                        {log.borrower.email}
-                      </StyledTableCell>
-                      <StyledTableCell align="right">
-                        {moment(log.returnDate).format("Do MMMM, YYYY")}
-                      </StyledTableCell>
-                      <StyledTableCell align="right">
-                        {log.book.quantity}
-                      </StyledTableCell>
-                      <StyledTableCell
-                        align="right"
-                        style={{ color: theme.palette.secondary }}
-                      >
-                        {log.book.totalQty}
-                      </StyledTableCell>
-                      <StyledTableCell align="right">
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          disabled={
-                            (load && log._id === logId) ||
-                            log.status === "in-use" ||
-                            log.status === "closedout"
-                          }
-                          size="small"
-                          onClick={() => handleCloseOutLog(log._id)}
-                        >
-                          {load && log._id === logId ? (
-                            <span>Loading...</span>
-                          ) : (
-                            <span>Closeout</span>
-                          )}{" "}
-                          <CheckIcon />
-                        </Button>
-
-                        {/* <IconButton
-                          color="secondary"
-                          onClick={() => handleDeleteLog(log._id)}
-                          disabled={
-                            log.status === "in-use" || log.status === "returned"
-                          }
-                        >
-                          <DeleteIcon
-                            style={{
-                              color:
-                                log.status === "in-use" ||
-                                log.status === "returned"
-                                  ? theme.palette.secondary.grey
-                                  : theme.palette.secondary.red
-                            }}
+                        <StyledTableCell align="right">
+                          {/* {log.status} */}
+                          <Chip
+                            variant="outlined"
+                            color={
+                              log.status === "in-use" ? "secondary" : "primary"
+                            }
+                            label={log.status}
                           />
-                        </IconButton> */}
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  ))}
-                </TableBody>
+                        </StyledTableCell>
+                        <StyledTableCell align="right">
+                          {log.borrower.email}
+                        </StyledTableCell>
+                        <StyledTableCell align="right">
+                          {moment(log.returnDate).format("Do MMMM, YYYY")}
+                        </StyledTableCell>
+                        <StyledTableCell align="right">
+                          {log.book.quantity}
+                        </StyledTableCell>
+                        <StyledTableCell
+                          align="right"
+                          style={{ color: theme.palette.secondary }}
+                        >
+                          {log.book.totalQty}
+                        </StyledTableCell>
+                        <StyledTableCell align="right">
+                          <Button
+                            variant="contained"
+                            color="secondary"
+                            disabled={
+                              (load && log._id === logId) ||
+                              log.status === "in-use" ||
+                              log.status === "closedout"
+                            }
+                            size="small"
+                            onClick={() => handleCloseOutLog(log._id)}
+                          >
+                            {load && log._id === logId ? (
+                              <span>Loading...</span>
+                            ) : (
+                              <span>Closeout</span>
+                            )}{" "}
+                            <CheckIcon />
+                          </Button>
 
-                <TableFooter>
-                  <TableRow>
-                    <TablePagination
-                      rowsPerPageOptions={[
-                        5,
-                        10,
-                        25,
-                        { label: "All", value: -1 }
-                      ]}
-                      colSpan={3}
-                      count={filteredLogs().length}
-                      rowsPerPage={rowsPerPage}
-                      page={page}
-                      SelectProps={{
-                        inputProps: { "aria-label": "rows per page" },
-                        native: true
-                      }}
-                      onChangePage={handleChangePage}
-                      onChangeRowsPerPage={handleChangeRowsPerPage}
-                      ActionsComponent={TablePaginationActions}
-                    />
-                  </TableRow>
-                </TableFooter>
-              </Table>
+                          <IconButton
+                            color="secondary"
+                            onClick={() => handleDeleteLog(log._id)}
+                            disabled={
+                              log.status === "in-use" ||
+                              log.status === "returned"
+                            }
+                          >
+                            <DeleteIcon
+                              style={{
+                                color:
+                                  log.status === "in-use" ||
+                                  log.status === "returned"
+                                    ? theme.palette.secondary.grey
+                                    : theme.palette.secondary.red
+                              }}
+                            />
+                          </IconButton>
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+                <TablePagination
+                  rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+                  colSpan={3}
+                  count={filteredLogs().length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  SelectProps={{
+                    inputProps: { "aria-label": "rows per page" },
+                    native: true
+                  }}
+                  component="div"
+                  onChangePage={handleChangePage}
+                  onChangeRowsPerPage={handleChangeRowsPerPage}
+                  ActionsComponent={TablePaginationActions}
+                />
+              </TableContainer>
             )}
           </div>
         </Paper>

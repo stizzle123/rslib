@@ -6,6 +6,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableFooter from "@material-ui/core/TableFooter";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
+import TableContainer from "@material-ui/core/TableContainer";
 import Paper from "@material-ui/core/Paper";
 import TablePaginationActions from "./TablePaginationActions";
 import SettingsIcon from "@material-ui/icons/Settings";
@@ -174,55 +175,50 @@ export default function Permissions({ users }) {
             {loading ? (
               <CircularProgress className={classes.spinner} size={60} />
             ) : (
-              <Table
-                className={classes.table}
-                aria-label="custom pagination table"
-              >
-                <TableHead>
-                  <TableRow>
-                    <StyledTableCell>Name</StyledTableCell>
-                    <StyledTableCell align="right">Email</StyledTableCell>
-                    <StyledTableCell align="right">Department</StyledTableCell>
-                    <StyledTableCell align="right">Role</StyledTableCell>
-                    <StyledTableCell align="right">Actions</StyledTableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {(rowsPerPage > 0
-                    ? filteredUser().slice(
-                        page * rowsPerPage,
-                        page * rowsPerPage + rowsPerPage
-                      )
-                    : filteredUser()
-                  ).map(user => (
-                    <PermissionsTableBody key={user._id} user={user} />
-                  ))}
-                </TableBody>
-
-                <TableFooter>
-                  <TableRow>
-                    <TablePagination
-                      rowsPerPageOptions={[
-                        5,
-                        10,
-                        25,
-                        { label: "All", value: -1 }
-                      ]}
-                      colSpan={3}
-                      count={filteredUser().length}
-                      rowsPerPage={rowsPerPage}
-                      page={page}
-                      SelectProps={{
-                        inputProps: { "aria-label": "rows per page" },
-                        native: true
-                      }}
-                      onChangePage={handleChangePage}
-                      onChangeRowsPerPage={handleChangeRowsPerPage}
-                      ActionsComponent={TablePaginationActions}
-                    />
-                  </TableRow>
-                </TableFooter>
-              </Table>
+              <TableContainer component={Paper}>
+                <Table
+                  className={classes.table}
+                  aria-label="custom pagination table"
+                >
+                  <TableHead>
+                    <TableRow>
+                      <StyledTableCell>Name</StyledTableCell>
+                      <StyledTableCell align="right">Email</StyledTableCell>
+                      <StyledTableCell align="right">
+                        Department
+                      </StyledTableCell>
+                      <StyledTableCell align="right">Role</StyledTableCell>
+                      <StyledTableCell align="right">Actions</StyledTableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {(rowsPerPage > 0
+                      ? filteredUser().slice(
+                          page * rowsPerPage,
+                          page * rowsPerPage + rowsPerPage
+                        )
+                      : filteredUser()
+                    ).map(user => (
+                      <PermissionsTableBody key={user._id} user={user} />
+                    ))}
+                  </TableBody>
+                </Table>
+                <TablePagination
+                  rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+                  colSpan={3}
+                  count={filteredUser().length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  SelectProps={{
+                    inputProps: { "aria-label": "rows per page" },
+                    native: true
+                  }}
+                  onChangePage={handleChangePage}
+                  onChangeRowsPerPage={handleChangeRowsPerPage}
+                  ActionsComponent={TablePaginationActions}
+                  component="div"
+                />
+              </TableContainer>
             )}
           </div>
         </Paper>

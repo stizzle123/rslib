@@ -78,6 +78,7 @@ const useStyles = makeStyles(theme => ({
     color: "#26a69a"
   },
   container: {
+    width: "100%",
     padding: theme.spacing(6),
     backgroundImage:
       "linear-gradient(84deg, rgba(110, 147, 161, 0.04) 0%, rgba(110, 147, 161, 0.04) 50%,rgba(31, 225, 91, 0.04) 50%, rgba(31, 225, 91, 0.04) 100%),linear-gradient(338deg, rgba(201, 121, 180, 0.04) 0%, rgba(201, 121, 180, 0.04) 50%,rgba(1, 113, 56, 0.04) 50%, rgba(1, 113, 56, 0.04) 100%),linear-gradient(223deg, rgba(211, 211, 180, 0.04) 0%, rgba(211, 211, 180, 0.04) 50%,rgba(13, 109, 126, 0.04) 50%, rgba(13, 109, 126, 0.04) 100%),linear-gradient(327deg, rgba(52, 121, 135, 0.04) 0%, rgba(52, 121, 135, 0.04) 50%,rgba(18, 246, 96, 0.04) 50%, rgba(18, 246, 96, 0.04) 100%),linear-gradient(289deg, rgba(127, 18, 115, 0.04) 0%, rgba(127, 18, 115, 0.04) 50%,rgba(70, 203, 229, 0.04) 50%, rgba(70, 203, 229, 0.04) 100%),linear-gradient(203deg, rgba(131, 205, 141, 0.04) 0%, rgba(131, 205, 141, 0.04) 50%,rgba(37, 31, 18, 0.04) 50%, rgba(37, 31, 18, 0.04) 100%),linear-gradient(221deg, rgba(13, 183, 43, 0.04) 0%, rgba(13, 183, 43, 0.04) 50%,rgba(103, 42, 135, 0.04) 50%, rgba(103, 42, 135, 0.04) 100%),linear-gradient(232deg, rgba(85, 200, 233, 0.04) 0%, rgba(85, 200, 233, 0.04) 50%,rgba(215, 24, 12, 0.04) 50%, rgba(215, 24, 12, 0.04) 100%),linear-gradient(226deg, rgba(95, 197, 25, 0.04) 0%, rgba(95, 197, 25, 0.04) 50%,rgba(30, 61, 7, 0.04) 50%, rgba(30, 61, 7, 0.04) 100%),linear-gradient(178deg, rgba(132, 241, 60, 0.04) 0%, rgba(132, 241, 60, 0.04) 50%,rgba(52, 203, 19, 0.04) 50%, rgba(52, 203, 19, 0.04) 100%),linear-gradient(138deg, rgba(67, 161, 9, 0.04) 0%, rgba(67, 161, 9, 0.04) 50%,rgba(27, 242, 201, 0.04) 50%, rgba(27, 242, 201, 0.04) 100%),linear-gradient(342deg, rgba(33, 36, 218, 0.04) 0%, rgba(33, 36, 218, 0.04) 50%,rgba(248, 232, 35, 0.04) 50%, rgba(248, 232, 35, 0.04) 100%),linear-gradient(70deg, rgba(236, 115, 112, 0.04) 0%, rgba(236, 115, 112, 0.04) 50%,rgba(33, 180, 6, 0.04) 50%, rgba(33, 180, 6, 0.04) 100%),linear-gradient(106deg, rgba(11, 133, 241, 0.04) 0%, rgba(11, 133, 241, 0.04) 50%,rgba(197, 131, 207, 0.04) 50%, rgba(197, 131, 207, 0.04) 100%),linear-gradient(127deg, rgb(50, 233, 241),rgb(7, 146, 201))"
@@ -310,15 +311,17 @@ export default function Dashboard({ collections }) {
           </div>
         </Container>
       </div>
-      <Container className={classes.container}>
-        <Divider style={{ margin: "40px" }} />
-        <div style={{ margin: "30px 0" }}>
-          <div className={classes.grid2}>
-            <TopRatedBooks />
-            <BookRequest />
+      <div className={classes.container}>
+        <Container>
+          <Divider style={{ margin: "40px" }} />
+          <div style={{ margin: "30px 0" }}>
+            <div className={classes.grid2}>
+              <TopRatedBooks />
+              <BookRequest />
+            </div>
           </div>
-        </div>
-      </Container>
+        </Container>
+      </div>
     </div>
   );
 }

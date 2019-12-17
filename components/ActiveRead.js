@@ -3,6 +3,7 @@ import { makeStyles, withStyles } from "@material-ui/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
 import TableFooter from "@material-ui/core/TableFooter";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
@@ -163,105 +164,99 @@ export default function ActiveRead({ reads, id, loading, setLoading }) {
               }}
             />
           ) : (
-            <Table
-              className={classes.table}
-              aria-label="custom pagination table"
-            >
-              <TableHead>
-                <TableRow>
-                  <StyledTableCell>Title</StyledTableCell>
-                  <StyledTableCell align="right">Author</StyledTableCell>
-                  <StyledTableCell align="right">Status</StyledTableCell>
-                  <StyledTableCell align="right">Due Date</StyledTableCell>
-                  <StyledTableCell align="right">Actions</StyledTableCell>
-                </TableRow>
-              </TableHead>
+            <TableContainer component={Paper}>
+              <Table
+                className={classes.table}
+                aria-label="custom pagination table"
+              >
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell>Title</StyledTableCell>
+                    <StyledTableCell align="right">Author</StyledTableCell>
+                    <StyledTableCell align="right">Status</StyledTableCell>
+                    <StyledTableCell align="right">Due Date</StyledTableCell>
+                    <StyledTableCell align="right">Actions</StyledTableCell>
+                  </TableRow>
+                </TableHead>
 
-              <TableBody>
-                {(rowsPerPage > 0
-                  ? books.slice(
-                      page * rowsPerPage,
-                      page * rowsPerPage + rowsPerPage
-                    )
-                  : books
-                ).map(read => (
-                  <StyledTableRow key={read._id}>
-                    <StyledTableCell component="th" scope="row">
-                      {read.book.title}
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
-                      {read.book.authorName}
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
-                      <Chip
-                        variant="outlined"
-                        color={
-                          read.status === "in-use" ? "secondary" : "primary"
-                        }
-                        label={read.status}
-                      />
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
-                      {moment(read.returnDate).format("Do MMMM, YYYY")}
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
-                      <Button
-                        color="secondary"
-                        variant="contained"
-                        // size="small"
-                        onClick={() =>
-                          handleBookReturn(read.book._id, read._id)
-                        }
-                        disabled={
-                          (load && read._id === getId) ||
-                          read.status === "returned" ||
-                          read.status === "closedout"
-                        }
-                      >
-                        {load && read._id === getId ? (
-                          <span>
-                            Loading...
-                            <CircularProgress size={10} />
-                          </span>
-                        ) : (
-                          <span>Return</span>
-                        )}
-                      </Button>
-                      {/* {read.status === "closedout" ? (
+                <TableBody>
+                  {(rowsPerPage > 0
+                    ? books.slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                    : books
+                  ).map(read => (
+                    <StyledTableRow key={read._id}>
+                      <StyledTableCell component="th" scope="row">
+                        {read.book.title}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        {read.book.authorName}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        <Chip
+                          variant="outlined"
+                          color={
+                            read.status === "in-use" ? "secondary" : "primary"
+                          }
+                          label={read.status}
+                        />
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        {moment(read.returnDate).format("Do MMMM, YYYY")}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        <Button
+                          color="secondary"
+                          variant="contained"
+                          // size="small"
+                          onClick={() =>
+                            handleBookReturn(read.book._id, read._id)
+                          }
+                          disabled={
+                            (load && read._id === getId) ||
+                            read.status === "returned" ||
+                            read.status === "closedout"
+                          }
+                        >
+                          {load && read._id === getId ? (
+                            <span>
+                              Loading...
+                              <CircularProgress size={10} />
+                            </span>
+                          ) : (
+                            <span>Return</span>
+                          )}
+                        </Button>
+                        {/* {read.status === "closedout" ? (
                         <IconButton>
                           <DeleteIcon color="error" />
                         </IconButton>
                       ) : (
                         ""
                       )} */}
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
-              </TableBody>
-              <TableFooter>
-                <TableRow>
-                  <TablePagination
-                    rowsPerPageOptions={[
-                      5,
-                      10,
-                      25,
-                      { label: "All", value: -1 }
-                    ]}
-                    colSpan={3}
-                    count={books.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    SelectProps={{
-                      inputProps: { "aria-label": "rows per page" },
-                      native: true
-                    }}
-                    onChangePage={handleChangePage}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                    ActionsComponent={TablePaginationActions}
-                  />
-                </TableRow>
-              </TableFooter>
-            </Table>
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+                colSpan={3}
+                count={books.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                SelectProps={{
+                  inputProps: { "aria-label": "rows per page" },
+                  native: true
+                }}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+                ActionsComponent={TablePaginationActions}
+                component="div"
+              />
+            </TableContainer>
           )}
         </div>
       </Paper>

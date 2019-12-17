@@ -6,6 +6,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableFooter from "@material-ui/core/TableFooter";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
+import TableContainer from "@material-ui/core/TableContainer";
 import Paper from "@material-ui/core/Paper";
 import TablePaginationActions from "./TablePaginationActions";
 import ArchiveIcon from "@material-ui/icons/Archive";
@@ -155,77 +156,72 @@ export default function MyReview({ load, setLoad, reviews }) {
               }}
             />
           ) : (
-            <Table
-              className={classes.table}
-              aria-label="custom pagination table"
-            >
-              <TableHead>
-                <TableRow>
-                  <StyledTableCell>Title</StyledTableCell>
-                  <StyledTableCell align="right">Author</StyledTableCell>
-                  <StyledTableCell align="right">Reviewed Date</StyledTableCell>
-                  <StyledTableCell align="right">Ratings</StyledTableCell>
-                  <StyledTableCell align="right">Actions</StyledTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {(rowsPerPage > 0
-                  ? reviews.slice(
-                      page * rowsPerPage,
-                      page * rowsPerPage + rowsPerPage
-                    )
-                  : reviews
-                ).map(review => (
-                  <StyledTableRow key={review._id}>
-                    <StyledTableCell component="th" scope="row">
-                      {review.book.title}
-                    </StyledTableCell>
+            <TableContainer component={Paper}>
+              <Table
+                className={classes.table}
+                aria-label="custom pagination table"
+              >
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell>Title</StyledTableCell>
+                    <StyledTableCell align="right">Author</StyledTableCell>
                     <StyledTableCell align="right">
-                      {review.book.authorName}
+                      Reviewed Date
                     </StyledTableCell>
-                    <StyledTableCell align="right">
-                      {moment(review.createdAt).format("Do MMMM, YYYY")}
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
-                      <Rating
-                        name="read-only"
-                        value={review.ratings}
-                        readOnly
-                      />
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
-                      <IconButton color="secondary">
-                        <DeleteIcon color="error" />
-                      </IconButton>
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
-              </TableBody>
-
-              <TableFooter>
-                <TableRow>
-                  <TablePagination
-                    rowsPerPageOptions={[
-                      5,
-                      10,
-                      25,
-                      { label: "All", value: -1 }
-                    ]}
-                    colSpan={3}
-                    count={reviews.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    SelectProps={{
-                      inputProps: { "aria-label": "rows per page" },
-                      native: true
-                    }}
-                    onChangePage={handleChangePage}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                    ActionsComponent={TablePaginationActions}
-                  />
-                </TableRow>
-              </TableFooter>
-            </Table>
+                    <StyledTableCell align="right">Ratings</StyledTableCell>
+                    <StyledTableCell align="right">Actions</StyledTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {(rowsPerPage > 0
+                    ? reviews.slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                    : reviews
+                  ).map(review => (
+                    <StyledTableRow key={review._id}>
+                      <StyledTableCell component="th" scope="row">
+                        {review.book.title}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        {review.book.authorName}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        {moment(review.createdAt).format("Do MMMM, YYYY")}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        <Rating
+                          name="read-only"
+                          value={review.ratings}
+                          readOnly
+                        />
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        <IconButton color="secondary">
+                          <DeleteIcon color="error" />
+                        </IconButton>
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+                colSpan={3}
+                count={reviews.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                SelectProps={{
+                  inputProps: { "aria-label": "rows per page" },
+                  native: true
+                }}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+                ActionsComponent={TablePaginationActions}
+                component="div"
+              />
+            </TableContainer>
           )}
         </div>
       </Paper>
