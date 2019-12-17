@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Typography, CircularProgress, Icon } from "@material-ui/core";
+import {
+  Typography,
+  CircularProgress,
+  Icon,
+  List,
+  ListItem,
+  Divider
+} from "@material-ui/core";
 import { makeStyles, withStyles, darken } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -41,13 +48,26 @@ const StyledTableRow = withStyles(theme => ({
 }))(TableRow);
 
 const useStyles = makeStyles(theme => ({
-  root: {
+  desktop: {
     width: "100%",
-    margin: "auto"
+    display: "none",
+    [theme.breakpoints.up("lg")]: {
+      display: "block"
+    }
+    // margin: "auto"
+  },
+  mobile: {
+    width: "100%",
+    display: "none",
+    backgroundImage:
+      "linear-gradient(45deg, transparent 0%, transparent 2%,rgba(116, 116, 116,0.04) 2%, rgba(116, 116, 116,0.04) 36%,transparent 36%, transparent 100%),linear-gradient(0deg, transparent 0%, transparent 48%,rgba(116, 116, 116,0.04) 48%, rgba(116, 116, 116,0.04) 64%,transparent 64%, transparent 100%),linear-gradient(90deg, transparent 0%, transparent 70%,rgba(116, 116, 116,0.04) 70%, rgba(116, 116, 116,0.04) 73%,transparent 73%, transparent 100%),linear-gradient(90deg, transparent 0%, transparent 17%,rgba(116, 116, 116,0.04) 17%, rgba(116, 116, 116,0.04) 54%,transparent 54%, transparent 100%),linear-gradient(90deg, rgb(255,255,255),rgb(255,255,255))",
+    [theme.breakpoints.down("sm")]: {
+      display: "block"
+    }
+    // margin: "auto"
   },
   table: {
-    // minWidth: 650
-    width: "100%"
+    minWidth: 650
   },
   tableHead: {
     color: "#fff",
@@ -63,6 +83,9 @@ const useStyles = makeStyles(theme => ({
     "&:hover": {
       color: theme.palette.secondary.grey
     }
+  },
+  tableWrapper: {
+    overflowX: "auto"
   }
 }));
 
@@ -109,50 +132,76 @@ export default function TopRatedBooks() {
       {loading ? (
         <CircularProgress size="3rem" style={{ margin: "auto" }} />
       ) : (
-        <Paper className={classes.root}>
-          <TableContainer component={Paper} style={{ width: "100%" }}>
-            <Table className={classes.table}>
-              <TableHead className={classes.tableHead}>
-                <TableRow>
-                  <StyledTableCell>Title</StyledTableCell>
-                  <StyledTableCell align="right">Author</StyledTableCell>
-                  <StyledTableCell align="right">Genre</StyledTableCell>
-                  {/* <StyledTableCell align="right">Rated By</StyledTableCell> */}
-                  <StyledTableCell align="right">Ratings</StyledTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {books.map(item => (
-                  <StyledTableRow key={item._id}>
-                    <StyledTableCell component="th" scope="row">
-                      <Link href={`/book/info?id=${item.book._id}`}>
-                        <a className={classes.link}>{item.book.title}</a>
-                      </Link>
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
-                      {item.book.authorName}
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
-                      {item.book.genre}
-                    </StyledTableCell>
-                    {/* <StyledTableCell align="right">
-                      {item.user.email}
-                    </StyledTableCell> */}
-                    <StyledTableCell align="right">
-                      <Rating
-                        precision={0.5}
-                        name="read-only"
-                        value={item.ratings}
-                        readOnly
-                        size="small"
-                      />
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Paper>
+        <>
+          <Paper className={classes.desktop}>
+            <div className={classes.tableWrapper}>
+              <TableContainer component={Paper}>
+                <Table
+                  className={classes.table}
+                  aria-label="custom pagination table"
+                >
+                  <TableHead>
+                    <TableRow>
+                      <StyledTableCell>Title</StyledTableCell>
+                      <StyledTableCell align="right">Author</StyledTableCell>
+                      <StyledTableCell align="right">Genre</StyledTableCell>
+                      {/* <StyledTableCell align="right">Status</StyledTableCell> */}
+                      <StyledTableCell align="right">Ratings</StyledTableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {books.map(item => (
+                      <StyledTableRow key={item._id}>
+                        <StyledTableCell component="th" scope="row">
+                          <Link href={`/book/info?id=${item.book._id}`}>
+                            <a className={classes.link}>{item.book.title}</a>
+                          </Link>
+                        </StyledTableCell>
+                        <StyledTableCell align="right">
+                          {item.book.authorName}
+                        </StyledTableCell>
+                        <StyledTableCell align="right">
+                          {item.book.genre}
+                        </StyledTableCell>
+
+                        <StyledTableCell align="right">
+                          <Rating
+                            precision={0.5}
+                            name="read-only"
+                            value={item.ratings}
+                            readOnly
+                            size="small"
+                          />
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </div>
+          </Paper>
+          <Paper className={classes.mobile}>
+            <List>
+              {books.map(item => (
+                <ListItem
+                  key={item._id}
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <Link href={`/book/info?id=${item.book._id}`}>
+                    <a className={classes.link}>{item.book.title}</a>
+                  </Link>
+                  <Rating
+                    precision={0.5}
+                    name="read-only"
+                    value={item.ratings}
+                    readOnly
+                    size="small"
+                  />
+                </ListItem>
+              ))}
+            </List>
+          </Paper>
+        </>
       )}
     </div>
   );

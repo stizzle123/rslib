@@ -44,7 +44,8 @@ const useStyles = makeStyles(theme => ({
     margin: "auto",
     // height: "100%",
     [theme.breakpoints.down("md")]: {
-      flexDirection: "column"
+      flexDirection: "column",
+      width: "100%"
     }
   },
   media: {

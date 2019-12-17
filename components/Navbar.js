@@ -231,6 +231,9 @@ const useStyles = makeStyles(theme => ({
   },
   avatarButton: {
     position: "relative"
+  },
+  appBar: {
+    borderBottom: `0.09px solid ${theme.palette.secondary.pink}`
   }
 }));
 
@@ -525,7 +528,7 @@ const Navbar = ({ id, name, avatar, collections, notification, role }) => {
           )}
         </Paper>
       )}
-      <AppBar position="static">
+      <AppBar position="static" className={classes.appBar}>
         <Toolbar>
           {state.auth && (
             <IconButton
