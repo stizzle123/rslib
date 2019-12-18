@@ -11,6 +11,9 @@ export default async (req, res) => {
     case "GET":
       await handleGetBook(req, res);
       break;
+    case "PATCH":
+      await handleUpdateBook(req, res);
+      break;
     case "DELETE":
       await handleDeleteBook(req, res);
       break;
@@ -39,7 +42,7 @@ const handleCreateBook = async (req, res) => {
 const handleGetBook = async (req, res) => {
   const { id } = req.query;
   try {
-    const book = await Book.findById({ _id: id });
+    const book = await Book.findOne({ _id: id });
     res.status(200).json(book);
   } catch (error) {
     console.error(error);
@@ -52,6 +55,22 @@ const handleDeleteBook = async (req, res) => {
   try {
     await Book.findOneAndDelete({ _id: id });
     res.status(200).json({ message: "Book removed successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(error);
+  }
+};
+
+const handleUpdateBook = async (req, res) => {
+  const data = { ...req.body };
+
+  try {
+    const updatedBook = await Book.findOneAndUpdate(
+      { _id: data.id },
+      { $set: data },
+      { new: true }
+    );
+    res.status(200).json(updatedBook);
   } catch (error) {
     console.error(error);
     res.status(500).json(error);

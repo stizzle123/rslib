@@ -138,10 +138,21 @@ const AuthContent = ({ classes, router }) => (
 
       <ScrollAnimation animateIn="fadeInUp" delay={4}>
         <Typography color="textSecondary" gutterBottom>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad nesciunt
-          ullam saepe perspiciatis nisi repellat debitis magni ea, quo, culpa
-          vitae nulla tenetur eum quam omnis distinctio iure quis est.
+          <Icon
+            className="fas fa-quote-left"
+            fontSize="small"
+            style={{ fontSize: "0.5rem" }}
+          />
+          Everything is created twice, first in the mind and then in reality
+          <Icon
+            className="fas fa-quote-right"
+            fontSize="small"
+            style={{ fontSize: "0.5rem" }}
+          />
         </Typography>
+        <small style={{ float: "right" }}>
+          &mdash; <em>Robin Sharma</em>
+        </small>
       </ScrollAnimation>
       <Button
         color="primary"

@@ -1,4 +1,4 @@
-import { fade, makeStyles } from "@material-ui/core/styles";
+import { fade, makeStyles, useTheme } from "@material-ui/core/styles";
 import { Container, Typography, Fab, Button, Icon } from "@material-ui/core";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import FormatQuoteIcon from "@material-ui/icons/FormatQuote";
@@ -77,49 +77,56 @@ const HeroContent = ({ _id }) => {
   );
 };
 
-const AuthContent = ({ classes, router }) => (
-  <div>
-    <ScrollAnimation animateIn="fadeInDown" delay={3}>
-      <blockquote>
-        <Typography variant="h3" component="h1" className={classes.quote}>
-          <Icon
-            className={clsx("fas fa-quote-left", {
-              [classes.iconMargin]: true
-            })}
-            fontSize="small"
-          />
-          Wisdom is not a product of schooling but of the lifelong attempt to
-          acquire it.
-          <Icon
-            className={clsx("fas fa-quote-right", {
-              [classes.iconMargin]: true
-            })}
-            fontSize="small"
-          />
+const AuthContent = ({ classes, router }) => {
+  const theme = useTheme();
+
+  return (
+    <div>
+      <ScrollAnimation animateIn="fadeInDown" delay={3}>
+        <blockquote>
+          <Typography variant="h3" component="h1" className={classes.quote}>
+            <Icon
+              className={clsx("fas fa-quote-left", {
+                [classes.iconMargin]: true
+              })}
+              fontSize="small"
+            />
+            Wisdom is not a product of schooling but of the lifelong attempt to
+            acquire it.
+            <Icon
+              className={clsx("fas fa-quote-right", {
+                [classes.iconMargin]: true
+              })}
+              fontSize="small"
+            />
+          </Typography>
+        </blockquote>
+        <Typography
+          variant="subtitle1"
+          component="h3"
+          style={{ fontWeight: "bold", color: theme.palette.background }}
+        >
+          &mdash; <em>Albert Eistein</em>
         </Typography>
-      </blockquote>
-      <Typography
-        variant="subtitle1"
-        component="h3"
-        style={{ fontWeight: "bold", color: "#efebe9" }}
-      >
-        &mdash; <em>Albert Eistein</em>
-      </Typography>
-    </ScrollAnimation>
-    <ScrollAnimation animateIn="fadeInUp" delay={4}>
-      <Button
-        variant="contained"
-        color="primary"
-        size="large"
-        className={classes.margin}
-        onClick={() => router.replace("/books")}
-      >
-        <ArrowForwardIosIcon fontSize="small" style={{ marginRight: "10px" }} />{" "}
-        Get Started
-      </Button>
-    </ScrollAnimation>
-  </div>
-);
+      </ScrollAnimation>
+      <ScrollAnimation animateIn="fadeInUp" delay={4}>
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          className={classes.margin}
+          onClick={() => router.replace("/books")}
+        >
+          <ArrowForwardIosIcon
+            fontSize="small"
+            style={{ marginRight: "10px" }}
+          />{" "}
+          Get Started
+        </Button>
+      </ScrollAnimation>
+    </div>
+  );
+};
 
 const UnAuthContent = ({ classes, router }) => (
   <div>

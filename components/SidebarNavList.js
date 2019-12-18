@@ -94,7 +94,7 @@ export default function SidebarNavList({ role }) {
                 </ListItemIcon>
                 <ListItemText primary="Permissions" />
               </ListItem>
-              <ListItem button>
+              <ListItem button onClick={() => router.push("/requests")}>
                 <ListItemIcon>
                   <Icon className="fas fa-paper-plane" />
                 </ListItemIcon>

@@ -1,6 +1,16 @@
-import React from "react";
-import { Typography, TextField, Paper, Button, Icon } from "@material-ui/core";
+import React, { useState } from "react";
+import {
+  Typography,
+  TextField,
+  Paper,
+  Button,
+  Icon,
+  CircularProgress
+} from "@material-ui/core";
 import { makeStyles, useTheme } from "@material-ui/styles";
+import baseUrl from "../utils/baseUrl";
+import Cookie from "js-cookie";
+import axios from "axios";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -20,12 +30,43 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const INIT_STATE = {
+  title: "",
+  author: "",
+  justification: ""
+};
+
 export default function BookRequest() {
   const classes = useStyles();
   const theme = useTheme();
+  const URL = `${baseUrl}/api/requestbook`;
+  const [loading, setLoading] = useState(false);
+  const [state, setState] = useState(INIT_STATE);
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
+    const token = Cookie.get("token");
+    setLoading(true);
+    try {
+      const payload = { headers: { Authorization: token } };
+      const { title, author, justification } = state;
+      const data = {
+        title,
+        author,
+        justification
+      };
+      await axios.post(URL, data, payload);
+      setLoading(false);
+      setState(INIT_STATE);
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
+  };
+
+  const handleChange = e => {
+    const { target } = e;
+    setState(prevState => ({ ...prevState, [target.id]: target.value }));
   };
 
   return (
@@ -50,6 +91,8 @@ export default function BookRequest() {
           fullWidth
           className={classes.input}
           color="secondary"
+          value={state.title}
+          onChange={handleChange}
         />
         <TextField
           id="author"
@@ -60,6 +103,8 @@ export default function BookRequest() {
           fullWidth
           className={classes.input}
           color="secondary"
+          value={state.author}
+          onChange={handleChange}
         />
         <TextField
           id="justification"
@@ -71,9 +116,24 @@ export default function BookRequest() {
           rows="4"
           className={classes.input}
           color="secondary"
+          value={state.justification}
+          onChange={handleChange}
         />
-        <Button type="submit" variant="contained" color="secondary">
-          Send
+        <Button
+          type="submit"
+          variant="contained"
+          color="secondary"
+          disabled={
+            !(state.title || state.author || state.justification) || loading
+          }
+        >
+          {loading ? (
+            <span>
+              Sending... <CircularProgress size="1rem" />
+            </span>
+          ) : (
+            <span>Send</span>
+          )}
         </Button>
       </form>
     </div>

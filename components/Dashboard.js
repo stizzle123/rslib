@@ -11,7 +11,9 @@ import {
   Tooltip,
   Grid
 } from "@material-ui/core";
-import { makeStyles, useTheme } from "@material-ui/styles";
+import { makeStyles, useTheme, withStyles } from "@material-ui/styles";
+import Badge from "@material-ui/core/Badge";
+
 import Avatar from "@material-ui/core/Avatar";
 import Chip from "@material-ui/core/Chip";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
@@ -86,12 +88,43 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Dashboard({ collections }) {
+const StyledBadge = withStyles(theme => ({
+  badge: {
+    backgroundColor: "#44b700",
+    color: "#44b700",
+    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+
+    "&::after": {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      borderRadius: "50%",
+      animation: "$ripple 1.2s infinite ease-in-out",
+      border: "1px solid currentColor",
+      content: '""'
+    }
+  },
+  "@keyframes ripple": {
+    "0%": {
+      transform: "scale(.8)",
+      opacity: 1
+    },
+    "100%": {
+      transform: "scale(2.4)",
+      opacity: 0
+    }
+  }
+}))(Badge);
+
+export default function Dashboard({ collections, _id }) {
   const classes = useStyles();
   const theme = useTheme();
   const router = useRouter();
   const [books, setBooks] = useState([]);
   const [latestbooks, setLatestBooks] = useState([]);
+  const [totalusers, setTotalUsers] = useState(0);
   const [count, setCount] = useState({
     autobiography: [],
     biography: [],
@@ -103,27 +136,68 @@ export default function Dashboard({ collections }) {
     legal: []
   });
   const [loading, setLoading] = useState(false);
+  const [load, setLoad] = useState(false);
   const [log, setLog] = useState([]);
   const latestBookUrl = `${baseUrl}/api/latestbooks`;
   const logUrl = `${baseUrl}/api/log`;
+  const countUrl = `${baseUrl}/api/totalusers`;
+  const booksUrl = `${baseUrl}/api/books`;
 
   useEffect(() => {
     let abortController = new AbortController();
 
     setLoading(true);
-    axios.get(`${baseUrl}/api/books`).then(res => {
-      setBooks(res.data);
-      setLoading(false);
-    });
-    axios.get(latestBookUrl).then(res => {
-      setLatestBooks(res.data);
-      setLoading(false);
-    });
+    axios
+      .get(booksUrl)
+      .then(res => {
+        setBooks(res.data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setLoading(false);
+      });
+
+    return () => {
+      abortController.abort();
+      setBooks([]);
+    };
+  }, [booksUrl]);
+
+  useEffect(() => {
+    let abortController = new AbortController();
+
+    axios
+      .get(latestBookUrl)
+      .then(res => {
+        setLatestBooks(res.data);
+      })
+      .catch(err => {
+        console.error(err);
+      });
     return () => {
       abortController.abort();
       setBooks([]);
     };
   }, [latestBookUrl]);
+
+  useEffect(() => {
+    let abortController = new AbortController();
+    setLoad(true);
+    axios
+      .get(countUrl)
+      .then(res => {
+        setTotalUsers(res.data);
+        setLoad(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setLoad(false);
+      });
+    return () => {
+      abortController.abort();
+    };
+  }, [countUrl]);
 
   useEffect(() => {
     let abortController = new AbortController();
@@ -196,7 +270,7 @@ export default function Dashboard({ collections }) {
                   <TimelineIcon
                     fontSize="small"
                     color="secondary"
-                    style={{ marginLeft: "5px" }}
+                    style={{ marginLeft: 3 }}
                   />
                   <strong>
                     Total Books as at{" "}
@@ -209,6 +283,33 @@ export default function Dashboard({ collections }) {
                   </Typography>
                 </>
               </div>
+              <Chip
+                label={
+                  <strong style={{ marginLeft: 3, textAlign: "center" }}>
+                    Active users:{" "}
+                    {load ? (
+                      <CircularProgress size="0.8rem" color="secondary" />
+                    ) : (
+                      totalusers
+                    )}
+                  </strong>
+                }
+                style={{ marginBottom: 10, marginLeft: 2 }}
+                variant="outlined"
+                color="secondary"
+                icon={
+                  <StyledBadge
+                    overlap="circle"
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "right"
+                    }}
+                    variant="dot"
+                    style={{ marginLeft: -1 }}
+                  />
+                }
+              />
+
               <Divider />
               <div style={{ margin: "20px 0" }}>
                 <Typography

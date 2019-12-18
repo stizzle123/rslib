@@ -32,7 +32,7 @@ const handleOverdue = async (req, res) => {
     )
       .where("returnDate")
       .lte(date);
-    // Trigger Email notification to User
+    // Trigger Email notification to User And PPM Department
 
     res.status(200).json(logs);
   } catch (error) {

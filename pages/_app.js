@@ -105,7 +105,10 @@ export class MyApp extends App {
     return (
       <React.Fragment>
         <Head>
-          <title>RS Library</title>
+          <title>
+            RS Library &mdash; Empowering the mind through the acquisition of
+            knowledge
+          </title>
         </Head>
         <ThemeProvider theme={theme}>
           <CssBaseline />
