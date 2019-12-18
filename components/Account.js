@@ -9,12 +9,19 @@ import {
   Divider,
   Container,
   Button,
-  Box
+  Box,
+  Snackbar,
+  Fade,
+  CircularProgress
 } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import BorderColorIcon from "@material-ui/icons/BorderColor";
+import CloseOutlined from "@material-ui/icons/CloseOutlined";
 import TextField from "@material-ui/core/TextField";
 import moment from "moment";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
@@ -25,7 +32,6 @@ import { useTheme } from "@material-ui/styles";
 import axios from "axios";
 import baseUrl from "../utils/baseUrl";
 import Badge from "@material-ui/core/Badge";
-
 import Cookie from "js-cookie";
 
 const useStyles = makeStyles(theme => ({
@@ -69,9 +75,8 @@ const useStyles = makeStyles(theme => ({
     padding: `0 ${theme.spacing(1)}`
   },
   textField: {
-    // marginLeft: theme.spacing(1),
-    // marginRight: theme.spacing(1)
-    // width: 200
+    marginBottom: 10,
+    marginTop: 10
   },
   indicator: {
     width: 10,
@@ -127,9 +132,25 @@ export default function Account({
   const [loading, setLoading] = useState(false);
   const [load, setLoad] = useState(false);
   const [reviews, setReviews] = useState([]);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const [snack, setSnack] = useState({
+    success: false,
+    msg: "",
+    Transition: Fade,
+    openError: false,
+    error: ""
+  });
+  const [state, setState] = useState({
+    password: "",
+    confirmpassword: "",
+    loading: false
+  });
 
   const URL = `${baseUrl}/api/borrowed`;
   const REVIEWSURL = `${baseUrl}/api/myreviews`;
+  const PASSURL = `${baseUrl}/api/changepass`;
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -179,8 +200,106 @@ export default function Account({
     };
   }, [REVIEWSURL]);
 
+  const showError = err => {
+    const error = (err.response && err.response.data) || err.message;
+    setSnack({ error, openError: true });
+    setState({ loading: false });
+  };
+
+  const showSuccess = msg => {
+    setSnack({ success: true, msg });
+  };
+
+  const handleCloseSuccess = () => {
+    setSnack({ success: false });
+  };
+
+  const handleChange = e => {
+    const { target } = e;
+    setState(prevState => ({ ...prevState, [target.id]: target.value }));
+  };
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+  const handleClickShowConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+  const handleMouseDownPassword = event => {
+    event.preventDefault();
+  };
+
+  const handleClose = () => {
+    setSnack({ openError: false });
+  };
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    const token = Cookie.get("token");
+    setState({ loading: true });
+    try {
+      const payload = { headers: { Authorization: token } };
+      const { password, confirmpassword } = state;
+      const data = { password, confirmpassword };
+      const res = await axios.patch(PASSURL, data, payload);
+      setState({ loading: false, password: "", confirmpassword: "" });
+      showSuccess("Password changed successfully");
+    } catch (error) {
+      showError(error);
+      setState({ loading: false, password: "", confirmpassword: "" });
+    }
+  };
+
   return (
     <div className={classes.root}>
+      {snack.error && (
+        <Snackbar
+          open={snack.openError}
+          onClose={handleClose}
+          TransitionComponent={snack.Transition}
+          ContentProps={{
+            "aria-describedby": "message-id"
+          }}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right"
+          }}
+          message={
+            <span id="message-id" style={{ color: "red" }}>
+              {snack.error}
+            </span>
+          }
+          action={
+            <IconButton color="secondary" onClick={handleClose}>
+              <CloseOutlined color="secondary" />
+            </IconButton>
+          }
+        />
+      )}
+      {snack.success && (
+        <Snackbar
+          open={snack.success}
+          onClose={handleCloseSuccess}
+          TransitionComponent={snack.Transition}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right"
+          }}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right"
+          }}
+          ContentProps={{
+            "aria-describedby": "message-id"
+          }}
+          // autoHideDuration={6000}
+          action={
+            <IconButton color="secondary" onClick={handleCloseSuccess}>
+              <CloseOutlined color="secondary" />
+            </IconButton>
+          }
+          message={<span id="message-id-3">{snack.msg}</span>}
+        />
+      )}
       <Typography
         style={{
           display: "flex",
@@ -231,29 +350,75 @@ export default function Account({
           >
             Change Password <BorderColorIcon color="secondary" />
           </Typography>
-          <form className={classes.form}>
+          <form onSubmit={handleSubmit} className={classes.form}>
             <TextField
-              id="outlined-textarea-1"
-              label="New Password"
-              placeholder="New Password"
-              multiline
-              className={classes.textField}
-              margin="normal"
+              id="password"
+              label="Password"
+              type={showPassword ? "text" : "password"}
+              autoComplete="current-password"
               variant="outlined"
               fullWidth
+              color="secondary"
+              value={state.password}
+              onChange={handleChange}
+              className={classes.textField}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }}
             />
             <TextField
-              id="outlined-textarea-2"
-              label="Confirm New Password"
-              placeholder="Confirm New Password"
-              multiline
-              className={classes.textField}
-              margin="normal"
+              id="confirmpassword"
+              label="Confirm Password"
+              type={showConfirmPassword ? "text" : "password"}
+              autoComplete="current-password"
               variant="outlined"
               fullWidth
+              color="secondary"
+              className={classes.textField}
+              value={state.confirmpassword}
+              onChange={handleChange}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowConfirmPassword}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }}
             />
-            <Button variant="contained" color="secondary" fullWidth>
-              Save
+            <Button
+              type="submit"
+              disabled={
+                !(state.password && state.confirmpassword) || state.loading
+              }
+              variant="contained"
+              color="secondary"
+              fullWidth
+              style={{ marginTop: 5 }}
+            >
+              {state.loading ? (
+                <span>
+                  Saving...
+                  <CircularProgress size="1rem" />
+                </span>
+              ) : (
+                <span>Save</span>
+              )}
             </Button>
           </form>
         </Paper>

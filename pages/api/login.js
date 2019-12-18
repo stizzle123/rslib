@@ -20,7 +20,7 @@ export default async (req, res) => {
       });
       res.status(200).json(token);
     } else {
-      res.status(401).send("Password does not match");
+      res.status(401).send("Invalid password");
     }
   } catch (error) {
     console.error(error);
