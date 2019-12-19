@@ -482,7 +482,8 @@ const Navbar = ({ id, name, avatar, collections, notification, role }) => {
               boxShadow: "0 0 10px rgba(225,225,225,0.9)"
               // border: "3px solid #fefefe",
             }}
-            src="/images/rslibrary-logo.jpg"
+            // src="/images/rslibrary-logo.jpg"
+            src="/images/logo.png"
             variant="circle"
           />
           {/* <img
@@ -558,7 +559,7 @@ const Navbar = ({ id, name, avatar, collections, notification, role }) => {
               <a className={classes.titleNav}>
                 RS Library
                 <Avatar
-                  src="/images/rslibrary-logo.jpg"
+                  src="/images/logo.png"
                   variant="circle"
                   style={{
                     width: "40px",
@@ -572,7 +573,7 @@ const Navbar = ({ id, name, avatar, collections, notification, role }) => {
             </Link>
           </div>
           <Avatar
-            src="/images/rslibrary-logo.jpg"
+            src="/images/ogo.png"
             variant="circle"
             style={{
               width: "40px",

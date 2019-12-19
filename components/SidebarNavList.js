@@ -106,7 +106,7 @@ export default function SidebarNavList({ role }) {
       </>
       <span className={classes.bottomPosition}>
         <Avatar
-          src="/images/rslibrary-logo.jpg"
+          src="/images/logo.png"
           variant="circle"
           style={{
             margin: "auto",
