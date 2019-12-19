@@ -308,6 +308,7 @@ export default function BookLog() {
                             onClick={() => handleDeleteLog(log._id)}
                             disabled={
                               log.status === "in-use" ||
+                              log.status === "overdue" ||
                               log.status === "returned"
                             }
                           >
@@ -315,6 +316,7 @@ export default function BookLog() {
                               style={{
                                 color:
                                   log.status === "in-use" ||
+                                  log.status === "overdue" ||
                                   log.status === "returned"
                                     ? theme.palette.secondary.grey
                                     : theme.palette.secondary.red
