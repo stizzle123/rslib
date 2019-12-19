@@ -573,7 +573,7 @@ const Navbar = ({ id, name, avatar, collections, notification, role }) => {
             </Link>
           </div>
           <Avatar
-            src="/images/ogo.png"
+            src="/images/logo.png"
             variant="circle"
             style={{
               width: "40px",
