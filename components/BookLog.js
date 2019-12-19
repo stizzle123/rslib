@@ -289,7 +289,8 @@ export default function BookLog() {
                             disabled={
                               (load && log._id === logId) ||
                               log.status === "in-use" ||
-                              log.status === "closedout"
+                              log.status === "closedout" ||
+                              log.status === "overdue"
                             }
                             size="small"
                             onClick={() => handleCloseOutLog(log._id)}
