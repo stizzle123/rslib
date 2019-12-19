@@ -164,7 +164,7 @@ export default function MyCollections({ books, createdAt, user }) {
   return (
     <div className={classes.root}>
       <Typography variant="h3" component="h6" align="center" gutterBottom>
-        My Book Collections
+        My Book History
       </Typography>
       <div className={classes.container}>
         {getBooks.length !== 0 ? (
@@ -218,7 +218,7 @@ export default function MyCollections({ books, createdAt, user }) {
                 align="center"
                 gutterBottom
               >
-                You currently have no books in your collection{" "}
+                You currently have no books in your history{" "}
               </Typography>
               <Button
                 variant="contained"

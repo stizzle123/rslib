@@ -1,6 +1,7 @@
 import React from "react";
 import { Pie, Doughnut } from "react-chartjs-2";
 import { Typography } from "@material-ui/core";
+import InsertChartIcon from "@material-ui/icons/InsertChart";
 
 const state = {
   labels: ["Books", "Users", "Reviews", "Requests"],
@@ -17,23 +18,30 @@ const state = {
 export default function DataChart() {
   return (
     <div>
-      {/* <Typography variant="h6" color="textSecondary">
-        Data Count
-      </Typography> */}
-      <Pie
+      <Doughnut
         data={state}
         options={{
           title: {
             display: true,
-            text: "Total Data count",
-            fontSize: 20
+            fontSize: 20,
+            color: "#fff"
           },
           legend: {
             display: true,
-            position: "right"
+            labels: {
+              fontColor: "white"
+            }
           }
         }}
       />
+      <Typography
+        variant="h6"
+        component="h1"
+        color="textSecondary"
+        style={{ color: "#fff", display: "flex", alignItems: "center" }}
+      >
+        Data Analytics <InsertChartIcon />
+      </Typography>
     </div>
   );
 }

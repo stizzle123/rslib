@@ -88,8 +88,37 @@ const useStyles = makeStyles(theme => ({
       "linear-gradient(84deg, rgba(110, 147, 161, 0.04) 0%, rgba(110, 147, 161, 0.04) 50%,rgba(31, 225, 91, 0.04) 50%, rgba(31, 225, 91, 0.04) 100%),linear-gradient(338deg, rgba(201, 121, 180, 0.04) 0%, rgba(201, 121, 180, 0.04) 50%,rgba(1, 113, 56, 0.04) 50%, rgba(1, 113, 56, 0.04) 100%),linear-gradient(223deg, rgba(211, 211, 180, 0.04) 0%, rgba(211, 211, 180, 0.04) 50%,rgba(13, 109, 126, 0.04) 50%, rgba(13, 109, 126, 0.04) 100%),linear-gradient(327deg, rgba(52, 121, 135, 0.04) 0%, rgba(52, 121, 135, 0.04) 50%,rgba(18, 246, 96, 0.04) 50%, rgba(18, 246, 96, 0.04) 100%),linear-gradient(289deg, rgba(127, 18, 115, 0.04) 0%, rgba(127, 18, 115, 0.04) 50%,rgba(70, 203, 229, 0.04) 50%, rgba(70, 203, 229, 0.04) 100%),linear-gradient(203deg, rgba(131, 205, 141, 0.04) 0%, rgba(131, 205, 141, 0.04) 50%,rgba(37, 31, 18, 0.04) 50%, rgba(37, 31, 18, 0.04) 100%),linear-gradient(221deg, rgba(13, 183, 43, 0.04) 0%, rgba(13, 183, 43, 0.04) 50%,rgba(103, 42, 135, 0.04) 50%, rgba(103, 42, 135, 0.04) 100%),linear-gradient(232deg, rgba(85, 200, 233, 0.04) 0%, rgba(85, 200, 233, 0.04) 50%,rgba(215, 24, 12, 0.04) 50%, rgba(215, 24, 12, 0.04) 100%),linear-gradient(226deg, rgba(95, 197, 25, 0.04) 0%, rgba(95, 197, 25, 0.04) 50%,rgba(30, 61, 7, 0.04) 50%, rgba(30, 61, 7, 0.04) 100%),linear-gradient(178deg, rgba(132, 241, 60, 0.04) 0%, rgba(132, 241, 60, 0.04) 50%,rgba(52, 203, 19, 0.04) 50%, rgba(52, 203, 19, 0.04) 100%),linear-gradient(138deg, rgba(67, 161, 9, 0.04) 0%, rgba(67, 161, 9, 0.04) 50%,rgba(27, 242, 201, 0.04) 50%, rgba(27, 242, 201, 0.04) 100%),linear-gradient(342deg, rgba(33, 36, 218, 0.04) 0%, rgba(33, 36, 218, 0.04) 50%,rgba(248, 232, 35, 0.04) 50%, rgba(248, 232, 35, 0.04) 100%),linear-gradient(70deg, rgba(236, 115, 112, 0.04) 0%, rgba(236, 115, 112, 0.04) 50%,rgba(33, 180, 6, 0.04) 50%, rgba(33, 180, 6, 0.04) 100%),linear-gradient(106deg, rgba(11, 133, 241, 0.04) 0%, rgba(11, 133, 241, 0.04) 50%,rgba(197, 131, 207, 0.04) 50%, rgba(197, 131, 207, 0.04) 100%),linear-gradient(127deg, rgb(50, 233, 241),rgb(7, 146, 201))"
   },
   chartContainer: {
+    // backgroundImage:
+    //   "linear-gradient(297deg, transparent 0%, transparent 34%,rgba(178, 178, 178,0.02) 34%, rgba(178, 178, 178,0.02) 53%,transparent 53%, transparent 100%),linear-gradient(222deg, transparent 0%, transparent 30%,rgba(8, 8, 8,0.02) 30%, rgba(8, 8, 8,0.02) 58%,transparent 58%, transparent 100%),linear-gradient(352deg, transparent 0%, transparent 25%,rgba(88, 88, 88,0.02) 25%, rgba(88, 88, 88,0.02) 57%,transparent 57%, transparent 100%),linear-gradient(90deg, rgb(255,255,255),rgb(255,255,255))"
+  },
+  chart: {
+    padding: theme.spacing(6),
+    // height: "100vh",
+
     backgroundImage:
-      "linear-gradient(297deg, transparent 0%, transparent 34%,rgba(178, 178, 178,0.02) 34%, rgba(178, 178, 178,0.02) 53%,transparent 53%, transparent 100%),linear-gradient(222deg, transparent 0%, transparent 30%,rgba(8, 8, 8,0.02) 30%, rgba(8, 8, 8,0.02) 58%,transparent 58%, transparent 100%),linear-gradient(352deg, transparent 0%, transparent 25%,rgba(88, 88, 88,0.02) 25%, rgba(88, 88, 88,0.02) 57%,transparent 57%, transparent 100%),linear-gradient(90deg, rgb(255,255,255),rgb(255,255,255))"
+      "linear-gradient(348deg, transparent 0%, transparent 76%,rgba(194, 194, 194,0.04) 76%, rgba(194, 194, 194,0.04) 93%,transparent 93%, transparent 100%),linear-gradient(150deg, transparent 0%, transparent 10%,rgba(194, 194, 194,0.04) 10%, rgba(194, 194, 194,0.04) 74%,transparent 74%, transparent 100%),linear-gradient(68deg, transparent 0%, transparent 36%,rgba(194, 194, 194,0.04) 36%, rgba(194, 194, 194,0.04) 47%,transparent 47%, transparent 100%),linear-gradient(199deg, transparent 0%, transparent 37%,rgba(194, 194, 194,0.04) 37%, rgba(194, 194, 194,0.04) 47%,transparent 47%, transparent 100%),linear-gradient(90deg, rgb(0,0,0),rgb(0,0,0))"
+  },
+  chartIllustration: {
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    position: "relative",
+
+    display: "block",
+    backgroundImage: "url(images/icon-bg.png)",
+    [theme.breakpoints.down("sm")]: {
+      display: "none"
+    }
+  },
+  dashboardBg: {
+    position: "absolute",
+    left: 0,
+    top: 0,
+    width: "100%",
+    height: "100%",
+    [theme.breakpoints.down("sm")]: {
+      display: "none"
+    }
   }
 }));
 
@@ -228,7 +257,7 @@ export default function Dashboard({ collections, _id }) {
     return () => {
       abortController.abort();
     };
-  }, [booksUrl]);
+  }, [books]);
 
   const getGenre = key => {
     return books.filter(book => {
@@ -442,8 +471,26 @@ export default function Dashboard({ collections, _id }) {
         </Container>
       </div>
       <Grid container className={classes.chartContainer}>
-        <Grid item md={6}>
-          {/* <DataChart /> */}
+        <Grid item md={6} sm={12} className={classes.chart}>
+          <DataChart />
+        </Grid>
+        <Grid item md={6} sm={12} className={classes.chartIllustration}>
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)"
+            }}
+          >
+            <Typography variant="h3" align="center" style={{ color: "#fff" }}>
+              Analytics
+            </Typography>
+            <Typography paragraph style={{ color: "#fff" }} align="center">
+              Detailed analytics to measure and analyse users engagement with RS
+              Library
+            </Typography>
+          </div>
         </Grid>
       </Grid>
     </div>

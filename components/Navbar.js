@@ -479,12 +479,23 @@ const Navbar = ({ id, name, avatar, collections, notification, role }) => {
           <Avatar
             style={{
               margin: "auto",
-              boxShadow: "0 0 10px rgba(225,225,225,0.9)",
-              border: "3px solid #fefefe"
+              boxShadow: "0 0 10px rgba(225,225,225,0.9)"
+              // border: "3px solid #fefefe",
             }}
             src="/images/rslibrary-logo.jpg"
             variant="circle"
           />
+          {/* <img
+            src="/images/books.svg"
+            alt="logo"
+            style={{
+              width: 60,
+              height: 60,
+              borderRadius: "50%",
+              margin: "auto",
+              display: "block"
+            }}
+          /> */}
           <Grid container justify="space-between" alignItems="center">
             <Typography variant="subtitle1" gutterBottom>
               Search Results:{" "}
@@ -647,7 +658,7 @@ const Navbar = ({ id, name, avatar, collections, notification, role }) => {
                     badgeContent={collections.books.length}
                     color="secondary"
                   >
-                    <Icon className="fas fa-shopping-bag" />
+                    <Icon className="fas fa-archive" />
                   </Badge>
                 </IconButton>
               </div>
@@ -685,7 +696,7 @@ const Navbar = ({ id, name, avatar, collections, notification, role }) => {
                     My account
                   </MenuItem>
                   <MenuItem onClick={() => router.push(`/bookcollections`)}>
-                    My Collections
+                    My Book History
                   </MenuItem>
                   <MenuItem onClick={signOut}>Logout</MenuItem>
                 </Menu>
@@ -716,7 +727,7 @@ const Navbar = ({ id, name, avatar, collections, notification, role }) => {
                     My account
                   </MenuItem>
                   <MenuItem onClick={() => router.replace(`/bookcollections`)}>
-                    My Collections{" "}
+                    My Book History{" "}
                   </MenuItem>
                   <MenuItem onClick={signOut}>Logout</MenuItem>
                 </Menu>
