@@ -27,6 +27,7 @@ import { capitalize } from "../utils/capitalize";
 
 import axios from "axios";
 import baseUrl from "../utils/baseUrl";
+import Cookie from "js-cookie";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -90,13 +91,16 @@ export default function BorrowModal({ handleClose, open, book, name, userId }) {
 
   const handleBorrow = async book => {
     setLoading(true);
+    const token = Cookie.get("token");
     try {
-      const payload = {
+      const payload = { headers: { Authorization: token } };
+
+      const data = {
         borrower: userId,
         book: book._id,
         returnDate: selectedDate
       };
-      const response = await axios.post(`${baseUrl}/api/log`, payload);
+      const response = await axios.post(`${baseUrl}/api/log`, data, payload);
       setLoading(false);
       handleClose();
       showSuccess("Book was borrowed successfully");
@@ -114,6 +118,10 @@ export default function BorrowModal({ handleClose, open, book, name, userId }) {
           open={snack.openError}
           onClose={handleClose}
           TransitionComponent={snack.Transition}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right"
+          }}
           ContentProps={{
             "aria-describedby": "message-id"
           }}

@@ -28,7 +28,9 @@ const handleGetNotification = async (req, res) => {
       req.headers.authorization,
       process.env.JWT_SECRET
     );
-    const data = await Notification.find({ user: userId });
+    const data = await Notification.find({ user: userId }).sort({
+      createdAt: "desc"
+    });
     res.status(200).json(data);
   } catch (error) {
     console.error(error);

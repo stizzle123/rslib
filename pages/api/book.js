@@ -62,7 +62,8 @@ const handleDeleteBook = async (req, res) => {
 };
 
 const handleUpdateBook = async (req, res) => {
-  const data = { ...req.body };
+  let data = {};
+  data = { ...req.body };
 
   try {
     const updatedBook = await Book.findOneAndUpdate(

@@ -23,6 +23,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import CheckIcon from "@material-ui/icons/Check";
 import { capitalize } from "../utils/capitalize";
 import { darken } from "@material-ui/core/styles";
+
 import moment from "moment";
 import baseUrl from "../utils/baseUrl";
 import axios from "axios";
@@ -134,7 +135,7 @@ export default function ActiveRead({ reads, id, loading, setLoading }) {
 
   const handleBookReturn = async (bookId, logId) => {
     setGetId(logId);
-    const payload = {
+    const data = {
       borrower: id,
       book: bookId,
       _id: logId,
@@ -142,7 +143,7 @@ export default function ActiveRead({ reads, id, loading, setLoading }) {
     };
     setLoad(true);
     try {
-      const response = await axios.patch(URL, payload);
+      const response = await axios.patch(URL, data);
       setLoad(false);
       let arr = [
         ...books.map(book =>

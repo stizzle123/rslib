@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import BookLog from "../../models/BookLog";
 import Book from "../../models/Book";
 import Notification from "../../models/Notification";
+import jwt from "jsonwebtoken";
 import Collection from "../../models/Collection";
 import connectDb from "../../utils/connectDb";
 const { ObjectId } = mongoose.Types;
@@ -30,30 +31,48 @@ export default async (req, res) => {
 
 const handleCreateLog = async (req, res) => {
   const data = { ...req.body };
+  if (!("authorization" in req.headers)) {
+    return res.status(401).send("No authorization token");
+  }
   try {
+    const { userId } = jwt.verify(
+      req.headers.authorization,
+      process.env.JWT_SECRET
+    );
     const book = await Book.findOne({ _id: data.book });
-    if (book.quantity < 1) {
+    if (book.quantity - book.borrowers.length === 0) {
       res.status(500).json("This book is currently out of stock");
       return;
     } else {
-      await Book.findOneAndUpdate(
-        { _id: book._id },
-        { $inc: { quantity: -1 } }
-      );
-      const collection = await Collection.findOne({ user: data.borrower });
-      await Collection.findOneAndUpdate(
-        { _id: collection._id },
-        { $addToSet: { books: data.book } }
-      );
+      const isBorrowed = await Book.findOne({
+        _id: data.book,
+        borrowers: { $in: userId }
+      });
+      if (isBorrowed) {
+        res
+          .status(500)
+          .json(`${isBorrowed.title} has already been borrowed by you.`);
+        return;
+      } else {
+        await Book.findOneAndUpdate(
+          { _id: book._id },
+          { $addToSet: { borrowers: userId } }
+        );
+        const collection = await Collection.findOne({ user: data.borrower });
+        await Collection.findOneAndUpdate(
+          { _id: collection._id },
+          { $addToSet: { books: data.book } }
+        );
 
-      const notification = `Recently borrowed ${book.title}`;
-      const booklog = await new BookLog(data).save();
-      await new Notification({
-        message: notification,
-        user: data.borrower
-      }).save();
+        const notification = `Recently borrowed ${book.title}`;
+        const booklog = await new BookLog(data).save();
+        await new Notification({
+          message: notification,
+          user: data.borrower
+        }).save();
 
-      res.status(200).json(booklog);
+        res.status(200).json(booklog);
+      }
     }
   } catch (error) {
     console.error(error);
@@ -75,6 +94,11 @@ const handleUpdateLog = async (req, res) => {
   const data = { ...req.body };
 
   try {
+    let getLog = await BookLog.findOne({ _id: data.id });
+    await Book.findOneAndUpdate(
+      { _id: getLog.book._id },
+      { $pull: { borrowers: getLog.borrower } }
+    );
     const updatedLog = await BookLog.findOneAndUpdate(
       { _id: data.id },
       { $set: { status: "closedout" } },

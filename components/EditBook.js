@@ -21,6 +21,7 @@ import EditOutlined from "@material-ui/icons/EditOutlined";
 import { darken } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import Fade from "@material-ui/core/Fade";
 import axios from "axios";
 import baseUrl from "../utils/baseUrl";
 import catchErrors from "../utils/catchErrors";
@@ -118,6 +119,7 @@ const INIT_STATE = {
   genre: "",
   imageUrl: "",
   summary: "",
+  quantity: "",
   totalQty: "",
   id: ""
 };
@@ -132,6 +134,14 @@ export default function EditBook({ _id }) {
   const [loadingImage, setLoadingImage] = useState(false);
   const [error, setError] = useState("");
   const [openError, setOpenError] = useState(false);
+  const [snack, setSnack] = useState({
+    open: false,
+    Transition: Fade,
+    openError: false,
+    error: "",
+    success: false,
+    message: ""
+  });
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -147,7 +157,7 @@ export default function EditBook({ _id }) {
           genre: res.data.genre,
           imageUrl: res.data.imageUrl,
           summary: res.data.summary,
-          totalQty: res.data.totalQty,
+          quantity: res.data.quantity,
           summary: res.data.summary,
           id: res.data._id
         });
@@ -160,6 +170,20 @@ export default function EditBook({ _id }) {
       abortController.abort();
     };
   }, [URL]);
+
+  const showError = err => {
+    const error = (err.response && err.response.data) || err.message;
+    setSnack({ error, openError: true });
+    setLoading(false);
+  };
+
+  const showSuccess = msg => {
+    setSnack({ success: true, message: msg });
+  };
+
+  const handleCloseSuccess = () => {
+    setSnack({ success: false });
+  };
 
   const handleChange = e => {
     const { name, value, files } = e.target;
@@ -205,20 +229,26 @@ export default function EditBook({ _id }) {
         genre,
         summary,
         imageUrl,
-        totalQty,
+        quantity,
         id
       } = state;
 
-      const payload = { authorName, title, genre, summary, totalQty, id };
+      const payload = { authorName, title, genre, summary, quantity, id };
       if (imageUrl) {
         payload.imageUrl = imageUrl;
       }
+      payload.totalQty = quantity;
 
       const response = await axios.patch(URL, payload);
-      console.log(response.data);
+
+      showSuccess(`${response.data.title} was updated successfully`);
+      setTimeout(() => {
+        router.push("/books");
+      }, 1000);
     } catch (error) {
       setOpenError(true);
       catchErrors(error, setError);
+      showError(error);
     } finally {
       //   setState(INIT_STATE);
       setLoading(false);
@@ -228,6 +258,37 @@ export default function EditBook({ _id }) {
 
   return (
     <div className={classes.base}>
+      {snack.error && (
+        <Snackbar
+          open={snack.openError}
+          onClose={handleClose}
+          TransitionComponent={snack.Transition}
+          ContentProps={{
+            "aria-describedby": "message-id"
+          }}
+          message={
+            <span id="message-id" style={{ color: "red" }}>
+              {snack.error}
+            </span>
+          }
+        />
+      )}
+      {snack.success && (
+        <Snackbar
+          open={snack.success}
+          onClose={handleCloseSuccess}
+          TransitionComponent={snack.Transition}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right"
+          }}
+          ContentProps={{
+            "aria-describedby": "message-id"
+          }}
+          // autoHideDuration={6000}
+          message={<span id="message-id-2">{snack.message}</span>}
+        />
+      )}
       <div className={classes.root}>
         <Paper className={classes.paper}>
           <Avatar className={classes.imageUrl}>
@@ -330,11 +391,11 @@ export default function EditBook({ _id }) {
               </Select>
             </FormControl>
             <FormControl margin="normal" fullWidth required>
-              <InputLabel htmlFor="totalQty">Quantity</InputLabel>
+              <InputLabel htmlFor="quantity">Quantity</InputLabel>
               <Input
                 type="number"
-                name="totalQty"
-                value={state.totalQty}
+                name="quantity"
+                value={state.quantity}
                 onChange={handleChange}
               />
             </FormControl>

@@ -20,23 +20,17 @@ const handleReturnBook = async (req, res) => {
   const data = { ...req.body };
   try {
     const book = await Book.findOne({ _id: data.book });
-    if (book.quantity === book.totalQty) {
-      res.status(500).json("Already returned book.");
-      return;
-    } else {
-      await Book.findOneAndUpdate({ _id: book._id }, { $inc: { quantity: 1 } });
-      const notification = `Recently returned ${book.title}`;
-      await new Notification({
-        message: notification,
-        user: data.borrower
-      }).save();
-      const newLog = await BookLog.findOneAndUpdate(
-        { _id: data._id },
-        { $set: data },
-        { new: true }
-      );
-      res.status(200).json(newLog);
-    }
+    const notification = `Recently returned ${book.title}`;
+    await new Notification({
+      message: notification,
+      user: data.borrower
+    }).save();
+    const newLog = await BookLog.findOneAndUpdate(
+      { _id: data._id },
+      { $set: data },
+      { new: true }
+    );
+    res.status(200).json(newLog);
   } catch (error) {
     console.error(error);
     res.status(500).json(error);

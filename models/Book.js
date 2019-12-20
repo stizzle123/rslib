@@ -50,7 +50,8 @@ const bookSchema = new mongoose.Schema(
       type: Number,
       default: 1,
       trim: true
-    }
+    },
+    borrowers: [{ type: ObjectId, ref: "User" }]
   },
   { timestamps: true }
 );
@@ -62,6 +63,7 @@ const populateBorrowers = function(next) {
 };
 
 bookSchema.pre("findOne", populateBorrowers);
+bookSchema.pre("find", populateBorrowers);
 bookSchema.plugin(mongodbErrorHandler);
 
 export default mongoose.models.Book || mongoose.model("Book", bookSchema);

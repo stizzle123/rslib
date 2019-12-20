@@ -1,21 +1,32 @@
 import React from "react";
 import { Pie, Doughnut } from "react-chartjs-2";
 import { Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
+
 import InsertChartIcon from "@material-ui/icons/InsertChart";
 
-const state = {
-  labels: ["Books", "Users", "Reviews", "Requests"],
-  datasets: [
-    {
-      label: "Rainfall",
-      backgroundColor: ["#B21F00", "#C9DE00", "#2FDE00", "#00A6B4"],
-      hoverBackgroundColor: ["#501800", "#4B5000", "#175000", "#003350"],
-      data: [7, 5, 7, 4]
+const useStyles = makeStyles(theme => ({
+  chart: {
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+      height: "auto"
     }
-  ]
-};
+  }
+}));
 
 export default function DataChart() {
+  const classes = useStyles();
+  const state = {
+    labels: ["Books", "Users", "Reviews", "Requests"],
+    datasets: [
+      {
+        label: "Rainfall",
+        backgroundColor: ["#B21F00", "#C9DE00", "#2FDE00", "#00A6B4"],
+        hoverBackgroundColor: ["#501800", "#4B5000", "#175000", "#003350"],
+        data: [7, 5, 7, 4]
+      }
+    ]
+  };
   return (
     <div>
       <Doughnut
@@ -33,6 +44,7 @@ export default function DataChart() {
             }
           }
         }}
+        // className={classes.chart}
       />
       <Typography
         variant="h6"

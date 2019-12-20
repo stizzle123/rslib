@@ -579,7 +579,9 @@ const Navbar = ({ id, name, avatar, collections, notification, role }) => {
               width: "40px",
               height: "40px",
               marginRight: 15,
-              boxShadow: "0 0 4px rgba(225,225,225,0.9)"
+              border: "3px solid #fefefe"
+
+              // boxShadow: "0 0 4px rgba(225,225,225,0.9)"
             }}
             onClick={() => router.replace("/")}
             className={classes.sectionMobile}

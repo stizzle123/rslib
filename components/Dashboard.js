@@ -19,6 +19,11 @@ import Chip from "@material-ui/core/Chip";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import TimelineIcon from "@material-ui/icons/Timeline";
 import PollIcon from "@material-ui/icons/Poll";
+import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
 import moment from "moment";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -89,7 +94,10 @@ const useStyles = makeStyles(theme => ({
   },
   chartContainer: {
     // backgroundImage:
-    //   "linear-gradient(297deg, transparent 0%, transparent 34%,rgba(178, 178, 178,0.02) 34%, rgba(178, 178, 178,0.02) 53%,transparent 53%, transparent 100%),linear-gradient(222deg, transparent 0%, transparent 30%,rgba(8, 8, 8,0.02) 30%, rgba(8, 8, 8,0.02) 58%,transparent 58%, transparent 100%),linear-gradient(352deg, transparent 0%, transparent 25%,rgba(88, 88, 88,0.02) 25%, rgba(88, 88, 88,0.02) 57%,transparent 57%, transparent 100%),linear-gradient(90deg, rgb(255,255,255),rgb(255,255,255))"
+    //   "linear-gradient(297deg, transparent 0%, transparent 34%,rgba(178, 178, 178,0.02) 34%, rgba(178, 178, 178,0.02) 53%,transparent 53%, transparent 100%),linear-gradient(222deg, transparent 0%, transparent 30%,rgba(8, 8, 8,0.02) 30%, rgba(8, 8, 8,0.02) 58%,transparent 58%, transparent 100%),linear-gradient(352deg, transparent 0%, transparent 25%,rgba(88, 88, 88,0.02) 25%, rgba(88, 88, 88,0.02) 57%,transparent 57%, transparent 100%),linear-gradient(90deg, rgb(255,255,255),rgb(255,255,255))",
+    [theme.breakpoints.down("sm")]: {
+      display: "none"
+    }
   },
   chart: {
     padding: theme.spacing(6),
@@ -105,9 +113,19 @@ const useStyles = makeStyles(theme => ({
     position: "relative",
 
     display: "block",
+    opacity: 0.9,
     backgroundImage: "url(images/icon-bg.png)",
     [theme.breakpoints.down("sm")]: {
       display: "none"
+    },
+    "&:after": {
+      content: "",
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      background: "rgba(0,0,0,0.6)"
     }
   },
   dashboardBg: {
@@ -119,6 +137,36 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down("sm")]: {
       display: "none"
     }
+  },
+  card: {
+    maxWidth: 345,
+    display: "none",
+    margin: "auto",
+    [theme.breakpoints.down("sm")]: {
+      display: "block"
+    }
+  },
+  media: {
+    height: 140
+  },
+  cardContainer: {
+    width: "100%",
+    // height: "100vh",
+    paddingTop: theme.spacing(6),
+    paddingLeft: theme.spacing(6),
+    paddingBottom: theme.spacing(6),
+    paddingRight: theme.spacing(6),
+    backgroundImage:
+      "linear-gradient(348deg, transparent 0%, transparent 76%,rgba(194, 194, 194,0.04) 76%, rgba(194, 194, 194,0.04) 93%,transparent 93%, transparent 100%),linear-gradient(150deg, transparent 0%, transparent 10%,rgba(194, 194, 194,0.04) 10%, rgba(194, 194, 194,0.04) 74%,transparent 74%, transparent 100%),linear-gradient(68deg, transparent 0%, transparent 36%,rgba(194, 194, 194,0.04) 36%, rgba(194, 194, 194,0.04) 47%,transparent 47%, transparent 100%),linear-gradient(199deg, transparent 0%, transparent 37%,rgba(194, 194, 194,0.04) 37%, rgba(194, 194, 194,0.04) 47%,transparent 47%, transparent 100%),linear-gradient(90deg, rgb(0,0,0),rgb(0,0,0))",
+    display: "none",
+    [theme.breakpoints.down("sm")]: {
+      display: "block"
+    }
+  },
+  cardContent: {
+    padding: theme.spacing(6),
+    backgroundImage:
+      "linear-gradient(161deg, rgba(75, 75, 75,0.03) 0%, rgba(75, 75, 75,0.03) 27%,rgba(85, 85, 85,0.03) 27%, rgba(85, 85, 85,0.03) 32%,rgba(174, 174, 174,0.03) 32%, rgba(174, 174, 174,0.03) 100%),linear-gradient(320deg, rgba(138, 138, 138,0.03) 0%, rgba(138, 138, 138,0.03) 55%,rgba(234, 234, 234,0.03) 55%, rgba(234, 234, 234,0.03) 66%,rgba(197, 197, 197,0.03) 66%, rgba(197, 197, 197,0.03) 100%),linear-gradient(90deg, rgb(255,255,255),rgb(255,255,255))"
   }
 }));
 
@@ -281,6 +329,10 @@ export default function Dashboard({ collections, _id }) {
     };
   }, [logUrl]);
 
+  const getOverdue = () => {
+    return log.filter(log => log.status === "overdue");
+  };
+
   return (
     <div>
       <div className={classes.header}>
@@ -422,7 +474,10 @@ export default function Dashboard({ collections, _id }) {
                 </Typography>
                 <Typography variant="subtitle2">
                   <strong>
-                    Overdue: <span className={classes.spanIt}>0</span>
+                    Overdue:{" "}
+                    <span className={classes.spanIt}>
+                      {getOverdue().length}
+                    </span>
                   </strong>
                 </Typography>
               </div>
@@ -483,7 +538,12 @@ export default function Dashboard({ collections, _id }) {
               transform: "translate(-50%, -50%)"
             }}
           >
-            <Typography variant="h3" align="center" style={{ color: "#fff" }}>
+            <Typography
+              variant="h3"
+              align="center"
+              style={{ color: "#fff" }}
+              gutterBottom
+            >
               Analytics
             </Typography>
             <Typography paragraph style={{ color: "#fff" }} align="center">
@@ -493,6 +553,26 @@ export default function Dashboard({ collections, _id }) {
           </div>
         </Grid>
       </Grid>
+      <div className={classes.cardContainer}>
+        <Card className={classes.card}>
+          <CardActionArea>
+            <CardMedia
+              className={classes.media}
+              image="/images/icon-bg.png"
+              title="Analytics"
+            />
+            <CardContent className={classes.cardContent}>
+              <Typography gutterBottom variant="h5" component="h2">
+                Analytics
+              </Typography>
+              <Typography variant="body2" color="textSecondary" component="p">
+                Detailed analytics to measure and analyse users engagement with
+                RS Library
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+        </Card>
+      </div>
     </div>
   );
 }

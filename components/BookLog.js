@@ -265,6 +265,11 @@ export default function BookLog() {
                               log.status === "in-use" ? "secondary" : "primary"
                             }
                             label={log.status}
+                            style={{
+                              borderColor:
+                                log.status === "overdue" ? "#f44336" : "",
+                              color: log.status === "overdue" ? "#f44336" : ""
+                            }}
                           />
                         </StyledTableCell>
                         <StyledTableCell align="right">
@@ -274,7 +279,7 @@ export default function BookLog() {
                           {moment(log.returnDate).format("Do MMMM, YYYY")}
                         </StyledTableCell>
                         <StyledTableCell align="right">
-                          {log.book.quantity}
+                          {log.book.quantity - log.book.borrowers.length}
                         </StyledTableCell>
                         <StyledTableCell
                           align="right"

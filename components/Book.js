@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   Typography,
   makeStyles,
+  withStyles,
   Card,
   CardMedia,
   CardContent,
@@ -13,8 +14,10 @@ import {
   Avatar,
   CardHeader,
   Container,
-  Chip
+  Chip,
+  TablePagination
 } from "@material-ui/core";
+import Badge from "@material-ui/core/Badge";
 
 import ScrollAnimation from "react-animate-on-scroll";
 import Rating from "@material-ui/lab/Rating";
@@ -22,6 +25,7 @@ import { useRouter } from "next/router";
 import baseUrl from "../utils/baseUrl";
 import axios from "axios";
 import IconButton from "@material-ui/core/IconButton";
+
 import DeleteIcon from "@material-ui/icons/Delete";
 import Modal from "./Modal";
 import moment from "moment";
@@ -86,6 +90,35 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const StyledBadge = withStyles(theme => ({
+  badge: {
+    backgroundColor: "#44b700",
+    color: "#44b700",
+    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+    "&::after": {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      borderRadius: "50%",
+      animation: "$ripple 1.2s infinite ease-in-out",
+      border: "1px solid currentColor",
+      content: '""'
+    }
+  },
+  "@keyframes ripple": {
+    "0%": {
+      transform: "scale(.8)",
+      opacity: 1
+    },
+    "100%": {
+      transform: "scale(2.4)",
+      opacity: 0
+    }
+  }
+}))(Badge);
+
 export default function Book({ _id, name, role }) {
   const router = useRouter();
   const classes = useStyles();
@@ -98,6 +131,10 @@ export default function Book({ _id, name, role }) {
   const [loading, setLoading] = useState(false);
   const [load, setLoad] = useState(false);
   const [rating, setRating] = useState({});
+  const [page, setPage] = React.useState(0);
+  const [dense, setDense] = React.useState(false);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [quantity, setQuantity] = useState(0);
 
   useEffect(() => {
     const payload = {
@@ -108,6 +145,7 @@ export default function Book({ _id, name, role }) {
       .get(URL, payload)
       .then(res => {
         setDetail(res.data);
+        setQuantity(res.data.quantity - res.data.borrowers.length);
         setLoading(false);
       })
       .catch(err => console.error(err));
@@ -151,6 +189,17 @@ export default function Book({ _id, name, role }) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = event => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  console.log(quantity);
 
   return (
     <div className={classes.root}>
@@ -224,7 +273,6 @@ export default function Book({ _id, name, role }) {
                       // color="secondary"
                       className={classes.badge}
                     />
-                    {/* {rating.ratings || 0}/5 */}
                   </Typography>
                 </div>
               </ScrollAnimation>
@@ -234,9 +282,9 @@ export default function Book({ _id, name, role }) {
                   variant="contained"
                   color="secondary"
                   onClick={() => handleClickOpen(detail._id)}
-                  disabled={detail.quantity === 0}
+                  disabled={quantity === 0}
                 >
-                  {detail.quantity === 0 ? (
+                  {quantity === 0 ? (
                     <span>Unavailable</span>
                   ) : (
                     <span>Borrow this Book</span>
@@ -259,16 +307,40 @@ export default function Book({ _id, name, role }) {
                 }}
               />
             ) : reviews.length ? (
-              reviews.map(review => (
+              (rowsPerPage > 0
+                ? reviews.slice(
+                    page * rowsPerPage,
+                    page * rowsPerPage + rowsPerPage
+                  )
+                : reviews
+              ).map(review => (
                 <Card className={classes.cardReview} key={review._id}>
                   <CardHeader
                     avatar={
-                      <Avatar
-                        aria-label="recipe"
-                        src={review.user.avatar}
-                        alt={review.user.name}
-                        className={classes.avatar}
-                      />
+                      review.user._id === _id ? (
+                        <StyledBadge
+                          overlap="circle"
+                          anchorOrigin={{
+                            vertical: "bottom",
+                            horizontal: "right"
+                          }}
+                          variant="dot"
+                        >
+                          <Avatar
+                            aria-label="recipe"
+                            src={review.user.avatar}
+                            alt={review.user.name}
+                            className={classes.avatar}
+                          />
+                        </StyledBadge>
+                      ) : (
+                        <Avatar
+                          aria-label="recipe"
+                          src={review.user.avatar}
+                          alt={review.user.name}
+                          className={classes.avatar}
+                        />
+                      )
                     }
                     title={
                       <div
@@ -310,6 +382,20 @@ export default function Book({ _id, name, role }) {
                   No Reviews for this book
                 </Typography>
               </Card>
+            )}
+
+            {reviews.length ? (
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={reviews.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+              />
+            ) : (
+              ""
             )}
           </Container>
         </Container>

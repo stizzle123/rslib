@@ -25,14 +25,10 @@ export default class MyDocument extends Document {
           <meta name="theme-color" content={theme.palette.primary.main} />
           <link
             rel="shortcut icon"
-            href="/images/rslibrary-logo.jpg"
+            href="/images/logo.jpg"
             type="image/x-icon"
           />
-          <link
-            rel="icon"
-            href="/images/rslibrary-logo.png"
-            type="image/x-icon"
-          />
+          <link rel="icon" href="/images/logo.png" type="image/x-icon" />
           <link rel="manifest" href="/manifest.json" />
 
           <meta name="mobile-web-app-capable" content="yes" />
