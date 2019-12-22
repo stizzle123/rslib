@@ -15,6 +15,8 @@ import {
   Typography
 } from "@material-ui/core";
 import DateFnsUtils from "@date-io/date-fns";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker
@@ -26,6 +28,7 @@ import { capitalize } from "../utils/capitalize";
 import baseUrl from "../utils/baseUrl";
 import axios from "axios";
 import { useRouter } from "next/router";
+import Cookie from "js-cookie";
 
 const useStyles = makeStyles(theme => ({
   modal: {
@@ -41,6 +44,9 @@ const useStyles = makeStyles(theme => ({
     objectFit: "contain",
     border: `6px solid ${theme.palette.primary.light}`,
     borderRadius: 5
+  },
+  icon: {
+    fontSize: 20
   }
 }));
 
@@ -69,6 +75,10 @@ export default function Modal({ book, open, handleClose, name, userId }) {
     setLoading(false);
   };
 
+  const closeError = () => {
+    setSnack({ openError: false });
+  };
+
   const handleDateChange = date => {
     setSelectedDate(date);
   };
@@ -87,13 +97,17 @@ export default function Modal({ book, open, handleClose, name, userId }) {
 
   const handleBorrow = async book => {
     setLoading(true);
+    const token = Cookie.get("token");
+
     try {
-      const payload = {
+      const payload = { headers: { Authorization: token } };
+
+      const data = {
         borrower: userId,
         book: book._id,
         returnDate: selectedDate
       };
-      const response = await axios.post(`${baseUrl}/api/log`, payload);
+      const response = await axios.post(`${baseUrl}/api/log`, data, payload);
       setLoading(false);
       handleClose();
       showSuccess("Book was borrowed successfully");
@@ -114,6 +128,10 @@ export default function Modal({ book, open, handleClose, name, userId }) {
           open={snack.openError}
           onClose={handleClose}
           TransitionComponent={snack.Transition}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right"
+          }}
           ContentProps={{
             "aria-describedby": "message-id"
           }}
@@ -122,6 +140,16 @@ export default function Modal({ book, open, handleClose, name, userId }) {
               {snack.error}
             </span>
           }
+          action={[
+            <IconButton
+              key="close"
+              aria-label="close"
+              color="inherit"
+              onClick={closeError}
+            >
+              <CloseIcon className={classes.icon} />
+            </IconButton>
+          ]}
         />
       )}
       {snack.success && (
@@ -138,12 +166,22 @@ export default function Modal({ book, open, handleClose, name, userId }) {
           }}
           // autoHideDuration={6000}
           message={<span id="message-id-2">{snack.message}</span>}
+          action={[
+            <IconButton
+              key="close"
+              aria-label="close"
+              color="inherit"
+              onClick={handleClose}
+            >
+              <CloseIcon className={classes.icon} />
+            </IconButton>
+          ]}
         />
       )}
       <Dialog
         fullWidth={true}
         open={open}
-        onClose={handleClose}
+        onClose={handleCloseSuccess}
         aria-labelledby="responsive-dialog-title"
         className={classes.modal}
       >

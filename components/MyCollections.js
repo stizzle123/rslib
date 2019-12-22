@@ -31,6 +31,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import baseUrl from "../utils/baseUrl";
 import Cookie from "js-cookie";
+import Link from "next/link";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -43,8 +44,9 @@ const useStyles = makeStyles(theme => ({
   container: {
     display: "grid",
     padding: theme.spacing(8),
-    gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+    gridTemplateColumns: "repeat(auto-fit, minmax(450px, 1fr))",
     gridGap: 10,
+    margin: "auto",
     [theme.breakpoints.down("md")]: {
       justifyItems: "center",
       gridTemplateColumns: "repeat(1,1fr)"
@@ -171,7 +173,13 @@ export default function MyCollections({ books, createdAt, user }) {
           getBooks.map((book, i) => (
             <Card className={classes.card} key={book._id}>
               <CardHeader
-                title={book.title}
+                title={
+                  <Link href={`/book/info?id=${book._id}`}>
+                    <a style={{ color: theme.palette.secondary.grey }}>
+                      {book.title}
+                    </a>
+                  </Link>
+                }
                 subheader={moment(createdAt).format("MMMM Do, YYYY")}
                 action={
                   <IconButton

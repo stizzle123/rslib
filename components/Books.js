@@ -125,7 +125,7 @@ export default function Books({ _id, name, role }) {
 
   const handleClose = () => {
     setOpen(false);
-    router.reload();
+    // router.reload();
   };
 
   useEffect(() => {
@@ -312,6 +312,12 @@ export default function Books({ _id, name, role }) {
                             disabled={
                               book.quantity - book.borrowers.length === 0
                             }
+                            style={{
+                              cursor:
+                                book.quantity - book.borrowers.length === 0
+                                  ? "not-allowed"
+                                  : ""
+                            }}
                           >
                             Borrow
                           </Button>

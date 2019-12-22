@@ -20,6 +20,7 @@ import {
   IconButton,
   CircularProgress
 } from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
 
 import Snackbar from "@material-ui/core/Snackbar";
 import Fade from "@material-ui/core/Fade";
@@ -48,6 +49,9 @@ const useStyles = makeStyles(theme => ({
     objectFit: "contain",
     border: "6px solid #424242",
     borderRadius: 5
+  },
+  icon: {
+    fontSize: 20
   }
 }));
 
@@ -72,6 +76,10 @@ export default function BorrowModal({ handleClose, open, book, name, userId }) {
     const error = (err.response && err.response.data) || err.message;
     setSnack({ error, openError: true });
     setLoading(false);
+  };
+
+  const closeError = () => {
+    setSnack({ openError: false });
   };
 
   const handleDateChange = date => {
@@ -130,6 +138,16 @@ export default function BorrowModal({ handleClose, open, book, name, userId }) {
               {snack.error}
             </span>
           }
+          action={[
+            <IconButton
+              key="close"
+              aria-label="close"
+              color="inherit"
+              onClick={closeError}
+            >
+              <CloseIcon className={classes.icon} />
+            </IconButton>
+          ]}
         />
       )}
       {snack.success && (
@@ -146,6 +164,16 @@ export default function BorrowModal({ handleClose, open, book, name, userId }) {
           }}
           // autoHideDuration={6000}
           message={<span id="message-id-2">{snack.message}</span>}
+          action={[
+            <IconButton
+              key="close"
+              aria-label="close"
+              color="inherit"
+              onClick={handleCloseSuccess}
+            >
+              <CloseIcon className={classes.icon} />
+            </IconButton>
+          ]}
         />
       )}
       {book.map(book => (

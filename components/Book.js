@@ -199,8 +199,6 @@ export default function Book({ _id, name, role }) {
     setPage(0);
   };
 
-  console.log(quantity);
-
   return (
     <div className={classes.root}>
       <Modal

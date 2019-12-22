@@ -548,29 +548,49 @@ export default function Dashboard({ collections, _id }) {
             </Typography>
             <Typography paragraph style={{ color: "#fff" }} align="center">
               Detailed analytics to measure and analyse users engagement with RS
-              Library
+              Library application
             </Typography>
+            <div style={{ textAlign: "center" }}>
+              <Button
+                onClick={() => router.push("/books")}
+                variant="contained"
+                color="primary"
+              >
+                Get Started
+              </Button>
+            </div>
           </div>
         </Grid>
       </Grid>
       <div className={classes.cardContainer}>
         <Card className={classes.card}>
-          <CardActionArea>
-            <CardMedia
-              className={classes.media}
-              image="/images/icon-bg.png"
-              title="Analytics"
-            />
-            <CardContent className={classes.cardContent}>
-              <Typography gutterBottom variant="h5" component="h2">
-                Analytics
-              </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                Detailed analytics to measure and analyse users engagement with
-                RS Library
-              </Typography>
-            </CardContent>
-          </CardActionArea>
+          <CardMedia
+            className={classes.media}
+            image="/images/icon-bg.png"
+            title="Analytics"
+          />
+          <CardContent className={classes.cardContent}>
+            <Typography gutterBottom variant="h5" component="h2">
+              Analytics
+            </Typography>
+            <Typography
+              gutterBottom
+              variant="body2"
+              color="textSecondary"
+              component="p"
+              style={{ marginBottom: 20 }}
+            >
+              Detailed analytics to measure and analyse users engagement with RS
+              Library
+            </Typography>
+            <Button
+              onClick={() => router.push("/books")}
+              variant="contained"
+              color="primary"
+            >
+              Get Started
+            </Button>
+          </CardContent>
         </Card>
       </div>
     </div>

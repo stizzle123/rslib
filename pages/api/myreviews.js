@@ -23,7 +23,9 @@ const handleGetReview = async (req, res) => {
       req.headers.authorization,
       process.env.JWT_SECRET
     );
-    const reviews = await Rating.find({ user: userId });
+    const reviews = await Rating.find({ user: userId }).sort({
+      createdAt: "desc"
+    });
     res.status(200).json(reviews);
   } catch (error) {
     res.status(403).send("Invalid token");

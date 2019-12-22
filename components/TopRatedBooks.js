@@ -118,6 +118,12 @@ export default function TopRatedBooks() {
     };
   }, [URL]);
 
+  const arr = books.filter((val, index, array) => {
+    return index === array.findIndex(t => t.book._id === val.book._id);
+  });
+
+  const getCount = id => books.filter((val, index, arr) => val.book._id === id);
+
   return (
     <div>
       <Typography
@@ -150,7 +156,7 @@ export default function TopRatedBooks() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {books.map(item => (
+                    {arr.map(item => (
                       <StyledTableRow key={item._id}>
                         <StyledTableCell component="th" scope="row">
                           <Link href={`/book/info?id=${item.book._id}`}>
@@ -164,7 +170,17 @@ export default function TopRatedBooks() {
                           {item.book.genre}
                         </StyledTableCell>
 
-                        <StyledTableCell align="right">
+                        <StyledTableCell
+                          align="right"
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center"
+                          }}
+                        >
+                          <span style={{ marginLeft: 5, color: "#757575" }}>
+                            {getCount(item.book._id).length} review(s)
+                          </span>
                           <Rating
                             precision={0.5}
                             name="read-only"
@@ -182,21 +198,32 @@ export default function TopRatedBooks() {
           </Paper>
           <Paper className={classes.mobile}>
             <List>
-              {books.map(item => (
+              {arr.map(item => (
                 <ListItem
                   key={item._id}
-                  style={{ display: "flex", justifyContent: "space-between" }}
+                  // style={{ display: "flex", justifyContent: "space-between" }}
                 >
                   <Link href={`/book/info?id=${item.book._id}`}>
                     <a className={classes.link}>{item.book.title}</a>
                   </Link>
-                  <Rating
-                    precision={0.5}
-                    name="read-only"
-                    value={item.ratings}
-                    readOnly
-                    size="small"
-                  />
+                  <span
+                    style={{
+                      marginLeft: "auto",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center"
+                    }}
+                  >
+                    <Rating
+                      precision={0.5}
+                      name="read-only"
+                      value={item.ratings}
+                      readOnly
+                      size="small"
+                      style={{ marginRight: 5 }}
+                    />
+                    {getCount(item.book._id).length} review(s)
+                  </span>
                 </ListItem>
               ))}
             </List>

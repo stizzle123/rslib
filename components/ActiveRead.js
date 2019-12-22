@@ -213,35 +213,39 @@ export default function ActiveRead({ reads, id, loading, setLoading }) {
                         {moment(read.returnDate).format("Do MMMM, YYYY")}
                       </StyledTableCell>
                       <StyledTableCell align="right">
-                        <Button
-                          color="secondary"
-                          variant="contained"
-                          // size="small"
-                          onClick={() =>
-                            handleBookReturn(read.book._id, read._id)
-                          }
-                          disabled={
-                            (load && read._id === getId) ||
-                            read.status === "returned" ||
-                            read.status === "closedout"
-                          }
-                        >
-                          {load && read._id === getId ? (
-                            <span>
-                              Loading...
-                              <CircularProgress size={10} />
-                            </span>
-                          ) : (
-                            <span>Return</span>
-                          )}
-                        </Button>
-                        {/* {read.status === "closedout" ? (
-                        <IconButton>
-                          <DeleteIcon color="error" />
-                        </IconButton>
-                      ) : (
-                        ""
-                      )} */}
+                        {read.status !== "closedout" ? (
+                          <Button
+                            color="secondary"
+                            variant="contained"
+                            // size="small"
+                            onClick={() =>
+                              handleBookReturn(read.book._id, read._id)
+                            }
+                            disabled={
+                              (load && read._id === getId) ||
+                              read.status === "returned" ||
+                              read.status === "closedout"
+                            }
+                          >
+                            {load && read._id === getId ? (
+                              <span>
+                                Loading...
+                                <CircularProgress size={10} />
+                              </span>
+                            ) : (
+                              <span>Return</span>
+                            )}
+                          </Button>
+                        ) : (
+                          ""
+                        )}
+                        {read.status === "closedout" ? (
+                          <IconButton>
+                            <DeleteIcon color="error" />
+                          </IconButton>
+                        ) : (
+                          ""
+                        )}
                       </StyledTableCell>
                     </StyledTableRow>
                   ))}
