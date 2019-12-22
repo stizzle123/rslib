@@ -25,7 +25,7 @@ export default class MyDocument extends Document {
           <meta name="theme-color" content={theme.palette.primary.main} />
           <link
             rel="shortcut icon"
-            href="/images/logo.jpg"
+            href="/images/logo.png"
             type="image/x-icon"
           />
           <link rel="icon" href="/images/logo.png" type="image/x-icon" />
