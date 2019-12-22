@@ -1,6 +1,8 @@
 import Book from "../../models/Book";
 import connectDb from "../../utils/connectDb";
 
+connectDb();
+
 export default async (req, res) => {
   const { genre } = req.query;
   try {

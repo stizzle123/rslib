@@ -3,6 +3,8 @@ import jwt from "jsonwebtoken";
 
 import connectDb from "../../utils/connectDb";
 
+connectDb();
+
 export default async (req, res) => {
   const { id } = req.query;
   try {

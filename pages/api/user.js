@@ -1,7 +1,7 @@
 import User from "../../models/User";
 import connectDb from "../../utils/connectDb";
 
-// connectDb();
+connectDb();
 
 export default async (req, res) => {
   switch (req.method) {

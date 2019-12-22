@@ -2,6 +2,8 @@ import Request from "../../models/Request";
 import jwt from "jsonwebtoken";
 import connectDb from "../../utils/connectDb";
 
+connectDb();
+
 export default async (req, res) => {
   switch (req.method) {
     case "POST":

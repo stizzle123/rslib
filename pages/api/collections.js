@@ -3,7 +3,7 @@ import connectDb from "../../utils/connectDb";
 import Collection from "../../models/Collection";
 import jwt from "jsonwebtoken";
 
-// connectDb();
+connectDb();
 
 const { ObjectId } = mongoose.Types;
 

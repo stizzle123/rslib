@@ -52,7 +52,7 @@ const useStyles = makeStyles(theme => ({
       gridTemplateColumns: "repeat(1,1fr)"
     },
     "& > *": {
-      grid: "1"
+      // grid: "1"
     }
   },
   media: {
@@ -62,11 +62,14 @@ const useStyles = makeStyles(theme => ({
   },
   card: {
     maxWidth: 545,
-    width: "80%",
+    width: "100%",
     margin: "auto",
     "&:nth-of-type(odd)": {
       backgroundImage:
         "repeating-linear-gradient(135deg, rgba(209, 209, 209,0.01) 0px, rgba(209, 209, 209,0.01) 33px,rgba(180, 180, 180,0.01) 33px, rgba(180, 180, 180,0.01) 66px,rgba(151, 151, 151,0.01) 66px, rgba(151, 151, 151,0.01) 99px,rgba(122, 122, 122,0.01) 99px, rgba(122, 122, 122,0.01) 132px,rgba(94, 94, 94,0.01) 132px, rgba(94, 94, 94,0.01) 165px,rgba(65, 65, 65,0.01) 165px, rgba(65, 65, 65,0.01) 198px,rgba(36, 36, 36,0.01) 198px, rgba(36, 36, 36,0.01) 231px,rgba(7, 7, 7,0.01) 231px, rgba(7, 7, 7,0.01) 264px),repeating-linear-gradient(45deg, rgba(11, 11, 11,0.01) 0px, rgba(11, 11, 11,0.01) 33px,rgba(34, 34, 34,0.01) 33px, rgba(34, 34, 34,0.01) 66px,rgba(56, 56, 56,0.01) 66px, rgba(56, 56, 56,0.01) 99px,rgba(79, 79, 79,0.01) 99px, rgba(79, 79, 79,0.01) 132px,rgba(102, 102, 102,0.01) 132px, rgba(102, 102, 102,0.01) 165px,rgba(125, 125, 125,0.01) 165px, rgba(125, 125, 125,0.01) 198px,rgba(147, 147, 147,0.01) 198px, rgba(147, 147, 147,0.01) 231px,rgba(170, 170, 170,0.01) 231px, rgba(170, 170, 170,0.01) 264px),linear-gradient(90deg, #FFF,#FFF)"
+    },
+    [theme.breakpoints.down("sm")]: {
+      width: "100%"
     }
   },
   expand: {

@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "precache.EqRHdLcT37w4y8nHviCs2.95a7da0a7f09571f06b5f721c3cd585e.js"
+  "precache.MMaKyQo_Gv0LDXJYIlmjV.9dbd34c1288c29aa3afec23007270d7a.js"
 );
 
 workbox.core.skipWaiting();
@@ -37,35 +37,35 @@ self.__precacheManifest = [
   },
   {
     "url": "public/icons/icon-128x128.png",
-    "revision": "27851f16c1021a1342761f0a0a009a4e"
+    "revision": "7aa14b439cdbb4643515f871b8c1d187"
   },
   {
     "url": "public/icons/icon-144x144.png",
-    "revision": "2218c7f1a7a06cb7e4ca0a2d3a3a399f"
+    "revision": "fdc38fa5ee251b9295d970986fd910d6"
   },
   {
     "url": "public/icons/icon-152x152.png",
-    "revision": "59e5919047bfb5e2fb1c92e302d34075"
+    "revision": "4da775292451ac926cddb7200c39c200"
   },
   {
     "url": "public/icons/icon-192x192.png",
-    "revision": "e21753d0a201ae7eb7950df266ad5686"
+    "revision": "0dce286f34bf06dc56349806cf610662"
   },
   {
     "url": "public/icons/icon-384x384.png",
-    "revision": "302040135fa788cca68e5d51bac17881"
+    "revision": "b7d625e37e297cbab6ea25f74432918d"
   },
   {
     "url": "public/icons/icon-512x512.png",
-    "revision": "ced23a5028dd17441b5caef76779ae65"
+    "revision": "e771c3c6a94a19942b853b4646aa5bd1"
   },
   {
     "url": "public/icons/icon-72x72.png",
-    "revision": "a93a41e8be74c861b467f51ac451437e"
+    "revision": "f2c7d15530be7249fe2ac4b3284616f7"
   },
   {
     "url": "public/icons/icon-96x96.png",
-    "revision": "1f69763e26b8fa4cf1bc41c6bf26a214"
+    "revision": "86e8e5e8e8d7ded26d676ad801038534"
   },
   {
     "url": "public/images/abstract.png",

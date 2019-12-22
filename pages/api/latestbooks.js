@@ -1,7 +1,7 @@
 import connectDb from "../../utils/connectDb";
 import Book from "../../models/Book";
 
-// connectDb();
+connectDb();
 
 export default async (req, res) => {
   try {
