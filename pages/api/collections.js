@@ -3,11 +3,10 @@ import connectDb from "../../utils/connectDb";
 import Collection from "../../models/Collection";
 import jwt from "jsonwebtoken";
 
-connectDb();
-
 const { ObjectId } = mongoose.Types;
 
 export default async (req, res) => {
+  // await connectDb();
   switch (req.method) {
     case "GET":
       await handleGetCollections(req, res);

@@ -4,9 +4,8 @@ import Book from "../../models/Book";
 import Notification from "../../models/Notification";
 import connectDb from "../../utils/connectDb";
 
-connectDb();
-
 export default async (req, res) => {
+  // await connectDb();
   switch (req.method) {
     case "PATCH":
       await handleReturnBook(req, res);

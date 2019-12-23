@@ -1,9 +1,8 @@
 import User from "../../models/User";
 import connectDb from "../../utils/connectDb";
 
-connectDb();
-
 export default async (req, res) => {
+  // await connectDb();
   const { id, role } = req.body;
   try {
     await User.findOneAndUpdate({ _id: id }, { $set: { role } });

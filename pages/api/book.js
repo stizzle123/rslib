@@ -1,9 +1,8 @@
 import Book from "../../models/Book";
 import connectDb from "../../utils/connectDb";
 
-connectDb();
-
 export default async (req, res) => {
+  // await connectDb();
   switch (req.method) {
     case "POST":
       await handleCreateBook(req, res);

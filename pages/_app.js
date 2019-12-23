@@ -8,9 +8,11 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { redirectUser } from "../utils/auth";
 import axios from "axios";
 import baseUrl from "../utils/baseUrl";
+import connectDb from "../utils/connectDb";
 
 export class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
+    await connectDb();
     const { token } = parseCookies(ctx);
     let pageProps = {};
 

@@ -2,9 +2,8 @@ import Notification from "../../models/Notification";
 import jwt from "jsonwebtoken";
 import connectDb from "../../utils/connectDb";
 
-connectDb();
-
 export default async (req, res) => {
+  // await connectDb();
   switch (req.method) {
     case "GET":
       await handleGetNotification(req, res);

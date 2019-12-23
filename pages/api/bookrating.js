@@ -3,9 +3,8 @@ import jwt from "jsonwebtoken";
 
 import connectDb from "../../utils/connectDb";
 
-connectDb();
-
 export default async (req, res) => {
+  // await connectDb();
   const { id } = req.query;
   try {
     const rating = await Rating.findOne({ book: id });

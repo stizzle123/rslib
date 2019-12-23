@@ -3,9 +3,8 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import User from "../../models/User";
 
-connectDb();
-
 export default async (req, res) => {
+  // await connectDb();
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email }).select("+password");

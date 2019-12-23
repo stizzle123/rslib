@@ -7,9 +7,8 @@ import Collection from "../../models/Collection";
 import connectDb from "../../utils/connectDb";
 const { ObjectId } = mongoose.Types;
 
-connectDb();
-
 export default async (req, res) => {
+  // await connectDb();
   switch (req.method) {
     case "POST":
       await handleCreateLog(req, res);

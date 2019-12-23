@@ -1,9 +1,8 @@
 import User from "../../models/User";
 import connectDb from "../../utils/connectDb";
 
-connectDb();
-
 export default async (req, res) => {
+  // await connectDb();
   switch (req.method) {
     case "GET":
       await handleGetUserDetails(req, res);

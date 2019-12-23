@@ -1,9 +1,8 @@
 import connectDb from "../../utils/connectDb";
 import Book from "../../models/Book";
 
-connectDb();
-
 export default async (req, res) => {
+  // await connectDb();
   try {
     const books = await Book.find()
       .sort({ createdAt: "desc" })

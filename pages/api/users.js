@@ -2,9 +2,8 @@ import User from "../../models/User";
 import connectDb from "../../utils/connectDb";
 import jwt from "jsonwebtoken";
 
-connectDb();
-
 export default async (req, res) => {
+  // await connectDb();
   if (!("authorization" in req.headers)) {
     return res.status(401).send("No authorization token");
   }

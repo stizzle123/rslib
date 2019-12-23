@@ -6,9 +6,8 @@ import jwt from "jsonwebtoken";
 import isLength from "validator/lib/isLength";
 import isEmail from "validator/lib/isEmail";
 
-connectDb();
-
 export default async (req, res) => {
+  // await connectDb();
   const { name, email, password, department } = req.body;
   try {
     if (!isLength(name, { min: 3, max: 10 })) {
