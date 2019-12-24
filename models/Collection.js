@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import Book from "./Book";
+const mongoose = require("mongoose");
+const Book = require("./Book");
 
 const { ObjectId } = mongoose.Schema;
 
@@ -27,5 +27,4 @@ const autoPopulateUserAndCollections = function(next) {
 
 CollectionSchema.pre("findOne", autoPopulateUserAndCollections);
 
-export default mongoose.models.Collection ||
-  mongoose.model("Collection", CollectionSchema);
+module.exports = Collection = mongoose.model("Collection", CollectionSchema);

@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
-import User from "./User";
-import Book from "./Book";
-import mongodbErrorHandler from "mongoose-mongodb-errors";
+const mongoose = require("mongoose");
+const User = require("./User");
+const Book = require("./Book");
+const mongodbErrorHandler = require("mongoose-mongodb-errors");
 
 const { ObjectId } = mongoose.Schema;
 
@@ -41,4 +41,4 @@ ratingSchema.pre("find", autoPopulateUserAndBook);
 
 ratingSchema.plugin(mongodbErrorHandler);
 
-export default mongoose.models.Rating || mongoose.model("Rating", ratingSchema);
+module.exports = Rating = mongoose.model("Rating", ratingSchema);

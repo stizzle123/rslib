@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import connectDb from "../../utils/connectDb";
 
 export default async (req, res) => {
-  // await connectDb();
+  await connectDb();
   const { id } = req.query;
   try {
     const rating = await Rating.findOne({ book: id });

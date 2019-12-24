@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
-import User from "./User";
-import Book from "./Book";
-import mongodbErrorHandler from "mongoose-mongodb-errors";
+const mongoose = require("mongoose");
+// const User = require("./User");
+// const Book = require("./Book");
+const mongodbErrorHandler = require("mongoose-mongodb-errors");
 
 const { ObjectId } = mongoose.Schema.Types;
 
@@ -66,4 +66,4 @@ bookSchema.pre("findOne", populateBorrowers);
 bookSchema.pre("find", populateBorrowers);
 bookSchema.plugin(mongodbErrorHandler);
 
-export default mongoose.models.Book || mongoose.model("Book", bookSchema);
+module.exports = Book = mongoose.model("Book", bookSchema);

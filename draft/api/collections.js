@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 const { ObjectId } = mongoose.Types;
 
 export default async (req, res) => {
-  // await connectDb();
+  await connectDb();
   switch (req.method) {
     case "GET":
       await handleGetCollections(req, res);

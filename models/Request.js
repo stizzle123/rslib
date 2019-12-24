@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
-import mongodbErrorHandler from "mongoose-mongodb-errors";
-import User from "./User";
+const mongoose = require("mongoose");
+const mongodbErrorHandler = require("mongoose-mongodb-errors");
+const User = require("./User");
 
 const { ObjectId } = mongoose.Schema.Types;
 
@@ -38,5 +38,4 @@ requestSchema.pre("find", autopopulateUser);
 
 requestSchema.plugin(mongodbErrorHandler);
 
-export default mongoose.models.Request ||
-  mongoose.model("Request", requestSchema);
+module.exports = Request = mongoose.model("Request", requestSchema);

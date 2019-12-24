@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
-import mongodbErrorHandler from "mongoose-mongodb-errors";
-import User from "./User";
-import Book from "./Book";
+const mongoose = require("mongoose");
+const mongodbErrorHandler = require("mongoose-mongodb-errors");
+const User = require("./User");
+const Book = require("./Book");
 const { ObjectId } = mongoose.Schema.Types;
 
 const bookLogSchema = new mongoose.Schema(
@@ -41,5 +41,4 @@ bookLogSchema.pre("findOneAndUpdate", autoPopulateUserAndBook);
 
 bookLogSchema.plugin(mongodbErrorHandler);
 
-export default mongoose.models.BookLog ||
-  mongoose.model("BookLog", bookLogSchema);
+module.exports = BookLog = mongoose.model("BookLog", bookLogSchema);

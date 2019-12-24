@@ -12,7 +12,7 @@ import connectDb from "../utils/connectDb";
 
 export class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
-    await connectDb();
+    // await connectDb();
     const { token } = parseCookies(ctx);
     let pageProps = {};
 

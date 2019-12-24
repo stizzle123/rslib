@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
-import mongodbErrorHandler from "mongoose-mongodb-errors";
+const mongodbErrorHandler = require("mongoose-mongodb-errors");
 
 const userSchema = new mongoose.Schema(
   {
@@ -60,4 +60,4 @@ userSchema.pre("findOne", autoPopulateFollowingAndFollowers);
 
 userSchema.plugin(mongodbErrorHandler);
 
-export default mongoose.models.User || mongoose.model("User", userSchema);
+module.exports = User = mongoose.model("User", userSchema);

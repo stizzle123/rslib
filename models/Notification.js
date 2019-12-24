@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import User from "./User";
+const mongoose = require("mongoose");
+const User = require("./User");
 const { ObjectId } = mongoose.Schema.Types;
 
 const notificationSchema = new mongoose.Schema(
@@ -24,5 +24,7 @@ const notificationSchema = new mongoose.Schema(
 
 // notificationSchema.pre("find", autopopulateUser);
 
-export default mongoose.models.Notification ||
-  mongoose.model("Notification", notificationSchema);
+module.exports = Notification = mongoose.model(
+  "Notification",
+  notificationSchema
+);

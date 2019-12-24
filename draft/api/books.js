@@ -2,7 +2,7 @@ import Book from "../../models/Book";
 import connectDb from "../../utils/connectDb";
 
 export default async (req, res) => {
-  // await connectDb();
+  await connectDb();
   switch (req.method) {
     case "GET":
       await handleGetBooks(req, res);

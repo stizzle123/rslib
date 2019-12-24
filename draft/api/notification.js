@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import connectDb from "../../utils/connectDb";
 
 export default async (req, res) => {
-  // await connectDb();
+  await connectDb();
   switch (req.method) {
     case "GET":
       await handleGetNotification(req, res);

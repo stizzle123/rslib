@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import isLength from "validator/lib/isLength";
 
 export default async (req, res) => {
-  // await connectDb();
+  await connectDb();
   switch (req.method) {
     case "PATCH":
       await handleChangePassword(req, res);
