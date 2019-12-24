@@ -6,6 +6,7 @@ const next = require("next");
 const mongoose = require("mongoose");
 
 const routes = require("./routes");
+const PORT = process.env.PORT || 3000;
 
 mongoose
   .connect(process.env.MONGODB_URI, {
@@ -48,7 +49,7 @@ app.prepare().then(() => {
   server.get("*", (req, res) => {
     handle(req, res);
   });
-  server.listen(3000, err => {
+  server.listen(PORT, err => {
     if (err) throw err;
     console.log("> Ready on http://localhost:3000");
   });
