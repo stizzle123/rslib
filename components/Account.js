@@ -12,7 +12,8 @@ import {
   Box,
   Snackbar,
   Fade,
-  CircularProgress
+  CircularProgress,
+  Chip
 } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import BorderColorIcon from "@material-ui/icons/BorderColor";
@@ -56,9 +57,12 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(6),
     display: "grid",
     justifyItems: "center",
-    alignContent: "center",
+    // alignContent: "center",
     backgroundImage:
-      "linear-gradient(23deg, rgba(202, 202, 202,0.02) 0%, rgba(202, 202, 202,0.02) 13%,transparent 13%, transparent 80%,rgba(11, 11, 11,0.02) 80%, rgba(11, 11, 11,0.02) 100%),linear-gradient(42deg, rgba(98, 98, 98,0.02) 0%, rgba(98, 98, 98,0.02) 36%,transparent 36%, transparent 77%,rgba(252, 252, 252,0.02) 77%, rgba(252, 252, 252,0.02) 100%),linear-gradient(286deg, rgba(173, 173, 173,0.02) 0%, rgba(173, 173, 173,0.02) 2%,transparent 2%, transparent 12%,rgba(59, 59, 59,0.02) 12%, rgba(59, 59, 59,0.02) 100%),linear-gradient(77deg, rgba(87, 87, 87,0.02) 0%, rgba(87, 87, 87,0.02) 18%,transparent 18%, transparent 55%,rgba(247, 247, 247,0.02) 55%, rgba(247, 247, 247,0.02) 100%),linear-gradient(90deg, rgb(255,255,255),rgb(255,255,255))"
+      "linear-gradient(23deg, rgba(202, 202, 202,0.02) 0%, rgba(202, 202, 202,0.02) 13%,transparent 13%, transparent 80%,rgba(11, 11, 11,0.02) 80%, rgba(11, 11, 11,0.02) 100%),linear-gradient(42deg, rgba(98, 98, 98,0.02) 0%, rgba(98, 98, 98,0.02) 36%,transparent 36%, transparent 77%,rgba(252, 252, 252,0.02) 77%, rgba(252, 252, 252,0.02) 100%),linear-gradient(286deg, rgba(173, 173, 173,0.02) 0%, rgba(173, 173, 173,0.02) 2%,transparent 2%, transparent 12%,rgba(59, 59, 59,0.02) 12%, rgba(59, 59, 59,0.02) 100%),linear-gradient(77deg, rgba(87, 87, 87,0.02) 0%, rgba(87, 87, 87,0.02) 18%,transparent 18%, transparent 55%,rgba(247, 247, 247,0.02) 55%, rgba(247, 247, 247,0.02) 100%),linear-gradient(90deg, rgb(255,255,255),rgb(255,255,255))",
+    [theme.breakpoints.down("sm")]: {
+      alignContent: "start"
+    }
   },
   passwordBox: {
     padding: theme.spacing(3),
@@ -69,7 +73,8 @@ const useStyles = makeStyles(theme => ({
     textAlign: "center",
     width: 80,
     height: 80,
-    boxShadow: "0 0 2px rgba(0,0,0,0.3)"
+    boxShadow: "0 0 2px rgba(0,0,0,0.3)",
+    marginBottom: 5
   },
   form: {
     padding: `0 ${theme.spacing(1)}`
@@ -318,14 +323,15 @@ export default function Account({
         <Paper className={classes.account} elevation={3}>
           <Avatar src={avatar} variant="circle" className={classes.avatar} />
           <Typography variant="h6" component="h6">
-            <strong>EMAIL:</strong> {email}{" "}
-            <IconButton
+            <Chip
+              label={email}
+              size="medium"
+              clickable
+              variant="outlined"
               color="secondary"
-              style={{ marginLeft: "auto" }}
-              onClick={() => router.push("/profile")}
-            >
-              <EditIcon color="secondary" />
-            </IconButton>
+              icon={<EditIcon fontSize="small" />}
+              onClick={() => router.push(`/profile?id=${_id}`)}
+            />
           </Typography>
           <Typography variant="overline">
             <strong>Name:</strong> {name}

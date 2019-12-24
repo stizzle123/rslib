@@ -207,6 +207,16 @@ export default function ActiveRead({ reads, id, loading, setLoading }) {
                             read.status === "in-use" ? "secondary" : "primary"
                           }
                           label={read.status}
+                          style={{
+                            color:
+                              read.status === "overdue"
+                                ? theme.palette.secondary.red
+                                : "",
+                            borderColor:
+                              read.status === "overdue"
+                                ? theme.palette.secondary.red
+                                : ""
+                          }}
                         />
                       </StyledTableCell>
                       <StyledTableCell align="right">
