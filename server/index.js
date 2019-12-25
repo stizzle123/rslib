@@ -27,8 +27,18 @@ app.prepare().then(() => {
 
   // Be sure to pass `true` as the second argument to `url.parse`.
   // This tells it to parse the query portion of the URL.
-  // const parsedUrl = parse(req.url, true);
-  // const { pathname, query } = parsedUrl;
+
+  createServer((req, res) => {
+    const parsedUrl = parse(req.url, true);
+    const { pathname } = parsedUrl;
+
+    if (pathname === "/sw.js" || pathname.startsWith("/precache-manifest.")) {
+      const filePath = join(__dirname, ".next", pathname);
+      app.serveStatic(req, res, filePath);
+    } else {
+      handle(req, res, parsedUrl);
+    }
+  });
   server.use(express.json());
   server.use(express.urlencoded({ extended: false }));
 
