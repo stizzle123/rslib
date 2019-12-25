@@ -23,42 +23,36 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 
 app.prepare().then(() => {
-  // Be sure to pass `true` as the second argument to `url.parse`.
-  // This tells it to parse the query portion of the URL.
+  const server = express();
 
-  createServer((req, res) => {
-    const server = express();
+  server.use(express.json());
+  server.use(express.urlencoded({ extended: false }));
 
-    const parsedUrl = parse(req.url, true);
-    const { pathname } = parsedUrl;
+  server.get("/_next/*", (req, res) => {
+    handle(req, res);
+  });
 
-    if (pathname === "/sw.js" || pathname.startsWith("/precache-manifest.")) {
-      const filePath = join(__dirname, ".next", pathname);
+  server.get("/public/*", (req, res) => {
+    handle(req, res);
+  });
+
+  server.use("/", routes);
+
+  server.get("/hello", (req, res) => {
+    res.send("Hello...");
+  });
+
+  server.get("*", (req, res) => {
+    if (req.url.includes("/sw")) {
+      const filePath = join(__dirname, "public", "sw.js");
       app.serveStatic(req, res, filePath);
+    } else if (req.url.startsWith("public/")) {
+      app.serveStatic(req, res, join(__dirname, req.url));
     } else {
-      handle(req, res, parsedUrl);
+      handle(req, res, req.url);
     }
-    server.use(express.json());
-    server.use(express.urlencoded({ extended: false }));
-
-    server.get("/_next/*", (req, res) => {
-      handle(req, res);
-    });
-
-    server.get("/public/*", (req, res) => {
-      handle(req, res);
-    });
-
-    server.use("/", routes);
-
-    server.get("/hello", (req, res) => {
-      res.send("Hello...");
-    });
-
-    server.get("*", (req, res) => {
-      handle(req, res);
-    });
-  }).listen(PORT, err => {
+  });
+  server.listen(PORT, err => {
     if (err) throw err;
     console.log(`> Ready on http://localhost:${PORT}`);
   });
