@@ -276,13 +276,19 @@ export default function Collection({ _id, name, role }) {
                           {capitalize(book.genre)}
                         </StyledTableCell>
                         <StyledTableCell align="right">
-                          {book.quantity}
+                          {book.quantity - book.borrowers.length}
                         </StyledTableCell>
                         <StyledTableCell align="right">
                           <Chip
-                            color={book.quantity > 0 ? "secondary" : "primary"}
+                            color={
+                              book.quantity - book.borrowers.length > 0
+                                ? "secondary"
+                                : "primary"
+                            }
                             label={
-                              book.quantity > 0 ? "available" : "unavailable"
+                              book.quantity - book.borrowers.length > 0
+                                ? "available"
+                                : "unavailable"
                             }
                             variant="outlined"
                             // disabled={true}
@@ -306,7 +312,15 @@ export default function Collection({ _id, name, role }) {
                             variant="outlined"
                             color="secondary"
                             onClick={() => handleClickOpen(book._id)}
-                            disabled={book.quantity === 0}
+                            disabled={
+                              book.quantity - book.borrowers.length === 0
+                            }
+                            style={{
+                              cursor:
+                                book.quantity - book.borrowers.length === 0
+                                  ? "not-allowed"
+                                  : ""
+                            }}
                           >
                             Borrow
                           </Button>

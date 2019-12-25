@@ -330,7 +330,7 @@ export default function Account({
               variant="outlined"
               color="secondary"
               icon={<EditIcon fontSize="small" />}
-              onClick={() => router.push(`/profile?id=${_id}`)}
+              onClick={() => router.push(`/profile`)}
             />
           </Typography>
           <Typography variant="overline">
