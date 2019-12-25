@@ -23,12 +23,12 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 
 app.prepare().then(() => {
-  const server = express();
-
   // Be sure to pass `true` as the second argument to `url.parse`.
   // This tells it to parse the query portion of the URL.
 
   createServer((req, res) => {
+    const server = express();
+
     const parsedUrl = parse(req.url, true);
     const { pathname } = parsedUrl;
 
@@ -38,29 +38,28 @@ app.prepare().then(() => {
     } else {
       handle(req, res, parsedUrl);
     }
-  });
-  server.use(express.json());
-  server.use(express.urlencoded({ extended: false }));
+    server.use(express.json());
+    server.use(express.urlencoded({ extended: false }));
 
-  server.get("/_next/*", (req, res) => {
-    handle(req, res);
-  });
+    server.get("/_next/*", (req, res) => {
+      handle(req, res);
+    });
 
-  server.get("/public/*", (req, res) => {
-    handle(req, res);
-  });
+    server.get("/public/*", (req, res) => {
+      handle(req, res);
+    });
 
-  server.use("/", routes);
+    server.use("/", routes);
 
-  server.get("/hello", (req, res) => {
-    res.send("Hello...");
-  });
+    server.get("/hello", (req, res) => {
+      res.send("Hello...");
+    });
 
-  server.get("*", (req, res) => {
-    handle(req, res);
-  });
-  server.listen(PORT, err => {
+    server.get("*", (req, res) => {
+      handle(req, res);
+    });
+  }).listen(PORT, err => {
     if (err) throw err;
-    console.log("> Ready on http://localhost:3000");
+    console.log(`> Ready on http://localhost:${PORT}`);
   });
 });
