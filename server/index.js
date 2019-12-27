@@ -56,13 +56,13 @@ app.prepare().then(() => {
       app.serveStatic(
         req,
         res,
-        path.join(__dirname, "public/service-worker.js")
+        path.resolve(__dirname, "./.next/service-worker.js")
       );
     }
   });
 
   server.get("*", (req, res) => {
-    handle(req, res, req.url);
+    handle(req, res);
   });
   server.listen(PORT, err => {
     if (err) throw err;
