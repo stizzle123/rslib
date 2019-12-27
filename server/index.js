@@ -53,11 +53,7 @@ app.prepare().then(() => {
         path.join(__dirname, "public/service-worker.js")
       );
     } else {
-      app.serveStatic(
-        req,
-        res,
-        path.resolve(__dirname, "./.next/service-worker.js")
-      );
+      app.serveStatic(req, res, path.resolve("./.next/service-worker.js"));
     }
   });
 
