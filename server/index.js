@@ -46,9 +46,17 @@ app.prepare().then(() => {
     );
     res.set("Content-Type", "application/javascript");
     if (dev) {
-      app.serveStatic(req, res, path.resolve("./public/service-worker.js"));
+      app.serveStatic(
+        req,
+        res,
+        path.join(__dirname, "public/service-worker.js")
+      );
     } else {
-      app.serveStatic(req, res, path.resolve("../public/service-worker.js"));
+      app.serveStatic(
+        req,
+        res,
+        path.join(__dirname, "public/service-worker.js")
+      );
     }
   });
 
