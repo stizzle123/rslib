@@ -38,10 +38,6 @@ app.prepare().then(() => {
 
   server.use("/", routes);
 
-  server.get("/hello", (req, res) => {
-    res.send("Hello...");
-  });
-
   server.get("/service-worker.js", (req, res) => {
     // Don't cache service worker is a best practice (otherwise clients wont get emergency bug fix)
     res.set(
