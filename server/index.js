@@ -48,7 +48,7 @@ app.prepare().then(() => {
     if (dev) {
       app.serveStatic(req, res, path.resolve("./public/service-worker.js"));
     } else {
-      app.serveStatic(req, res, path.resolve("./public/service-worker.js"));
+      app.serveStatic(req, res, path.resolve("../public/service-worker.js"));
     }
   });
 
