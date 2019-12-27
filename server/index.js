@@ -42,6 +42,20 @@ app.prepare().then(() => {
     res.send("Hello...");
   });
 
+  server.get("/service-worker.js", (req, res) => {
+    // Don't cache service worker is a best practice (otherwise clients wont get emergency bug fix)
+    res.set(
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate, proxy-revalidate"
+    );
+    res.set("Content-Type", "application/javascript");
+    if (dev) {
+      app.serveStatic(req, res, path.resolve("./public/sw.js"));
+    } else {
+      app.serveStatic(req, res, path.resolve("./.next/service-worker.js"));
+    }
+  });
+
   server.get("*", (req, res) => {
     if (req.url.includes("/sw")) {
       const filePath = join(__dirname, "public", "sw.js");

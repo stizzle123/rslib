@@ -557,18 +557,18 @@ const Navbar = ({ id, name, avatar, collections, notification, role }) => {
           <div className={classes.sectionDesktop}>
             <Link href="/">
               <a className={classes.titleNav}>
-                RS Library
                 <Avatar
                   src="/images/logo.png"
                   variant="circle"
                   style={{
                     width: "40px",
                     height: "40px",
-                    marginLeft: 10,
+                    marginRight: 10,
                     border: "3px solid #fefefe"
                   }}
                   onClick={() => router.replace("/")}
                 />
+                RS Library
               </a>
             </Link>
           </div>
