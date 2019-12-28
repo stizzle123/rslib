@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const { createServer } = require("http");
+const cors = require("cors");
 const { parse } = require("url");
 const next = require("next");
 const mongoose = require("mongoose");
@@ -27,6 +28,8 @@ app
   .prepare()
   .then(() => {
     const server = express();
+
+    server.use(cors());
 
     server.use(express.json());
     server.use(express.urlencoded({ extended: false }));

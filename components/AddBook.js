@@ -30,10 +30,14 @@ const useStyles = makeStyles(theme => ({
   base: {
     width: "100%",
     height: "100%",
+    minHeight: "100vh",
     backgroundImage:
       "linear-gradient(135deg, transparent 0%, transparent 6%,rgba(71, 71, 71,0.04) 6%, rgba(71, 71, 71,0.04) 22%,transparent 22%, transparent 100%),linear-gradient(45deg, transparent 0%, transparent 20%,rgba(71, 71, 71,0.04) 20%, rgba(71, 71, 71,0.04) 47%,transparent 47%, transparent 100%),linear-gradient(135deg, transparent 0%, transparent 24%,rgba(71, 71, 71,0.04) 24%, rgba(71, 71, 71,0.04) 62%,transparent 62%, transparent 100%),linear-gradient(45deg, transparent 0%, transparent 73%,rgba(71, 71, 71,0.04) 73%, rgba(71, 71, 71,0.04) 75%,transparent 75%, transparent 100%),linear-gradient(90deg, rgb(255,255,255),rgb(255,255,255))",
     backgroundAttachment: "fixed",
-    padding: theme.spacing(8)
+    padding: theme.spacing(8),
+    [theme.breakpoints.down("sm")]: {
+      padding: theme.spacing(2)
+    }
   },
   root: {
     width: "auto",
@@ -51,7 +55,11 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    padding: theme.spacing(2)
+    width: "100%",
+    padding: theme.spacing(2),
+    [theme.breakpoints.down("sm")]: {
+      padding: theme.spacing(1)
+    }
   },
   imageUrl: {
     margin: theme.spacing(2),

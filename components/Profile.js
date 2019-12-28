@@ -24,6 +24,7 @@ import baseUrl from "../utils/baseUrl";
 import catchErrors from "../utils/catchErrors";
 import Tooltip from "@material-ui/core/Tooltip";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import config from "../utils/config";
 
 const INITIAL_STATE = {
   avatar: "",
@@ -79,8 +80,8 @@ export default function Profile({ _id }) {
   };
 
   const handleAvatarUpload = async e => {
-    const userData = new FormData();
     try {
+      const userData = new FormData();
       e.preventDefault();
       setLoading(true);
       const url = `${baseUrl}/api/account`;
@@ -89,7 +90,8 @@ export default function Profile({ _id }) {
       userData.append("upload_preset", "rslibrary");
       userData.append("cloud_name", "stizzle");
 
-      const res = await axios.post(process.env.CLOUDINARY_URL, userData);
+      const res = await axios.post(config.CLOUDINARY_URL, userData);
+
       let payload = {};
       payload._id = _id;
       payload.avatar = res.data.secure_url;
@@ -243,10 +245,14 @@ const useStyles = makeStyles(theme => ({
   base: {
     width: "100%",
     height: "100%",
+    minHeight: "100vh",
     backgroundImage:
       "linear-gradient(135deg, transparent 0%, transparent 6%,rgba(71, 71, 71,0.04) 6%, rgba(71, 71, 71,0.04) 22%,transparent 22%, transparent 100%),linear-gradient(45deg, transparent 0%, transparent 20%,rgba(71, 71, 71,0.04) 20%, rgba(71, 71, 71,0.04) 47%,transparent 47%, transparent 100%),linear-gradient(135deg, transparent 0%, transparent 24%,rgba(71, 71, 71,0.04) 24%, rgba(71, 71, 71,0.04) 62%,transparent 62%, transparent 100%),linear-gradient(45deg, transparent 0%, transparent 73%,rgba(71, 71, 71,0.04) 73%, rgba(71, 71, 71,0.04) 75%,transparent 75%, transparent 100%),linear-gradient(90deg, rgb(255,255,255),rgb(255,255,255))",
     padding: theme.spacing(8),
-    backgroundAttachment: "fixed"
+    backgroundAttachment: "fixed",
+    [theme.breakpoints.down("sm")]: {
+      padding: theme.spacing(2)
+    }
   },
   root: {
     width: "auto",
@@ -263,7 +269,10 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
+    [theme.breakpoints.down("sm")]: {
+      padding: theme.spacing(1)
+    }
   },
   avatar: {
     margin: theme.spacing(2),
