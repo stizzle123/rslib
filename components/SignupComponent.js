@@ -100,7 +100,7 @@ export default function Signup() {
 
   return (
     <div className={classes.root}>
-      <Typography variant="h3" component="h1">
+      <Typography variant="h3" component="h1" align="center">
         SIGN UP
       </Typography>
       <Card className={classes.flex}>
@@ -220,7 +220,7 @@ export default function Signup() {
 const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(8),
-    textAlign: "center",
+
     height: "100%",
     minHeight: "100vh",
     backgroundImage:

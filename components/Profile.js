@@ -251,7 +251,7 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(8),
     backgroundAttachment: "fixed",
     [theme.breakpoints.down("sm")]: {
-      padding: theme.spacing(2)
+      padding: theme.spacing(1)
     }
   },
   root: {
@@ -263,6 +263,10 @@ const useStyles = makeStyles(theme => ({
       width: 400,
       marginLeft: "auto",
       marginRight: "auto"
+    },
+    [theme.breakpoints.down("sm")]: {
+      marginLeft: theme.spacing(1),
+      marginRight: theme.spacing(1)
     }
   },
   paper: {
