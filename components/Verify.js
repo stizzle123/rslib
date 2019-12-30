@@ -114,7 +114,11 @@ export default function Verify() {
 
   const renderTime = value => {
     if (value === 0) {
-      return <div className={classes.timer}>Too late...</div>;
+      return (
+        <div className={classes.timer} style={{ fontSize: "1.2rem" }}>
+          Too late...
+        </div>
+      );
     }
 
     return (
@@ -138,7 +142,12 @@ export default function Verify() {
       <CountdownCircleTimer
         isPlaying
         durationSeconds={20}
-        colors={[["#004777", 0.33], ["#F7B801", 0.33], ["#A30000"]]}
+        colors={[
+          ["#2196f3", 0.33],
+          ["#009688", 0.33],
+          ["#F7B801", 0.33],
+          ["#A30000"]
+        ]}
         renderTime={renderTime}
         onComplete={() => [true, 1000]}
       />
@@ -188,6 +197,7 @@ export default function Verify() {
             variant="contained"
             type="submit"
             disabled={loading || !token}
+            style={{ cursor: loading || !token ? "not-allowed" : "" }}
           >
             {loading ? (
               <span>
@@ -199,6 +209,16 @@ export default function Verify() {
             )}
           </Button>
         </Paper>
+        <small
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: 3,
+            userSelect: "none"
+          }}
+        >
+          Enter an Authy 7 digits token for authentication, e.g., 7XXXXXX
+        </small>
       </div>
     </div>
   );
