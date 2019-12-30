@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { ObjectId } = mongoose.Schema;
 const mongodbErrorHandler = require("mongoose-mongodb-errors");
 
 const userSchema = new mongoose.Schema(
@@ -23,8 +22,6 @@ const userSchema = new mongoose.Schema(
       required: "Avatar is required",
       default: "/images/profile-image.jpg"
     },
-    following: [{ type: ObjectId, ref: "User" }],
-    followers: [{ type: ObjectId, ref: "User" }],
     password: {
       type: String,
       required: true,
@@ -45,18 +42,25 @@ const userSchema = new mongoose.Schema(
       required: "Department is required",
       trim: true,
       lowercase: true
+    },
+    countryCode: {
+      type: String,
+      required: "Country code is required",
+      trim: true
+    },
+    phone: {
+      type: String,
+      required: "Phone is required"
+    },
+    authyId: String,
+    verified: {
+      type: Boolean,
+      required: true,
+      default: false
     }
   },
   { timestamps: true }
 );
-
-const autoPopulateFollowingAndFollowers = function(next) {
-  this.populate("following", "_id name avatar");
-  this.populate("followers", "_id name avatar");
-  next();
-};
-
-userSchema.pre("findOne", autoPopulateFollowingAndFollowers);
 
 userSchema.plugin(mongodbErrorHandler);
 

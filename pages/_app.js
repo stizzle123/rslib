@@ -65,7 +65,9 @@ export class MyApp extends App {
         const isRoot = user.role === "root";
         const isAdmin = user.role === "admin";
         const isLoggedIn =
-          (user && ctx.pathname === "/login") || ctx.pathname === "/signup";
+          (user && ctx.pathname === "/login") ||
+          ctx.pathname === "/signup" ||
+          ctx.pathname === "/verify";
         const isNotPermitted =
           !(isRoot || isAdmin) &&
           ctx.pathname === "/books/add" &&

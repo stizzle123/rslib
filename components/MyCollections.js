@@ -228,7 +228,7 @@ export default function MyCollections({ books, createdAt, user }) {
           <>
             <Paper className={classes.paper}>
               <Typography
-                variant="h3"
+                variant="h4"
                 component="h1"
                 align="center"
                 gutterBottom

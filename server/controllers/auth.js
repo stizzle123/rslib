@@ -2,6 +2,7 @@ const User = require("../../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const isLength = require("validator/lib/isLength");
+const authy = require("authy")(process.env.AUTHY_API);
 
 exports.handleChangePassword = async (req, res) => {
   if (!("authorization" in req.headers)) {
@@ -45,10 +46,10 @@ exports.handleLogin = async (req, res) => {
 
     const passwordsMatch = await bcrypt.compare(password, user.password);
     if (passwordsMatch) {
-      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-        expiresIn: "1d"
-      });
-      res.status(200).json(token);
+      // authy.request_sms(user.authyId, true, result => {
+      //   res.status(200).json({id: user._id});
+      // });
+      res.status(200).json({ id: user._id });
     } else {
       res.status(401).send("Invalid password");
     }
@@ -63,6 +64,28 @@ exports.handleUserPermissions = async (req, res) => {
   try {
     await User.findOneAndUpdate({ _id: id }, { $set: { role } });
     res.status(203).json("User updated");
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(error);
+  }
+};
+
+exports.verify = async (req, res) => {
+  const { id } = req.query;
+  const { token } = req.body;
+  try {
+    const user = await User.findOne({ _id: id });
+
+    authy.verify(user.authyId, token, true, (err, result) => {
+      if (err) {
+        res.status(500).json(err);
+        return;
+      }
+      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+        expiresIn: "1d"
+      });
+      res.status(200).json(token);
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json(error);

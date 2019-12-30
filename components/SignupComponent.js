@@ -11,7 +11,8 @@ import {
   MenuItem,
   Card,
   CardContent,
-  CardMedia
+  CardMedia,
+  TextField
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import PersonIcon from "@material-ui/icons/Person";
@@ -20,6 +21,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import Snackbar from "@material-ui/core/Snackbar";
 import Fade from "@material-ui/core/Fade";
 import axios from "axios";
@@ -27,6 +29,7 @@ import Link from "next/link";
 import { handleSignup } from "../utils/auth";
 import { departments } from "../utils/departments";
 import baseUrl from "../utils/baseUrl";
+import { countries } from "../utils/countries";
 
 const INITIAL_STATE = {
   name: "",
@@ -35,6 +38,7 @@ const INITIAL_STATE = {
   password: "",
   isLoading: false,
   showPassword: false,
+  phone: "",
   error: "",
   openError: false,
   Transition: Fade
@@ -42,7 +46,29 @@ const INITIAL_STATE = {
 
 export default function Signup() {
   const [state, setState] = useState(INITIAL_STATE);
+  const [code, setCode] = useState(null);
   const [disabled, setDisabled] = useState(true);
+
+  const defaultProps = {
+    options: countries,
+    getOptionLabel: option => option.phone,
+    renderOption: option => (
+      <React.Fragment>
+        <span>{countryToFlag(option.code)}</span>
+        {option.label} ({option.code}) +{option.phone}
+      </React.Fragment>
+    )
+  };
+
+  function countryToFlag(isoCode) {
+    return typeof String.fromCodePoint !== "undefined"
+      ? isoCode
+          .toUpperCase()
+          .replace(/./g, char =>
+            String.fromCodePoint(char.charCodeAt(0) + 127397)
+          )
+      : isoCode;
+  }
 
   useEffect(() => {
     const user = {
@@ -82,10 +108,13 @@ export default function Signup() {
         name: state.name,
         email: state.email,
         department: state.department,
+        phone: state.phone,
+        code: code.phone,
         password: state.password
       };
-      await axios.post(`${baseUrl}/api/signup`, payload);
-      handleSignup();
+      const res = await axios.post(`${baseUrl}/api/signup`, payload);
+
+      handleSignup(res.data.id);
     } catch (err) {
       showError(err);
     }
@@ -127,15 +156,42 @@ export default function Signup() {
                 onChange={handleChange}
               />
             </FormControl>
+
+            <Autocomplete
+              id="country-code"
+              {...defaultProps}
+              value={code}
+              onChange={(event, newValue) => {
+                setCode(newValue);
+              }}
+              autoComplete
+              autoHighlight
+              renderInput={params => (
+                <TextField
+                  {...params}
+                  label="Country code"
+                  margin="normal"
+                  fullWidth
+                  required
+                  inputProps={{
+                    ...params.inputProps,
+                    autoComplete: "disabled",
+                    name: "code"
+                  }}
+                />
+              )}
+            />
+
             <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="email">Email</InputLabel>
+              <InputLabel htmlFor="phone">Phone</InputLabel>
               <Input
-                name="email"
-                type="email"
-                value={state.email}
+                name="phone"
+                type="text"
+                value={state.phone}
                 onChange={handleChange}
               />
             </FormControl>
+
             <FormControl margin="normal" required fullWidth>
               <InputLabel htmlFor="department">Department</InputLabel>
               <Select
@@ -153,6 +209,16 @@ export default function Signup() {
                 ))}
               </Select>
             </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="email">Email</InputLabel>
+              <Input
+                name="email"
+                type="email"
+                value={state.email}
+                onChange={handleChange}
+              />
+            </FormControl>
+
             <FormControl margin="normal" required fullWidth>
               <InputLabel htmlFor="password">Password</InputLabel>
               <Input

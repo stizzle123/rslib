@@ -4,9 +4,10 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const isLength = require("validator/lib/isLength");
 const isEmail = require("validator/lib/isEmail");
+const authy = require("authy")(process.env.AUTHY_API);
 
 exports.handleSignup = async (req, res) => {
-  const { name, email, password, department } = req.body;
+  const { name, email, password, department, phone, code } = req.body;
   try {
     if (!isLength(name, { min: 3, max: 10 })) {
       return res.status(422).send("Name must be 3-10 characters long");
@@ -27,16 +28,36 @@ exports.handleSignup = async (req, res) => {
       name,
       email,
       department,
+      phone,
+      countryCode: `+${code}`,
       password: hash
-    }).save();
-
-    await new Collection({ user: newUser._id }).save();
-
-    const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d"
     });
 
-    res.status(201).json(token);
+    newUser.save((err, doc) => {
+      if (err) throw err;
+      authy.register_user(
+        doc.email,
+        doc.phone,
+        doc.countryCode,
+        (err, response) => {
+          if (err) throw err;
+
+          newUser.authyId = response.user.id;
+          newUser.verified = true;
+
+          newUser.save((err, doc) => {
+            if (err) throw err;
+            // authy.request_sms(doc.authyId, true, result => {
+            //   res.status(200).json({ result, id: doc._id });
+            // });
+
+            new Collection({ user: newUser._id }).save();
+
+            res.status(200).json({ id: doc._id });
+          });
+        }
+      );
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send("Error signing up user. Please try again later");
