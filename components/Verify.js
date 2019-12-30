@@ -74,7 +74,7 @@ export default function Verify() {
   });
 
   const showError = err => {
-    const error = (err.response && err.response.data) || err.message;
+    const error = (err.response && err.response.data.message) || err.message;
     setSnack({ error, openError: true });
     setLoading(false);
   };
@@ -147,27 +147,27 @@ export default function Verify() {
 
   return (
     <div className={classes.root}>
+      {snack.error && (
+        <Snackbar
+          open={snack.openError}
+          onClose={handleClose}
+          TransitionComponent={snack.Transition}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right"
+          }}
+          ContentProps={{
+            "aria-describedby": "message-id"
+          }}
+          message={
+            <span id="message-id" style={{ color: "red" }}>
+              {snack.error}
+            </span>
+          }
+        />
+      )}
       <div className={classes.center}>
         {showTimer()}
-        {snack.error && (
-          <Snackbar
-            open={snack.openError}
-            onClose={handleClose}
-            TransitionComponent={snack.Transition}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "right"
-            }}
-            ContentProps={{
-              "aria-describedby": "message-id"
-            }}
-            message={
-              <span id="message-id" style={{ color: "red" }}>
-                {snack.error}
-              </span>
-            }
-          />
-        )}
         <Paper
           component="form"
           className={classes.paper}
