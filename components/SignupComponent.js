@@ -210,7 +210,15 @@ export default function Signup() {
               </Select>
             </FormControl>
             <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="email">Email</InputLabel>
+              {state.email && !state.email.includes("@russelsmithgroup.com") ? (
+                <InputLabel htmlFor="email" className={classes.fadeDown}>
+                  <span className={classes.red}>
+                    ex., example@russelsmithgroup.com
+                  </span>
+                </InputLabel>
+              ) : (
+                <InputLabel htmlFor="email">Email</InputLabel>
+              )}
               <Input
                 name="email"
                 type="email"
@@ -267,6 +275,10 @@ export default function Signup() {
               open={state.openError}
               onClose={handleClose}
               TransitionComponent={state.Transition}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right"
+              }}
               ContentProps={{
                 "aria-describedby": "message-id"
               }}
@@ -348,5 +360,25 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center"
+  },
+  red: {
+    color: theme.palette.secondary.red
+  },
+  fadeDown: {
+    opacity: 1,
+    display: "block",
+    fontSize: "0.8rem",
+    transform: "translate(0,0)",
+    animation: "$animate 300ms ease-in-out"
+  },
+  "@keyframes animate": {
+    "0%": {
+      opacity: 0,
+      transform: "translate(0, -10px)"
+    },
+    "100%": {
+      opacity: 1,
+      transform: "translate(0,0)"
+    }
   }
 }));

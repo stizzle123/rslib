@@ -17,6 +17,8 @@ exports.handleSignup = async (req, res) => {
         .send("Password must be at least 6 characters long");
     } else if (!isEmail(email)) {
       return res.status(422).send("Email must be valid.");
+    } else if (!email.includes("@russelsmithgroup.com")) {
+      return res.status(422).send("Invalid email, use company approved email.");
     }
     const user = await User.findOne({ email });
     if (user) {

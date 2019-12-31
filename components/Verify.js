@@ -116,7 +116,15 @@ export default function Verify() {
     if (value === 0) {
       return (
         <div className={classes.timer} style={{ fontSize: "1.2rem" }}>
-          Too late...
+          Oops, Too late...
+        </div>
+      );
+    } else if (value <= 4) {
+      return (
+        <div className={classes.timer}>
+          <div className={classes.text}>Hurry up</div>
+          <div className={classes.value}>{value}</div>
+          <div className={classes.text}>seconds</div>
         </div>
       );
     }
@@ -156,26 +164,26 @@ export default function Verify() {
 
   return (
     <div className={classes.root}>
-      {snack.error && (
-        <Snackbar
-          open={snack.openError}
-          onClose={handleClose}
-          TransitionComponent={snack.Transition}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right"
-          }}
-          ContentProps={{
-            "aria-describedby": "message-id"
-          }}
-          message={
-            <span id="message-id" style={{ color: "red" }}>
-              {snack.error}
-            </span>
-          }
-        />
-      )}
       <div className={classes.center}>
+        {snack.error && (
+          <Snackbar
+            open={snack.openError}
+            onClose={handleClose}
+            TransitionComponent={snack.Transition}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right"
+            }}
+            ContentProps={{
+              "aria-describedby": "message-id"
+            }}
+            message={
+              <span id="message-id" style={{ color: "red" }}>
+                {snack.error}
+              </span>
+            }
+          />
+        )}
         {showTimer()}
         <Paper
           component="form"
