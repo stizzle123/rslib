@@ -115,7 +115,25 @@ export default function Signup() {
       const res = await axios.post(`${baseUrl}/api/signup`, payload);
 
       handleSignup(res.data.id);
+
+      setState({
+        name: "",
+        email: "",
+        department: "",
+        phone: "",
+        password: ""
+      });
+      setCode(null);
     } catch (err) {
+      setState({
+        name: "",
+        email: "",
+        department: "",
+        phone: "",
+        password: ""
+      });
+      setCode(null);
+
       showError(err);
     }
   };
