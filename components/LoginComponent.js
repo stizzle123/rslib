@@ -119,6 +119,10 @@ export default function Login() {
               open={snack.openError}
               onClose={handleClose}
               TransitionComponent={snack.Transition}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right"
+              }}
               ContentProps={{
                 "aria-describedby": "message-id"
               }}
