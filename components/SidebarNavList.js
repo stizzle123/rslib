@@ -120,7 +120,7 @@ export default function SidebarNavList({ role }) {
                 <ListItemText
                   primary={
                     <span style={{ fontSize: "0.8rem", color: "#9e9e9e" }}>
-                      Copyright &copy; RS LIBRARY {new Date().getFullYear()}
+                      Copyright &copy; RS LIBRARY, {new Date().getFullYear()}
                     </span>
                   }
                 />

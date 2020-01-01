@@ -20,6 +20,14 @@ const useStyles = makeStyles(theme => ({
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)"
+  },
+  typo: {
+    color: "#fff",
+    display: "flex",
+    alignItems: "center",
+    [theme.breakpoints.down("sm")]: {
+      display: "none"
+    }
   }
 }));
 
@@ -127,7 +135,7 @@ export default function DataChart() {
         variant="h6"
         component="h1"
         color="textSecondary"
-        style={{ color: "#fff", display: "flex", alignItems: "center" }}
+        className={classes.typo}
       >
         Data Analytics <InsertChartIcon />
       </Typography>

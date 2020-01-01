@@ -167,6 +167,12 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(6),
     backgroundImage:
       "linear-gradient(161deg, rgba(75, 75, 75,0.03) 0%, rgba(75, 75, 75,0.03) 27%,rgba(85, 85, 85,0.03) 27%, rgba(85, 85, 85,0.03) 32%,rgba(174, 174, 174,0.03) 32%, rgba(174, 174, 174,0.03) 100%),linear-gradient(320deg, rgba(138, 138, 138,0.03) 0%, rgba(138, 138, 138,0.03) 55%,rgba(234, 234, 234,0.03) 55%, rgba(234, 234, 234,0.03) 66%,rgba(197, 197, 197,0.03) 66%, rgba(197, 197, 197,0.03) 100%),linear-gradient(90deg, rgb(255,255,255),rgb(255,255,255))"
+  },
+  cardTop: {
+    padding: theme.spacing(3),
+    backgroundImage: "url(/images/icon-bg.png)",
+    backgroundSize: "cover",
+    backgroundPosition: "center"
   }
 }));
 
@@ -564,11 +570,9 @@ export default function Dashboard({ collections, _id }) {
       </Grid>
       <div className={classes.cardContainer}>
         <Card className={classes.card}>
-          <CardMedia
-            className={classes.media}
-            image="/images/icon-bg.png"
-            title="Analytics"
-          />
+          <CardContent className={classes.cardTop}>
+            <DataChart />
+          </CardContent>
           <CardContent className={classes.cardContent}>
             <Typography gutterBottom variant="h5" component="h2">
               Analytics
