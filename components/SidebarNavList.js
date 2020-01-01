@@ -104,7 +104,7 @@ export default function SidebarNavList({ role }) {
                 </ListItemIcon>
                 <ListItemText primary="Book Requests" />
               </ListItem>
-              <ListItem style={{ display: "grid" }}>
+              <ListItem style={{ display: "grid", justifyContent: "center" }}>
                 <Avatar
                   src="/images/logo.png"
                   variant="circle"
