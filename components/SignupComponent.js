@@ -231,7 +231,7 @@ export default function Signup() {
               {state.email && !state.email.includes("@russelsmithgroup.com") ? (
                 <InputLabel htmlFor="email" className={classes.fadeDown}>
                   <span className={classes.red}>
-                    ex., example@russelsmithgroup.com
+                    ex., you@russelsmithgroup.com
                   </span>
                 </InputLabel>
               ) : (
