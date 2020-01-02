@@ -1,8 +1,11 @@
 import React from "react";
 import App from "next/app";
 import Head from "next/head";
-import theme from "../utils/theme";
+import themeConfig from "../utils/theme";
+
 import { ThemeProvider } from "@material-ui/core/styles";
+import { createMuiTheme } from "@material-ui/core/styles";
+
 import { parseCookies, destroyCookie } from "nookies";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { redirectUser } from "../utils/auth";
@@ -11,8 +14,13 @@ import baseUrl from "../utils/baseUrl";
 import connectDb from "../utils/connectDb";
 
 export class MyApp extends App {
+  state = {
+    theme: themeConfig
+  };
+
   static async getInitialProps({ Component, ctx }) {
     // await connectDb();
+
     const { token } = parseCookies(ctx);
     let pageProps = {};
 
@@ -62,6 +70,7 @@ export class MyApp extends App {
         pageProps.collections = collections;
         pageProps.notification = notification;
         pageProps.users = usersCollection.data;
+
         const isRoot = user.role === "root";
         const isAdmin = user.role === "admin";
         const isLoggedIn =
@@ -86,6 +95,7 @@ export class MyApp extends App {
         redirectUser(ctx, "/login");
       }
     }
+
     return { pageProps };
   }
 
@@ -106,6 +116,8 @@ export class MyApp extends App {
 
   render() {
     const { Component, pageProps } = this.props;
+    const themeObj = createMuiTheme(this.state.theme);
+
     return (
       <React.Fragment>
         <Head>
@@ -114,7 +126,7 @@ export class MyApp extends App {
             knowledge
           </title>
         </Head>
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={themeObj}>
           <CssBaseline />
           <Component {...pageProps} />
         </ThemeProvider>

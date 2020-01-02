@@ -1,9 +1,8 @@
-import { createMuiTheme } from "@material-ui/core/styles";
 import red from "@material-ui/core/colors/red";
 import { grey } from "@material-ui/core/colors";
 
 // Create a theme instance.
-const theme = createMuiTheme({
+const themeConfig = {
   typography: {
     useNextVariants: true,
     suppressDeprecationWarnings: true,
@@ -39,6 +38,6 @@ const theme = createMuiTheme({
       default: "#fafafa"
     }
   }
-});
+};
 
-export default theme;
+export default themeConfig;
