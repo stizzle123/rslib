@@ -14,10 +14,6 @@ import baseUrl from "../utils/baseUrl";
 import connectDb from "../utils/connectDb";
 
 export class MyApp extends App {
-  state = {
-    theme: themeConfig
-  };
-
   static async getInitialProps({ Component, ctx }) {
     // await connectDb();
 
@@ -112,6 +108,10 @@ export class MyApp extends App {
     if (e.key === "logout") {
       Router.push("/login");
     }
+  };
+
+  state = {
+    theme: themeConfig
   };
 
   render() {
