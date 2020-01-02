@@ -94,39 +94,41 @@ export default function SidebarNavList({ role }) {
                 </ListItemIcon>
                 <ListItemText primary="Permissions" />
               </ListItem>
-              <ListItem
-                button
-                onClick={() => router.push("/requests")}
-                style={{ marginBottom: 70 }}
-              >
+              <ListItem button onClick={() => router.push("/requests")}>
                 <ListItemIcon>
                   <Icon className="fas fa-paper-plane" />
                 </ListItemIcon>
                 <ListItemText primary="Book Requests" />
               </ListItem>
-              <ListItem style={{ display: "grid", justifyContent: "center" }}>
-                <Avatar
-                  src="/images/logo.png"
-                  variant="circle"
-                  style={{
-                    margin: "auto",
-                    width: "60px",
-                    height: "60px",
-                    display: "block",
-                    boxShadow: "0 0 4px rgba(225,225,225,0.9)",
-                    border: "3px solid #fefefe"
-                  }}
-                />
-                <ListItemText
-                  primary={
-                    <span style={{ fontSize: "0.8rem", color: "#9e9e9e" }}>
-                      Copyright &copy; RS LIBRARY, {new Date().getFullYear()}
-                    </span>
-                  }
-                />
-              </ListItem>
             </>
           )}
+          <ListItem
+            style={{
+              display: "grid",
+              justifyContent: "center",
+              marginTop: "50%"
+            }}
+          >
+            <Avatar
+              src="/images/logo.png"
+              variant="circle"
+              style={{
+                margin: "auto",
+                width: "60px",
+                height: "60px",
+                display: "block",
+                boxShadow: "0 0 4px rgba(225,225,225,0.9)",
+                border: "3px solid #fefefe"
+              }}
+            />
+            <ListItemText
+              primary={
+                <span style={{ fontSize: "0.8rem", color: "#9e9e9e" }}>
+                  Copyright &copy; RS LIBRARY, {new Date().getFullYear()}
+                </span>
+              }
+            />
+          </ListItem>
         </List>
       </>
     </div>
