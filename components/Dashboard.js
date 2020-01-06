@@ -26,7 +26,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import moment from "moment";
 import axios from "axios";
-import CookieConsent from "react-cookie-consent";
+import CookieConsent, { Cookies } from "react-cookie-consent";
 import { useRouter } from "next/router";
 import baseUrl from "../utils/baseUrl";
 import TopRatedBooks from "./TopRatedBooks";
@@ -567,7 +567,7 @@ export default function Dashboard({ collections, _id }) {
                 variant="contained"
                 color="primary"
               >
-                Get Started
+                Borrow A Book
               </Button>
             </div>
           </div>
@@ -597,7 +597,7 @@ export default function Dashboard({ collections, _id }) {
               variant="contained"
               color="primary"
             >
-              Get Started
+              Borrow A Book
             </Button>
           </CardContent>
         </Card>
@@ -609,6 +609,7 @@ export default function Dashboard({ collections, _id }) {
           style={{ background: "#2B373B" }}
           buttonStyle={{ color: "#4e503b", fontSize: "13px" }}
           expires={150}
+          onAccept={() => Cookies.set("acceptCookie", "YES!!!")}
         >
           This website uses cookies to enhance the user experience.{" "}
         </CookieConsent>
