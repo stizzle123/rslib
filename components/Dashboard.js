@@ -26,6 +26,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import moment from "moment";
 import axios from "axios";
+import CookieConsent from "react-cookie-consent";
 import { useRouter } from "next/router";
 import baseUrl from "../utils/baseUrl";
 import TopRatedBooks from "./TopRatedBooks";
@@ -600,6 +601,17 @@ export default function Dashboard({ collections, _id }) {
             </Button>
           </CardContent>
         </Card>
+        <CookieConsent
+          location="bottom"
+          buttonText="Accept"
+          enableDeclineButton
+          cookieName="rsCookie"
+          style={{ background: "#2B373B" }}
+          buttonStyle={{ color: "#4e503b", fontSize: "13px" }}
+          expires={150}
+        >
+          This website uses cookies to enhance the user experience.{" "}
+        </CookieConsent>
       </div>
     </div>
   );

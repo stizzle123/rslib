@@ -8,7 +8,7 @@ export function handleLogin(id) {
 
 export function handleVerify(token) {
   cookie.set("token", token, { expires: inADay });
-  Router.push("/account");
+  Router.push("/dashboard");
 }
 
 export function handleSignup(id) {
@@ -28,4 +28,9 @@ export function handleLogOut() {
   cookie.remove("token");
   Router.push("/login");
   window.localStorage.setItem("logout", Date.now());
+}
+
+export function deleteAccountRedirect() {
+  Cookie.remove("token");
+  Router.push("/login");
 }

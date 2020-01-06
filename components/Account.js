@@ -135,6 +135,7 @@ export default function Account({
   const theme = useTheme();
   const [reads, setReads] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [loader, setLoader] = useState(false);
   const [load, setLoad] = useState(false);
   const [reviews, setReviews] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
@@ -251,6 +252,20 @@ export default function Account({
     } catch (error) {
       showError(error);
       setState({ loading: false, password: "", confirmpassword: "" });
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    const token = Cookie.get("token");
+    setLoader(true);
+    try {
+      const payload = { headers: { Authorization: token } };
+      const res = await axios.delete(`${baseUrl}/api/account/delete`, payload);
+      setLoader(false);
+      deleteAccountRedirect();
+    } catch (error) {
+      showError(error);
+      setLoader(false);
     }
   };
 
@@ -481,7 +496,8 @@ export default function Account({
                 : theme.palette.secondary.grey,
               color: "#fff"
             }}
-            disabled={reads.length ? true : false}
+            disabled={loader || reads.length ? true : false}
+            onClick={handleDeleteAccount}
           >
             Delete Account <DeleteIcon color="inherit" />
           </Button>

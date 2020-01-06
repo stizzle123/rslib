@@ -20,6 +20,7 @@ router.patch("/api/changepass", auth.handleChangePassword);
 router.post("/api/login", auth.handleLogin);
 router.patch("/api/permissions", auth.handleUserPermissions);
 router.post("/api/verify", auth.verify);
+router.delete("/api/account/delete", auth.deleteAccount);
 
 router.post("/api/book", book.handleCreateBook);
 router.get("/api/book", book.handleGetBook);

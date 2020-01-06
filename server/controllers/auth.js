@@ -1,4 +1,8 @@
 const User = require("../../models/User");
+const Collection = require("../../models/Collection");
+const Notification = require("../../models/Notification");
+const Rating = require("../../models/Rating");
+const Request = require("../../models/Request");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const isLength = require("validator/lib/isLength");
@@ -86,6 +90,29 @@ exports.verify = async (req, res) => {
       });
       res.status(200).json(token);
     });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(error);
+  }
+};
+
+exports.deleteAccount = async (req, res) => {
+  if (!("authorization" in req.headers)) {
+    return res.status(401).send("No authorization token");
+  }
+
+  try {
+    const { userId } = jwt.verify(
+      req.headers.authorization,
+      process.env.JWT_SECRET
+    );
+
+    await Notification.deleteMany({ user: userId });
+    await Collection.deleteMany({ user: userId });
+    await Rating.deleteMany({ user: userId });
+    await Request.deleteMany({ user: userId });
+    await User.findOneAndDelete({ _id: userId });
+    res.status(200).json("Account deleted successfully.");
   } catch (error) {
     console.error(error);
     res.status(500).json(error);
