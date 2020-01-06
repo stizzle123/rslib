@@ -114,7 +114,9 @@ const useStyles = makeStyles(theme => ({
 
     display: "block",
     opacity: 0.9,
-    backgroundImage: "url(images/icon-bg.png)",
+    // backgroundImage: "url(images/icon-bg.png)",
+    backgroundImage:
+      "radial-gradient(circle at 40% 49%, rgba(196, 196, 196,0.04) 0%, rgba(196, 196, 196,0.04) 50%,rgba(91, 91, 91,0.04) 50%, rgba(91, 91, 91,0.04) 100%),radial-gradient(circle at 32% 80%, rgba(42, 42, 42,0.04) 0%, rgba(42, 42, 42,0.04) 50%,rgba(186, 186, 186,0.04) 50%, rgba(186, 186, 186,0.04) 100%),radial-gradient(circle at 72% 99%, rgba(233, 233, 233,0.04) 0%, rgba(233, 233, 233,0.04) 50%,rgba(53, 53, 53,0.04) 50%, rgba(53, 53, 53,0.04) 100%),linear-gradient(148deg, rgb(126, 9, 68),rgb(223, 57, 181))",
     [theme.breakpoints.down("sm")]: {
       display: "none"
     },
@@ -170,7 +172,9 @@ const useStyles = makeStyles(theme => ({
   },
   cardTop: {
     padding: theme.spacing(3),
-    backgroundImage: "url(/images/icon-bg.png)",
+    // backgroundImage: "url(/images/icon-bg.png)",
+    backgroundImage:
+      "radial-gradient(circle at 40% 49%, rgba(196, 196, 196,0.04) 0%, rgba(196, 196, 196,0.04) 50%,rgba(91, 91, 91,0.04) 50%, rgba(91, 91, 91,0.04) 100%),radial-gradient(circle at 32% 80%, rgba(42, 42, 42,0.04) 0%, rgba(42, 42, 42,0.04) 50%,rgba(186, 186, 186,0.04) 50%, rgba(186, 186, 186,0.04) 100%),radial-gradient(circle at 72% 99%, rgba(233, 233, 233,0.04) 0%, rgba(233, 233, 233,0.04) 50%,rgba(53, 53, 53,0.04) 50%, rgba(53, 53, 53,0.04) 100%),linear-gradient(148deg, rgb(126, 9, 68),rgb(223, 57, 181))",
     backgroundSize: "cover",
     backgroundPosition: "center"
   }
