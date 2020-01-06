@@ -19,6 +19,12 @@ import EditIcon from "@material-ui/icons/Edit";
 import BorderColorIcon from "@material-ui/icons/BorderColor";
 import CloseOutlined from "@material-ui/icons/CloseOutlined";
 import TextField from "@material-ui/core/TextField";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Slide from "@material-ui/core/Slide";
 import moment from "moment";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
@@ -34,6 +40,7 @@ import axios from "axios";
 import baseUrl from "../utils/baseUrl";
 import Badge from "@material-ui/core/Badge";
 import Cookie from "js-cookie";
+import { deleteAccountRedirect } from "../utils/auth";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -122,6 +129,10 @@ const StyledBadge = withStyles(theme => ({
   }
 }))(Badge);
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 export default function Account({
   avatar,
   email,
@@ -135,6 +146,7 @@ export default function Account({
   const theme = useTheme();
   const [reads, setReads] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
   const [loader, setLoader] = useState(false);
   const [load, setLoad] = useState(false);
   const [reviews, setReviews] = useState([]);
@@ -220,6 +232,14 @@ export default function Account({
     setSnack({ success: false });
   };
 
+  const handleOpenDialog = () => {
+    setOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpen(false);
+  };
+
   const handleChange = e => {
     const { target } = e;
     setState(prevState => ({ ...prevState, [target.id]: target.value }));
@@ -260,6 +280,7 @@ export default function Account({
     setLoader(true);
     try {
       const payload = { headers: { Authorization: token } };
+
       const res = await axios.delete(`${baseUrl}/api/account/delete`, payload);
       setLoader(false);
       deleteAccountRedirect();
@@ -496,13 +517,56 @@ export default function Account({
                 : theme.palette.secondary.grey,
               color: "#fff"
             }}
-            disabled={loader || reads.length ? true : false}
-            onClick={handleDeleteAccount}
+            disabled={reads.length ? true : false}
+            onClick={handleOpenDialog}
           >
-            Delete Account <DeleteIcon color="inherit" />
+            Delete Account <DeleteIcon color="inherit" />{" "}
           </Button>
         </div>
       </Container>
+
+      <Dialog
+        open={open}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            Are you sure you want to delete Account?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions
+          style={{ display: "flex", justifyContent: "space-between" }}
+        >
+          <Button
+            onClick={handleCloseDialog}
+            color="secondary"
+            variant="contained"
+          >
+            Cancel
+          </Button>
+          <Button
+            disabled={loader}
+            onClick={handleDeleteAccount}
+            color="primary"
+            style={{
+              backgroundColor: theme.palette.secondary.red,
+              color: "#fff"
+            }}
+          >
+            {loader ? (
+              <span style={{ textAlign: "center" }}>
+                <CircularProgress size="1rem" />
+              </span>
+            ) : (
+              <span>Delete</span>
+            )}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

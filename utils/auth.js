@@ -31,6 +31,8 @@ export function handleLogOut() {
 }
 
 export function deleteAccountRedirect() {
-  Cookie.remove("token");
+  cookie.remove("token");
+  cookie.remove("acceptCookie");
+  cookie.remove("rsCookie");
   Router.push("/login");
 }
