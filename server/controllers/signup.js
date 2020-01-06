@@ -7,7 +7,7 @@ const isEmail = require("validator/lib/isEmail");
 const authy = require("authy")(process.env.AUTHY_API);
 
 exports.handleSignup = async (req, res) => {
-  const { name, email, password, department, phone, code } = req.body;
+  const { name, email, password, department, phone, code, role } = req.body;
   try {
     if (!isLength(name, { min: 3, max: 10 })) {
       return res.status(422).send("Name must be 3-10 characters long");
@@ -32,7 +32,8 @@ exports.handleSignup = async (req, res) => {
       department,
       phone,
       countryCode: `+${code}`,
-      password: hash
+      password: hash,
+      role
     });
 
     newUser.save((err, doc) => {

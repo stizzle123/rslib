@@ -104,13 +104,15 @@ export default function Signup() {
     e.preventDefault();
     try {
       setState(prevState => ({ ...prevState, isLoading: true }));
+
       const payload = {
         name: state.name,
         email: state.email,
         department: state.department,
         phone: state.phone,
         code: code.phone,
-        password: state.password
+        password: state.password,
+        role: state.department === "People management" ? "admin" : "user"
       };
       const res = await axios.post(`${baseUrl}/api/signup`, payload);
 
