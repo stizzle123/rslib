@@ -257,7 +257,11 @@ export default function Book({ _id, name, role }) {
                     variant="subtitle1"
                     style={{ textAlign: "center" }}
                   >
-                    <Rating readOnly name="read-only" value={rating.ratings} />
+                    <Rating
+                      readOnly
+                      name="read-only"
+                      value={rating && rating.ratings}
+                    />
                     {/* <Box>2,350</Box> */}
                   </Typography>
                   <Typography
@@ -267,7 +271,7 @@ export default function Book({ _id, name, role }) {
                     <Chip
                       variant="outlined"
                       size="small"
-                      label={<span>{rating.ratings || 0} / 5</span>}
+                      label={<span>{(rating && rating.ratings) || 0} / 5</span>}
                       // color="secondary"
                       className={classes.badge}
                     />
