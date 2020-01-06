@@ -92,7 +92,7 @@ exports.handleDeleteLog = async (req, res) => {
   const id = req.body.id;
   try {
     const bookLog = await BookLog.findOneAndDelete({ _id: id });
-    res.status(200).json("Book has been removed successfully", bookLog);
+    res.json("Book has been removed successfully");
   } catch (error) {
     console.error(error);
     res.status(500).json(error);
