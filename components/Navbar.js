@@ -45,6 +45,7 @@ import EmailIcon from "@material-ui/icons/Email";
 import Router, { useRouter } from "next/router";
 import Link from "next/link";
 import { fade, makeStyles, withStyles } from "@material-ui/core/styles";
+
 import CloseIcon from "@material-ui/icons/Close";
 import NProgress from "nprogress";
 import SidebarNavList from "./SidebarNavList";

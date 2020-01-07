@@ -19,12 +19,16 @@ import CloudUpload from "@material-ui/icons/CloudUpload";
 import { darken } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
+import Fade from "@material-ui/core/Fade";
+import CloseIcon from "@material-ui/icons/Close";
+
 import axios from "axios";
 import baseUrl from "../utils/baseUrl";
 import catchErrors from "../utils/catchErrors";
 import Tooltip from "@material-ui/core/Tooltip";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import config from "../utils/config";
+import { useRouter } from "next/router";
 
 const INITIAL_STATE = {
   avatar: "",
@@ -41,6 +45,12 @@ export default function Profile({ _id }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const userUrl = `${baseUrl}/api/user?id=${_id}`;
+  const [snack, setSnack] = useState({
+    success: false,
+    msg: "",
+    Transition: Fade
+  });
+  const router = useRouter();
 
   useEffect(() => {
     let abort = new AbortController();
@@ -79,6 +89,15 @@ export default function Profile({ _id }) {
     }
   };
 
+  const showSuccess = msg => {
+    setSnack({ success: true, msg });
+  };
+
+  const handleCloseSuccess = () => {
+    setSnack({ success: false });
+    router.reload();
+  };
+
   const handleAvatarUpload = async e => {
     try {
       const userData = new FormData();
@@ -97,6 +116,7 @@ export default function Profile({ _id }) {
       payload.avatar = res.data.secure_url;
       const response = await axios.patch(url, payload);
       setLoading(false);
+      showSuccess("Avatar uploaded successfully.");
     } catch (error) {
       setState({ openError: true });
       catchErrors(error, setError);
@@ -233,6 +253,28 @@ export default function Profile({ _id }) {
               onClose={handleClose}
               autoHideDuration={6000}
               message={<span className={classes.snack}>{error}</span>}
+            />
+          )}
+
+          {snack.success && (
+            <Snackbar
+              open={snack.success}
+              onClose={handleCloseSuccess}
+              TransitionComponent={snack.Transition}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right"
+              }}
+              ContentProps={{
+                "aria-describedby": "message-id"
+              }}
+              // autoHideDuration={6000}
+              action={
+                <IconButton color="secondary" onClick={handleCloseSuccess}>
+                  <CloseIcon color="secondary" />
+                </IconButton>
+              }
+              message={<span id="message-id-3">{snack.msg}</span>}
             />
           )}
         </Paper>

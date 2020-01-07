@@ -169,7 +169,7 @@ export default function BookRequest() {
           variant="contained"
           color="secondary"
           disabled={
-            !(state.title || state.author || state.justification) || loading
+            !(state.title && state.author && state.justification) || loading
           }
         >
           {loading ? (

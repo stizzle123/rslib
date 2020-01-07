@@ -108,7 +108,7 @@ exports.deleteAccount = async (req, res) => {
     );
 
     await Notification.deleteMany({ user: userId });
-    await Collection.deleteMany({ user: userId });
+    await Collection.deleteOne({ user: userId });
     await Rating.deleteMany({ user: userId });
     await Request.deleteMany({ user: userId });
     await User.findOneAndDelete({ _id: userId });

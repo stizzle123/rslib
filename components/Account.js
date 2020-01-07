@@ -545,6 +545,7 @@ export default function Account({
             onClick={handleCloseDialog}
             color="secondary"
             variant="contained"
+            size="small"
           >
             Cancel
           </Button>
@@ -556,10 +557,11 @@ export default function Account({
               backgroundColor: theme.palette.secondary.red,
               color: "#fff"
             }}
+            size="small"
           >
             {loader ? (
-              <span style={{ textAlign: "center" }}>
-                <CircularProgress size="1rem" />
+              <span style={{ textAlign: "center", display: "flex" }}>
+                Deleting... <CircularProgress size="1rem" />
               </span>
             ) : (
               <span>Delete</span>
